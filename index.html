@@ -2120,9 +2120,9 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme
 /* ==========================================================================
    CAMERA CONTROL
    ========================================================================== */
-const cam = { theta: 0.70, phi: 1.17, dist: 6.4, target: new THREE.Vector3(0, 0.70, 0) };
+const cam = { theta: 0.70, phi: 1.17, dist: 5.9, target: new THREE.Vector3(0, 0.80, 0) };
 const goal = { theta: cam.theta, phi: cam.phi, dist: cam.dist, target: cam.target.clone() };
-let baseDist = 6.4, spinning = false;
+let baseDist = 5.9, spinning = false;
 
 function updateCamera(){
   cam.theta += (goal.theta - cam.theta) * .12;
@@ -2282,7 +2282,7 @@ function setExplode(v, instant){
   stageLbl.textContent = v < 1 ? '· assembled' : v < 50 ? '· separating' : v < 99 ? '· exploded' : '· catalogue';
   const t = Ttarget;
   goal.dist = lerp(baseDist * (1 + t * 0.55), wallDistance(), Math.max(0, (t - 0.55) / 0.45));
-  goal.target.set(0, lerp(0.70, GRID.cy, Math.max(0, (t - 0.5) / 0.5)), 0);
+  goal.target.set(0, lerp(0.80, GRID.cy, Math.max(0, (t - 0.5) / 0.5)), 0);
   /* square up to the wall as the pieces lay themselves out */
   if(t > 0.55){
     const k = Math.pow((t - 0.55) / 0.45, 1.4);
@@ -2307,7 +2307,7 @@ document.getElementById('spin').addEventListener('click', e => {
   spinning = !spinning; e.currentTarget.setAttribute('aria-pressed', spinning);
 });
 document.getElementById('reset').addEventListener('click', () => {
-  goal.theta = 0.70; goal.phi = 1.17; baseDist = 6.4; spinning = false;
+  goal.theta = 0.70; goal.phi = 1.17; baseDist = 5.9; spinning = false;
   setExplode(parseFloat(ex.value));
   document.getElementById('spin').setAttribute('aria-pressed','false');
   document.querySelectorAll('#rail [data-v]').forEach(x => x.setAttribute('aria-pressed', x.dataset.v === 'iso'));

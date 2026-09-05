@@ -5,7 +5,7 @@ self-contained HTML file. Pull the **Disassemble** slider and the car separates 
 own assembly order — body off subframes, subframes off running gear — until all
 **2,561 pieces** are laid out in one catalogue wall, sorted by system.
 
-![Assembled](docs/assembled.png)
+![The Mini Cooper Atlas, assembled](docs/assembled.jpg)
 
 ## What it does
 
