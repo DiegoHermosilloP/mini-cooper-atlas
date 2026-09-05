@@ -1,0 +1,2439 @@
+<title>Mini Cooper Atlas</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@85..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap">
+<style>
+:root{
+  --ground:#E7E9E3; --ground-2:#DDE0D8;
+  --surface:rgba(253,253,251,.86); --surface-solid:#FCFCFA; --surface-2:#F0F1EC;
+  --line:rgba(18,34,26,.13); --line-2:rgba(18,34,26,.07);
+  --ink:#141F19; --ink-2:#56615A; --ink-3:#8B948C;
+  --accent:#12503A; --accent-soft:rgba(18,80,58,.10);
+  --hot:#B0272F;
+  --shadow:0 1px 2px rgba(18,34,26,.05), 0 8px 24px -10px rgba(18,34,26,.18);
+  --shadow-lift:0 2px 4px rgba(18,34,26,.06), 0 18px 44px -14px rgba(18,34,26,.30);
+  --r:13px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#101411; --ground-2:#0B0E0C;
+    --surface:rgba(26,31,27,.82); --surface-solid:#1A1F1B; --surface-2:#20261F;
+    --line:rgba(226,238,228,.13); --line-2:rgba(226,238,228,.07);
+    --ink:#E8EEE7; --ink-2:#9CA79E; --ink-3:#6B756D;
+    --accent:#59C494; --accent-soft:rgba(89,196,148,.13);
+    --hot:#EF6B62;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -12px rgba(0,0,0,.7);
+    --shadow-lift:0 2px 6px rgba(0,0,0,.45), 0 20px 48px -16px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101411; --ground-2:#0B0E0C;
+  --surface:rgba(26,31,27,.82); --surface-solid:#1A1F1B; --surface-2:#20261F;
+  --line:rgba(226,238,228,.13); --line-2:rgba(226,238,228,.07);
+  --ink:#E8EEE7; --ink-2:#9CA79E; --ink-3:#6B756D;
+  --accent:#59C494; --accent-soft:rgba(89,196,148,.13);
+  --hot:#EF6B62;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -12px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 6px rgba(0,0,0,.45), 0 20px 48px -16px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:13px; line-height:1.45; overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.19em;text-transform:uppercase;color:var(--ink-3)}
+
+#stage{position:fixed;inset:0}
+#gl{display:block;width:100%;height:100%;touch-action:none}
+
+/* ---------- header ---------- */
+#head{position:fixed;top:26px;left:30px;z-index:6;pointer-events:none}
+#head .eyebrow{display:flex;align-items:center;gap:7px}
+#head .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent)}
+h1{
+  font-family:Archivo,"Helvetica Neue",sans-serif;
+  font-variation-settings:"wdth" 112,"wght" 700;
+  font-size:31px;line-height:1.02;margin:5px 0 0;letter-spacing:-.021em;
+  display:flex;align-items:baseline;gap:9px;
+}
+h1 .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:500;letter-spacing:.08em;
+  padding:2.5px 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);
+  transform:translateY(-4px);font-variation-settings:normal;
+}
+#submeta{margin-top:6px;color:var(--ink-2);font-size:11.5px;display:flex;gap:8px;align-items:center}
+#submeta b{font-weight:500;color:var(--ink)}
+#submeta .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-3);display:inline-block}
+
+/* ---------- generic panel ---------- */
+.panel{
+  background:var(--surface);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+}
+
+/* ---------- search ---------- */
+#topright{position:fixed;top:26px;right:30px;z-index:7;display:flex;gap:8px;align-items:flex-start}
+#searchwrap{position:relative;width:238px}
+#searchbar{display:flex;align-items:center;gap:8px;padding:0 11px;height:38px;border-radius:19px}
+#searchbar svg{flex:none;opacity:.5}
+#q{
+  flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:12.5px;
+  outline:none;padding:0;
+}
+#q::placeholder{color:var(--ink-3)}
+kbd{
+  font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;line-height:1.4;
+}
+#results{
+  position:absolute;top:44px;left:0;right:0;max-height:52vh;overflow-y:auto;border-radius:11px;
+  padding:5px;display:none;
+}
+#results.on{display:block}
+#results button{
+  display:flex;width:100%;gap:8px;align-items:center;padding:6px 8px;border-radius:7px;text-align:left;
+}
+#results button:hover,#results button.sel{background:var(--surface-2)}
+#results .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+#results .sy{font-size:9.5px;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+#results .empty{padding:10px;color:var(--ink-3);font-size:12px}
+.iconbtn{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;
+}
+.iconbtn:hover{background:var(--surface-2)}
+
+/* ---------- systems ---------- */
+#systems{position:fixed;left:30px;top:170px;width:246px;z-index:6;padding:14px 0 0;display:flex;flex-direction:column;max-height:calc(100vh - 300px)}
+.phead{display:flex;align-items:baseline;justify-content:space-between;padding:0 14px 11px}
+.phead h2{font-size:12.5px;font-weight:600;margin:0;letter-spacing:-.005em}
+.seg{display:flex;gap:2px;margin:0 12px 8px;padding:2.5px;background:var(--surface-2);border-radius:8px}
+.seg button{flex:1;padding:5px 0;font-size:11px;border-radius:6px;color:var(--ink-2);transition:.16s}
+.seg button[aria-pressed="true"]{background:var(--surface-solid);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.07);font-weight:500}
+#syslist{overflow-y:auto;padding:2px 8px 4px;flex:1;min-height:60px}
+.sys{display:flex;align-items:center;gap:9px;padding:6.5px 6px;border-radius:8px;cursor:pointer;transition:background .14s}
+.sys:hover{background:var(--surface-2)}
+.sys .chip{width:7px;height:7px;border-radius:2px;flex:none}
+.sys .nm{flex:1;font-size:12.5px;letter-spacing:-.004em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sys .ct{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.sw{width:31px;height:18px;border-radius:9px;background:var(--ink-3);position:relative;flex:none;transition:background .18s;opacity:.55}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .18s cubic-bezier(.3,1.4,.5,1);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.sys[aria-checked="true"] .sw{background:var(--ink);opacity:1}
+.sys[aria-checked="true"] .sw::after{transform:translateX(13px)}
+.sys[aria-checked="false"] .nm,.sys[aria-checked="false"] .ct{opacity:.45}
+.pfoot{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-top:1px solid var(--line-2);font-size:11px;color:var(--ink-3)}
+.pfoot button{color:var(--ink-2);font-size:11px}
+.pfoot button:hover{color:var(--ink)}
+
+/* ---------- view rail ---------- */
+#rail{position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:6;padding:6px;display:flex;flex-direction:column;gap:2px;align-items:center}
+#rail button{width:34px;height:31px;border-radius:8px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2);display:grid;place-items:center;transition:.15s}
+#rail button:hover{background:var(--surface-2);color:var(--ink)}
+#rail button[aria-pressed="true"]{background:var(--ink);color:var(--surface-solid)}
+#rail .rule{width:18px;height:1px;background:var(--line);margin:5px 0}
+
+/* ---------- explode dock ---------- */
+#dock{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:6;width:min(468px,calc(100vw - 60px));padding:13px 16px 11px}
+.dockhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.dockhead .lbl{font-size:12.5px;font-weight:500;letter-spacing:-.005em}
+.dockhead .lbl span{color:var(--ink-3);font-weight:400}
+#pct{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#pct em{font-style:normal;font-size:11px;color:var(--ink-3);margin-left:2px}
+#ex{
+  -webkit-appearance:none;appearance:none;width:100%;height:20px;background:none;display:block;cursor:pointer;
+}
+#ex::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--ink) var(--f,0%),var(--line) var(--f,0%))}
+#ex::-moz-range-track{height:4px;border-radius:2px;background:var(--line)}
+#ex::-moz-range-progress{height:4px;border-radius:2px;background:var(--ink)}
+#ex::-webkit-slider-thumb{
+  -webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--surface-solid);
+  border:1px solid var(--line);box-shadow:var(--shadow-lift);margin-top:-6.5px;transition:transform .12s;
+}
+#ex::-moz-range-thumb{width:17px;height:17px;border-radius:50%;background:var(--surface-solid);border:1px solid var(--line);box-shadow:var(--shadow-lift)}
+#ex:active::-webkit-slider-thumb{transform:scale(1.12)}
+.ticks{display:flex;justify-content:space-between;margin-top:1px;font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+.ticks button:hover{color:var(--ink)}
+.ticks button:nth-child(2){transform:translateX(-4px)}
+
+/* ---------- part card ---------- */
+#card{
+  position:fixed;right:30px;bottom:26px;z-index:6;width:262px;padding:0;overflow:hidden;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .22s,transform .22s;
+}
+#card.on{opacity:1;transform:none;pointer-events:auto}
+#card .top{padding:13px 15px 11px;border-bottom:1px solid var(--line-2)}
+#card .ref{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+#card .ref .r{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3);letter-spacing:.03em}
+#card h3{margin:0;font-size:14.5px;font-weight:600;line-height:1.28;letter-spacing:-.012em;text-wrap:balance}
+#card .sysline{display:flex;align-items:center;gap:6px;margin-top:7px;font-size:11.5px;color:var(--ink-2)}
+#card .sysline .chip{width:7px;height:7px;border-radius:2px;flex:none}
+#card dl{margin:0;padding:10px 15px 13px;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:11.5px}
+#card dt{color:var(--ink-3)}
+#card dd{margin:0;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:11px;font-variant-numeric:tabular-nums}
+#card .x{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;color:var(--ink-3);margin:-3px -5px -3px 0}
+#card .x:hover{background:var(--surface-2);color:var(--ink)}
+
+/* ---------- tooltip ---------- */
+#tip{
+  position:fixed;z-index:9;pointer-events:none;padding:5px 9px;border-radius:7px;
+  background:var(--ink);color:var(--ground);font-size:11.5px;letter-spacing:-.003em;white-space:nowrap;
+  opacity:0;transition:opacity .12s;transform:translate(-50%,-140%);box-shadow:var(--shadow-lift);
+}
+#tip.on{opacity:1}
+#tip .s{font-family:"IBM Plex Mono",monospace;font-size:9.5px;opacity:.6;margin-left:6px}
+
+/* ---------- footer caption ---------- */
+#caption{
+  position:fixed;bottom:26px;left:30px;z-index:5;font-family:"IBM Plex Mono",monospace;
+  font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);max-width:230px;line-height:1.7;
+}
+
+/* ---------- info modal ---------- */
+#scrim{position:fixed;inset:0;z-index:20;background:rgba(10,16,12,.42);backdrop-filter:blur(3px);display:none;padding:24px;overflow-y:auto}
+#scrim.on{display:grid;place-items:center}
+#info{width:min(560px,100%);background:var(--surface-solid);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lift);padding:26px 28px 24px}
+#info h2{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 108,"wght" 700;font-size:21px;margin:6px 0 0;letter-spacing:-.02em}
+#info p{color:var(--ink-2);font-size:12.5px;line-height:1.62;margin:11px 0 0;max-width:62ch}
+#info h3{font-size:10px;font-family:"IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:22px 0 9px;font-weight:500}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;font-size:12px}
+.specs div{display:flex;justify-content:space-between;gap:10px;padding:5.5px 0;border-bottom:1px solid var(--line-2)}
+.specs dt{color:var(--ink-2)}
+.specs dd{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;font-variant-numeric:tabular-nums;text-align:right}
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:6px 16px;font-size:12px;color:var(--ink-2)}
+.keys div{display:flex;justify-content:space-between;gap:8px;align-items:center}
+#info .close{position:absolute;top:0;right:0}
+#info .headrow{display:flex;justify-content:space-between;align-items:flex-start}
+#info .closebtn{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--ink-3)}
+#info .closebtn:hover{background:var(--surface-2);color:var(--ink)}
+
+/* ---------- loader ---------- */
+#load{position:fixed;inset:0;z-index:30;background:var(--ground);display:grid;place-items:center;transition:opacity .6s}
+#load.off{opacity:0;pointer-events:none}
+#load .in{text-align:center}
+#load .bar{width:170px;height:2px;background:var(--line);border-radius:2px;margin:14px auto 0;overflow:hidden}
+#load .bar i{display:block;height:100%;width:30%;background:var(--accent);border-radius:2px;animation:sweep 1.1s infinite ease-in-out}
+@keyframes sweep{0%{transform:translateX(-100%)}100%{transform:translateX(400%)}}
+#load .t{font-family:Archivo,sans-serif;font-variation-settings:"wdth" 110,"wght" 700;font-size:19px;letter-spacing:-.02em}
+#load .s{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:7px}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important;transition-duration:.01ms !important}}
+
+@media (max-width:1080px){
+  #systems{max-height:calc(100vh - 420px)}
+  #card{bottom:auto;top:170px}
+}
+@media (max-width:860px){
+  #head{top:18px;left:18px} h1{font-size:24px} #submeta{font-size:10.5px}
+  #topright{top:18px;right:18px} #searchwrap{width:150px}
+  #systems{left:18px;top:132px;width:206px;max-height:38vh}
+  #rail{right:14px} #caption{display:none}
+  #dock{bottom:16px;width:calc(100vw - 32px)}
+  #card{right:14px;top:auto;bottom:118px;width:214px}
+}
+</style>
+
+<div id="stage"><canvas id="gl"></canvas></div>
+
+<header id="head">
+  <div class="eyebrow">Interactive teardown</div>
+  <h1>Mini Cooper Atlas <span class="tag">3D</span></h1>
+  <div id="submeta"><b id="total">—</b> modeled pieces <i class="dot"></i> Morris Mini Cooper S Mk&nbsp;I</div>
+</header>
+
+<div id="topright">
+  <div id="searchwrap">
+    <div id="searchbar" class="panel">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.6"/><path d="M10.5 10.5 14 14" stroke-linecap="round"/></svg>
+      <input id="q" type="text" placeholder="Find a part" autocomplete="off" spellcheck="false" aria-label="Find a part">
+      <kbd>/</kbd>
+    </div>
+    <div id="results" class="panel"></div>
+  </div>
+  <button class="iconbtn panel" id="infobtn" aria-label="About this model">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.4"/><path d="M8 7.2v4M8 4.8v.6" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<section id="systems" class="panel">
+  <div class="phead"><h2>Systems</h2><span class="ct mono" id="syscount">—</span></div>
+  <div class="seg" id="filters" role="group" aria-label="Filter systems">
+    <button data-f="all" aria-pressed="true">All</button>
+    <button data-f="body" aria-pressed="false">Body</button>
+    <button data-f="mech" aria-pressed="false">Mechanical</button>
+  </div>
+  <div id="syslist"></div>
+  <div class="pfoot"><span id="vis">—</span><button id="toggleall">Hide all</button></div>
+</section>
+
+<nav id="rail" class="panel" aria-label="Camera views">
+  <button data-v="iso" aria-pressed="true" title="Three-quarter view">¾</button>
+  <button data-v="front" aria-pressed="false" title="Front elevation">F</button>
+  <button data-v="side" aria-pressed="false" title="Side elevation">S</button>
+  <button data-v="rear" aria-pressed="false" title="Rear elevation">R</button>
+  <button data-v="top" aria-pressed="false" title="Plan view">T</button>
+  <div class="rule"></div>
+  <button id="spin" aria-pressed="false" title="Auto-rotate">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.6 8a5.6 5.6 0 1 1-1.9-4.2" stroke-linecap="round"/><path d="M13.4 1.7v2.6h-2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button id="reset" title="Reset view">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.4 8a5.6 5.6 0 1 0 1.9-4.2" stroke-linecap="round"/><path d="M2.6 1.7v2.6h2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</nav>
+
+<section id="dock" class="panel">
+  <div class="dockhead">
+    <div class="lbl">Disassemble <span id="stage-lbl">· assembled</span></div>
+    <div id="pct">0<em>%</em></div>
+  </div>
+  <input id="ex" type="range" min="0" max="100" value="0" step="0.5" aria-label="Disassemble">
+  <div class="ticks">
+    <button data-set="0">Assembled</button>
+    <button data-set="50">Exploded</button>
+    <button data-set="100">Catalogue</button>
+  </div>
+</section>
+
+<aside id="card" class="panel" aria-live="polite">
+  <div class="top">
+    <div class="ref"><span class="r" id="c-ref">—</span><button class="x" id="c-close" aria-label="Clear selection">
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke-linecap="round"/></svg></button></div>
+    <h3 id="c-name">—</h3>
+    <div class="sysline"><span class="chip" id="c-chip"></span><span id="c-sys">—</span></div>
+  </div>
+  <dl>
+    <dt>Material</dt><dd id="c-mat">—</dd>
+    <dt>Assembly</dt><dd id="c-asm">—</dd>
+    <dt>Envelope</dt><dd id="c-dim">—</dd>
+    <dt>Fitted qty</dt><dd id="c-qty">—</dd>
+  </dl>
+</aside>
+
+<div id="caption">Morris Mini Cooper S · 1275 · 1964–1967</div>
+<div id="tip"></div>
+
+<div id="scrim" role="dialog" aria-modal="true" aria-label="About this model">
+  <div id="info">
+    <div class="headrow">
+      <div>
+        <div class="eyebrow">About the atlas</div>
+        <h2>An engineered guess, drawn to scale</h2>
+      </div>
+      <button class="closebtn" id="info-close" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <p>Every piece here is generated in the browser from the published dimensions of the 1275&nbsp;cc Cooper&nbsp;S — wheelbase, track, bore and stroke, disc diameter, wheel size. It is a reading of the car, not a scan of one: every pressing — bonnet, wings, doors, roof, boot lid — is lofted as one continuous surface from its own cross-sections, and the loom is modeled as routed runs. Names follow workshop-manual usage; the reference codes are this atlas's own index, not factory part numbers.</p>
+    <p>Drag to orbit, scroll to zoom, right-drag to pan. Pull the <b>Disassemble</b> slider and the car separates along its own assembly order — body off subframes, subframes off running gear — until every piece is laid out in one catalogue wall, sorted by system.</p>
+    <h3>As built</h3>
+    <div class="specs">
+      <div><dt>Engine</dt><dd>A-series, 1275 cc</dd></div>
+      <div><dt>Bore × stroke</dt><dd>70.6 × 81.3 mm</dd></div>
+      <div><dt>Power</dt><dd>76 bhp @ 5800</dd></div>
+      <div><dt>Torque</dt><dd>79 lb·ft @ 3000</dd></div>
+      <div><dt>Induction</dt><dd>2 × SU HS2</dd></div>
+      <div><dt>Gearbox</dt><dd>4-speed, in sump</dd></div>
+      <div><dt>Front brakes</dt><dd>7.5 in disc</dd></div>
+      <div><dt>Suspension</dt><dd>Rubber cone</dd></div>
+      <div><dt>Wheelbase</dt><dd>2036 mm</dd></div>
+      <div><dt>Length</dt><dd>3054 mm</dd></div>
+      <div><dt>Wheels</dt><dd>10 in</dd></div>
+      <div><dt>Kerb weight</dt><dd>≈ 686 kg</dd></div>
+    </div>
+    <h3>Keys</h3>
+    <div class="keys">
+      <div><span>Search parts</span><kbd>/</kbd></div>
+      <div><span>Clear selection</span><kbd>Esc</kbd></div>
+      <div><span>Nudge disassembly</span><kbd>← →</kbd></div>
+      <div><span>Assembled / catalogue</span><kbd>0</kbd> <kbd>1</kbd></div>
+    </div>
+  </div>
+</div>
+
+<div id="load"><div class="in">
+  <div class="t">Mini Cooper Atlas</div>
+  <div class="s" id="loadmsg">Building pieces</div>
+  <div class="bar"><i></i></div>
+</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+/* ============================================================================
+   MINI COOPER ATLAS — procedural teardown of a 1275 Cooper S (Mk I)
+   All dimensions in metres, derived from published factory figures.
+   ========================================================================== */
+
+/* ---- systems -------------------------------------------------------------- */
+const SYS = {
+  shell  :{ n:'Body shell',      c:'#3C7A5B', g:'body' },
+  chassis:{ n:'Subframes',       c:'#97A2AC', g:'body' },
+  engine :{ n:'Engine',          c:'#C0392B', g:'mech' },
+  trans  :{ n:'Transmission',    c:'#E08A1E', g:'mech' },
+  susp   :{ n:'Suspension',      c:'#7E57C2', g:'mech' },
+  brakes :{ n:'Brakes',          c:'#D0507A', g:'mech' },
+  steer  :{ n:'Steering',        c:'#0E8A8A', g:'mech' },
+  wheels :{ n:'Wheels & tyres',  c:'#4A4F55', g:'mech' },
+  cool   :{ n:'Cooling',         c:'#2E7BE0', g:'mech' },
+  fuel   :{ n:'Fuel & exhaust',  c:'#8A6A2F', g:'mech' },
+  elec   :{ n:'Electrical',      c:'#E3B505', g:'mech' },
+  lamps  :{ n:'Lighting',        c:'#9BB43A', g:'mech' },
+  int    :{ n:'Interior',        c:'#B07A56', g:'body' },
+  glass  :{ n:'Glass & trim',    c:'#57A9C4', g:'body' },
+  fast   :{ n:'Fasteners',       c:'#5F6B78', g:'body' }
+};
+const SYSKEYS = Object.keys(SYS);
+
+/* ---- materials ------------------------------------------------------------ */
+const MAT = {
+  paint :{ n:'Body paint on steel', c:0x235E48, m:.06, r:.34 },
+  paintW:{ n:'Old English White',   c:0xE6E4D8, m:.05, r:.34 },
+  steel :{ n:'Pressed steel',       c:0x929AA1, m:.80, r:.45 },
+  chrome:{ n:'Chromed steel',       c:0xE9EEF1, m:.86, r:.14 },
+  iron  :{ n:'Cast iron',           c:0x4B4945, m:.45, r:.80 },
+  alloy :{ n:'Cast aluminium',      c:0xA9AEAA, m:.72, r:.48 },
+  rubber:{ n:'Rubber',              c:0x212329, m:.02, r:.94 },
+  glass :{ n:'Toughened glass',     c:0xA9C6D2, m:.04, r:.04, t:.44 },
+  plast :{ n:'Moulded plastic',     c:0x3E444A, m:.02, r:.58 },
+  fabric:{ n:'Trimmed fabric',      c:0x7A6B5C, m:.00, r:.96 },
+  copper:{ n:'Copper',              c:0xB0703C, m:.85, r:.38 },
+  brass :{ n:'Brass',               c:0xBE9A42, m:.85, r:.35 },
+  felt  :{ n:'Felt / bitumen',      c:0x484440, m:.00, r:1.0 }
+};
+
+/* ---- catalog helpers ------------------------------------------------------ */
+const PARTS = [];
+let ASM = 'Vehicle';
+function grp(name, fn){ const p = ASM; ASM = name; fn(); ASM = p; }
+function add(n, sy, m, g, p, s, r){ PARTS.push({ n, sy, m, g, p, s, r: r || [0,0,0], asm: ASM }); }
+/* mirrored pair, RH first (RH = right of driver-forward, +x) */
+function addM(n, sy, m, g, p, s, r){
+  add(n + ' · RH', sy, m, g, p, s, r);
+  add(n + ' · LH', sy, m, g, [-p[0], p[1], p[2]], s, r ? [r[0], -r[1], -r[2]] : [0,0,0]);
+}
+const lerp = (a,b,t) => a + (b-a)*t;
+/* ring of identical pieces about an axis */
+function ring(n, sy, m, g, cx, cy, cz, rad, count, s, axis, r0){
+  for(let i=0;i<count;i++){
+    const a = (i/count)*Math.PI*2 + (r0||0);
+    let p, rot;
+    if(axis === 'z'){ p = [cx + Math.cos(a)*rad, cy + Math.sin(a)*rad, cz]; rot = [Math.PI/2,0,0]; }
+    else if(axis === 'x'){ p = [cx, cy + Math.sin(a)*rad, cz + Math.cos(a)*rad]; rot = [0,0,Math.PI/2]; }
+    else { p = [cx + Math.cos(a)*rad, cy, cz + Math.sin(a)*rad]; rot = [0,0,0]; }
+    add(n + ' · ' + (i+1), sy, m, g, p, s, rot);
+  }
+}
+/* run of pieces along a polyline: pts = [[x,y,z],...] */
+function pathRun(n, sy, m, g, pts, thick, per, startIdx){
+  let idx = startIdx || 1;
+  for(let i=0;i<pts.length-1;i++){
+    const a = pts[i], b = pts[i+1];
+    const dx=b[0]-a[0], dy=b[1]-a[1], dz=b[2]-a[2];
+    const len = Math.hypot(dx,dy,dz);
+    const seg = Math.max(1, Math.round(len/(per||.12)));
+    for(let k=0;k<seg;k++){
+      const t0 = k/seg, t1 = (k+1)/seg, tm = (t0+t1)/2;
+      const p = [a[0]+dx*tm, a[1]+dy*tm, a[2]+dz*tm];
+      const rotY = Math.atan2(dx, dz);
+      const rotX = -Math.asin(Math.max(-1,Math.min(1, dy/(len||1))));
+      add(n + ' · ' + (idx++), sy, m, g, p, [thick, thick, len/seg*1.06], [rotX, rotY, 0]);
+    }
+  }
+  return idx;
+}
+
+/* ---- vehicle geometry constants ------------------------------------------ */
+const HL = 1.527;        // half length (3054 mm)
+const AXF = 1.018, AXR = -1.018;   // axle centres (wheelbase 2036 mm)
+const HUBX = 0.615;      // half track (1230 mm)
+const WR = 0.268;        // rolling radius, 145/70 × 10 in
+const SILLY = 0.222;     // underside of the sill
+const WAIST = 0.900;     // belt line
+const ROOFY = 1.346;     // roof crown (1346 mm overall height)
+const ARCH = 0.298;      // wheel-arch radius
+
+/* body top line: z → y, round the nose, over the roof and down the tail */
+const PROF = [[1.527,.836],[1.514,.868],[1.486,.888],[1.436,.898],[1.330,.902],
+              [1.050,.902],[0.820,.912],[0.700,.922],
+              [0.620,1.005],[0.520,1.120],[0.420,1.222],[0.350,1.298],[0.300,1.332],[0.200,1.346],
+              [-0.640,1.346],[-0.760,1.334],[-0.855,1.294],[-0.945,1.150],[-1.020,1.010],[-1.090,.935],
+              [-1.300,.922],[-1.440,.900],[-1.492,.845],[-1.527,.760]];
+function prof(z){
+  z = Math.max(-HL, Math.min(HL, z));
+  for(let i=0;i<PROF.length-1;i++)
+    if(z <= PROF[i][0] && z >= PROF[i+1][0])
+      return lerp(PROF[i][1], PROF[i+1][1], (PROF[i][0]-z)/(PROF[i][0]-PROF[i+1][0]));
+  return .90;
+}
+/* plan half-width — flat-sided through the middle, rounded off at both ends */
+function hw(z){
+  const a = Math.abs(z);
+  if(a <= 0.98) return 0.705;
+  const t = Math.min(1, (a - 0.98) / 0.547);
+  return 0.705 * Math.sqrt(Math.max(0.02, 1 - 0.375*t*t*t));
+}
+function roofHW(z){
+  const t = Math.max(0, (Math.abs(z + 0.28) - 0.36) / 0.62);
+  return 0.590 - 0.085*t*t;
+}
+/* cabin half-width, tapering inward from the waist to the roof (tumblehome) */
+function hwc(z, y){
+  const t = Math.max(0, Math.min(1, (y - WAIST) / (ROOFY - WAIST)));
+  return lerp(hw(z), roofHW(z), t*t*0.86 + t*0.14);
+}
+/* lower edge of the flank: the sill, or the wheel-arch cut-out where one crosses */
+function bottomEdge(z){
+  let y = SILLY;
+  for(const ax of [AXF, AXR]){
+    const d = Math.abs(z - ax);
+    if(d < ARCH - 0.004) y = Math.max(y, 0.290 + Math.sqrt(ARCH*ARCH - d*d));
+  }
+  return y;
+}
+function arch(z, y){
+  const ax = Math.abs(z-AXF) < Math.abs(z-AXR) ? AXF : AXR;
+  return Math.hypot(z-ax, y-0.290) < ARCH;
+}
+
+/* ==========================================================================
+   SMOOTH PANELS — each pressing is one lofted surface with continuous normals
+   ========================================================================== */
+/* rows[i][j] = [x,y,z]; equal-length rows are stitched into a smooth quad mesh */
+function loft(rows){
+  const nu = rows.length, nv = rows[0].length;
+  const pos = new Float32Array(nu*nv*3), idx = [];
+  for(let i=0;i<nu;i++) for(let j=0;j<nv;j++){
+    const p = rows[i][j], k = (i*nv + j)*3;
+    pos[k] = p[0]; pos[k+1] = p[1]; pos[k+2] = p[2];
+  }
+  for(let i=0;i<nu-1;i++) for(let j=0;j<nv-1;j++){
+    const a = i*nv + j, b = a + 1, c = a + nv, d = c + 1;
+    idx.push(a, c, b, b, c, d);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return g;
+}
+/* register a lofted pressing as a single part, positioned at its own centroid */
+function panel(name, sy, mat, rows){
+  const g = loft(rows);
+  g.computeBoundingBox();
+  const c = new THREE.Vector3(), sz = new THREE.Vector3();
+  g.boundingBox.getCenter(c); g.boundingBox.getSize(sz);
+  g.translate(-c.x, -c.y, -c.z);
+  g.computeBoundingSphere();
+  PARTS.push({ n:name, sy, m:mat, g, p:[c.x, c.y, c.z], s:[1,1,1], r:[0,0,0], asm:ASM,
+               env:[sz.x, sz.y, sz.z] });
+}
+/* half a closed cross-section: sill → up the flank → round the shoulder → centreline */
+function halfSection(z){
+  const W = hw(z), yTop = prof(z);
+  const R = Math.min(0.155, (yTop - SILLY) * 0.40);
+  const yB = bottomEdge(z), yF1 = yTop - R;
+  const out = [];
+  const NF = 14;
+  for(let i=0;i<NF;i++){
+    const t = i/(NF-1);
+    out.push([W + 0.011*Math.sin(t*Math.PI), lerp(yB, yF1, t)]);
+  }
+  const NS = 8;
+  for(let i=1;i<=NS;i++){
+    const a = (i/NS) * Math.PI/2;
+    out.push([W - R + Math.cos(a)*R, yTop - R + Math.sin(a)*R]);
+  }
+  const NT = 6, xT = W - R;
+  for(let i=1;i<=NT;i++){
+    const x = xT * (1 - i/NT);
+    out.push([x, yTop - 0.030*Math.pow(x/(W||1), 2)]);
+  }
+  return out;                       // 28 points; [0] sill, [27] centreline
+}
+/* the whole section, LH sill (0) → centreline (27) → RH sill (54) */
+function fullSection(z){
+  const h = halfSection(z), out = [];
+  for(let i=0;i<h.length;i++)  out.push([-h[i][0], h[i][1], z]);
+  for(let i=h.length-2;i>=0;i--) out.push([ h[i][0], h[i][1], z]);
+  return out;
+}
+/* cabin section: flank up to the waist, finished with the belt roll */
+function cabinSection(z, side){
+  const W = hw(z), yB = bottomEdge(z), out = [];
+  const NF = 14;
+  for(let i=0;i<NF;i++){
+    const t = i/(NF-1);
+    out.push([side*(W + 0.011*Math.sin(t*Math.PI)), lerp(yB, WAIST - 0.032, t), z]);
+  }
+  for(let i=1;i<=4;i++){
+    const a = (i/4) * Math.PI/2.5;
+    out.push([side*(W - 0.032 + Math.cos(a)*0.032), WAIST - 0.032 + Math.sin(a)*0.032, z]);
+  }
+  return out;                        // 18 points
+}
+function roofSection(z){
+  const RW = roofHW(z), R = 0.078, xT = RW - R, out = [];
+  for(let i=4;i>=1;i--){
+    const a = (i/4) * Math.PI/2;
+    out.push([-(xT + Math.sin(a)*R), ROOFY - 0.028 - R + Math.cos(a)*R, z]);
+  }
+  for(let i=0;i<=12;i++){
+    const x = lerp(-xT, xT, i/12);
+    out.push([x, ROOFY - 0.028*Math.pow(x/RW, 2), z]);
+  }
+  for(let i=1;i<=4;i++){
+    const a = (i/4) * Math.PI/2;
+    out.push([xT + Math.sin(a)*R, ROOFY - 0.028 - R + Math.cos(a)*R, z]);
+  }
+  return out;                        // 21 points
+}
+/* half-width of the body section at station z and height y */
+function bodyXAt(z, y){
+  const h = halfSection(z);
+  for(let i=0;i<h.length-1;i++){
+    const a = h[i], b = h[i+1];
+    if((y >= a[1] && y <= b[1]) || (y <= a[1] && y >= b[1]))
+      return lerp(a[0], b[0], (y - a[1]) / ((b[1] - a[1]) || 1));
+  }
+  return y > h[h.length-1][1] ? 0 : h[0][0];
+}
+/* sweep a small profile along a path — used for pillars, gutters and arch lips */
+function sweep(name, sy, mat, path, profile){
+  const rows = path.map(pt => profile.map(q => [
+    pt[0] + q[0]*pt[3] , pt[1] + q[1], pt[2] + q[0]*pt[4] + q[2]
+  ]));
+  panel(name, sy, mat, rows);
+}
+/* slice a band of columns out of a set of section rows */
+const band = (rows, a, b) => rows.map(r => r.slice(a, b + 1));
+
+/* ==========================================================================
+   1 · BODY SHELL
+   ========================================================================== */
+function buildShell(){
+  /* ---------- front end: bonnet and front wings ---------- */
+  grp('Front end panels', ()=>{
+    const rows = [];
+    for(let z = 1.466; z >= 0.700; z -= 0.026) rows.push(fullSection(z));
+    panel('Bonnet', 'shell', 'paint', band(rows, 22, 32));
+    panel('Front wing · LH', 'shell', 'paint', band(rows, 0, 22));
+    panel('Front wing · RH', 'shell', 'paint', band(rows, 32, 54));
+    /* the nose, with the grille aperture left open */
+    const face = (name, y0, y1, x0f, x1f, nx) => {
+      const r = [];
+      for(let k=0;k<=10;k++){
+        const y = lerp(y0, y1, k/10);
+        const tuck = Math.max(0, (0.392 - y) / 0.130);
+        const Wy = Math.max(0.06, bodyXAt(1.466, y) - 0.003) * (1 - 0.09*tuck*tuck);
+        const zc = 1.500 - 0.068*tuck*tuck;
+        const row = [];
+        for(let j=0;j<=nx;j++){
+          const x = lerp(x0f(Wy), x1f(Wy), j/nx);
+          row.push([x, y, zc - 0.034*Math.pow(Math.abs(x)/Wy, 2.4)]);
+        }
+        r.push(row);
+      }
+      panel(name, 'shell', 'paint', r);
+    };
+    face('Front panel · upper', 0.792, 0.884, W => -W, W => W, 14);
+    face('Front panel · lower', 0.250, 0.500, W => -W, W => W, 14);
+    face('Front panel · LH', 0.500, 0.792, W => -W, () => -0.248, 8);
+    face('Front panel · RH', 0.500, 0.792, () => 0.248, W => W, 8);
+    add('Front valance', 'shell', 'paint', 'box', [0, 0.238, 1.408], [1.02, 0.13, 0.05], [-0.55,0,0]);
+    add('Front panel · lower rail', 'shell', 'steel', 'box', [0, 0.290, 1.418], [1.00, 0.05, 0.05]);
+    addM('Bonnet hinge', 'shell', 'steel', 'box', [0.34, 0.808, 1.404], [0.06, 0.03, 0.10]);
+    add('Bonnet safety catch', 'shell', 'steel', 'box', [0, 0.808, 1.424], [0.05, 0.04, 0.04]);
+    add('Bonnet frame · centre rib', 'shell', 'steel', 'box', [0, 0.836, 1.050], [0.06, 0.03, 0.70]);
+    addM('Bonnet frame · side rail', 'shell', 'steel', 'box', [0.40, 0.834, 1.050], [0.05, 0.03, 0.70]);
+    add('Bonnet prop rod', 'shell', 'steel', 'cyl', [0.34, 0.826, 1.160], [0.01, 0.42, 0.01], [Math.PI/2,0,0]);
+    add('Bonnet release cable', 'shell', 'steel', 'cyl', [0.10, 0.800, 1.180], [0.008, 0.90, 0.008], [Math.PI/2,0,0]);
+  });
+
+  /* ---------- cabin sides ---------- */
+  grp('Body sides', ()=>{
+    for(const s of [1, -1]){
+      const sd = s > 0 ? 'RH' : 'LH';
+      const door = [], quarter = [];
+      for(let z = 0.702; z >= -0.300; z -= 0.026) door.push(cabinSection(z, s));
+      for(let z = -0.300; z >= -0.952; z -= 0.026) quarter.push(cabinSection(z, s));
+      panel('Door skin · ' + sd, 'shell', 'paint', door);
+      panel('Rear quarter panel · ' + sd, 'shell', 'paint', quarter);
+    }
+    addM('Sill panel', 'shell', 'paint', 'box', [hw(0.1) - 0.022, 0.252, 0.150], [0.058, 0.070, 1.02]);
+    addM('Inner sill member', 'shell', 'steel', 'box', [0.612, 0.272, 0.10], [0.07, 0.12, 1.06]);
+    for(let i=0;i<11;i++)
+      addM('A-panel seam flange · ' + (i+1), 'fast', 'steel', 'box',
+        [hw(0.732) - 0.002, 0.270 + i*0.060, 0.732], [0.020, 0.062, 0.022]);
+    for(let i=0;i<9;i++)
+      addM('Rear quarter seam flange · ' + (i+1), 'fast', 'steel', 'box',
+        [hw(-0.952) - 0.002, 0.330 + i*0.066, -0.952], [0.020, 0.068, 0.022]);
+  });
+
+  /* ---------- roof ---------- */
+  grp('Roof', ()=>{
+    const rows = [];
+    for(let z = 0.302; z >= -0.860; z -= 0.028) rows.push(roofSection(z));
+    panel('Roof panel', 'shell', 'paintW', rows);
+    /* external gutter, swept along the roof edge */
+    for(const s of [1, -1]){
+      const path = [];
+      for(let z = 0.286; z >= -0.848; z -= 0.045)
+        path.push([s*(roofHW(z) + 0.004), ROOFY - 0.112, z, 1, 0]);
+      sweep('Roof gutter · ' + (s > 0 ? 'RH' : 'LH'), 'shell', 'paintW', path,
+            [[0.000, 0.030, 0], [0.020, 0.030, 0], [0.026, 0.012, 0], [0.020, -0.008, 0], [0.002, -0.010, 0]]);
+    }
+    add('Windscreen header rail', 'shell', 'steel', 'box', [0, ROOFY - 0.062, 0.318], [1.06, 0.055, 0.078]);
+    add('Rear header rail', 'shell', 'steel', 'box', [0, ROOFY - 0.062, -0.845], [1.00, 0.055, 0.078]);
+    addM('Cantrail', 'shell', 'steel', 'box', [roofHW(-0.3) - 0.030, ROOFY - 0.072, -0.290], [0.055, 0.055, 1.06]);
+    for(let i=0;i<20;i++)
+      addM('Gutter seam weld · ' + (i+1), 'fast', 'steel', 'disc',
+        [roofHW(0.24 - i*0.058) + 0.026, ROOFY - 0.106, 0.24 - i*0.058], [0.012, 0.006, 0.012], [0,0,Math.PI/2]);
+  });
+
+  /* ---------- rear end ---------- */
+  grp('Rear end panels', ()=>{
+    const deck = [], boot = [];
+    for(let z = -0.948; z >= -1.092; z -= 0.024) deck.push(fullSection(z));
+    for(let z = -1.092; z >= -1.470; z -= 0.024) boot.push(fullSection(z));
+    panel('Rear deck panel', 'shell', 'paint', band(deck, 22, 32));
+    panel('Rear wing · LH', 'shell', 'paint', band(deck.concat(boot), 0, 22));
+    panel('Rear wing · RH', 'shell', 'paint', band(deck.concat(boot), 32, 54));
+    panel('Boot lid', 'shell', 'paint', band(boot, 22, 32));
+    /* tail face */
+    const r = [];
+    for(let k=0;k<=11;k++){
+      const y = lerp(0.252, 0.836, k/11);
+      const tuck = Math.max(0, (0.352 - y) / 0.110);
+      const Wy = Math.max(0.06, bodyXAt(-1.470, y) - 0.003) * (1 - 0.09*tuck*tuck);
+      const zc = -(1.504 - 0.066*tuck*tuck);
+      const row = [];
+      for(let j=0;j<=14;j++){
+        const x = lerp(-Wy, Wy, j/14);
+        row.push([x, y, zc + 0.034*Math.pow(Math.abs(x)/Wy, 2.4)]);
+      }
+      r.push(row);
+    }
+    panel('Rear panel', 'shell', 'paint', r);
+    add('Rear valance', 'shell', 'paint', 'box', [0, 0.244, -1.442], [1.04, 0.13, 0.05], [0.50,0,0]);
+    addM('Boot hinge', 'shell', 'steel', 'box', [0.32, 0.918, -1.100], [0.05, 0.03, 0.09]);
+    add('Boot handle', 'shell', 'chrome', 'box', [0, 0.782, -1.500], [0.16, 0.035, 0.045]);
+    add('Boot lid stay', 'shell', 'steel', 'cyl', [0.30, 0.900, -1.280], [0.008, 0.28, 0.008], [Math.PI/2,0,0]);
+    add('Number plate hinge strap', 'shell', 'steel', 'box', [0, 0.390, -1.482], [0.20, 0.02, 0.02]);
+    add('Rear closing panel · inner', 'shell', 'steel', 'box', [0, 0.520, -1.452], [1.00, 0.30, 0.02]);
+    for(let i=0;i<9;i++)
+      add('Rear panel weld · ' + (i+1), 'fast', 'steel', 'disc',
+        [-0.48 + i*0.12, 0.812, -1.478], [0.011, 0.006, 0.011], [Math.PI/2,0,0]);
+  });
+
+  /* ---------- wheel arch lips ---------- */
+  grp('Wheel arches', ()=>{
+    for(const [ax, nm] of [[AXF, 'Front'], [AXR, 'Rear']]){
+      for(const s of [1, -1]){
+        const path = [];
+        for(let i=0;i<=18;i++){
+          const a = Math.PI * (0.03 + i/18*0.94);
+          path.push([s*(hw(ax) - 0.004), 0.290 + Math.sin(a)*ARCH, ax + Math.cos(a)*ARCH, 1, 0]);
+        }
+        sweep(nm + ' arch lip · ' + (s > 0 ? 'RH' : 'LH'), 'shell', 'paint', path,
+              [[0.000, 0.026, 0], [0.014, 0.028, 0], [0.020, 0.014, 0], [0.016, -0.004, 0], [-0.030, -0.010, 0]]);
+        for(let i=0;i<7;i++){
+          const a = Math.PI * (0.09 + i/6*0.82);
+          add(nm + ' arch inner return · ' + (s > 0 ? 'RH' : 'LH') + ' ' + (i+1), 'shell', 'steel', 'box',
+              [s*(hw(ax) - 0.058), 0.290 + Math.sin(a)*(ARCH - 0.022), ax + Math.cos(a)*(ARCH - 0.022)],
+              [0.075, 0.030, 0.115]);
+        }
+      }
+    }
+  });
+
+  /* ---------- pillars ---------- */
+  grp('Pillars', ()=>{
+    for(const s of [1, -1]){
+      const sd = s > 0 ? 'RH' : 'LH';
+      const a = [];
+      for(let i=0;i<=8;i++){
+        const t = i/8, z = lerp(0.652, 0.336, t), y = lerp(0.918, 1.302, t);
+        a.push([s*(hwc(z, y) - 0.006), y, z, 1, 0]);
+      }
+      sweep('A-pillar · ' + sd, 'shell', 'paint', a,
+            [[0.000, 0.000, 0.036], [0.016, 0.000, 0.030], [0.022, 0.000, 0.008], [0.018, 0.000, -0.016], [0.000, 0.000, -0.026]]);
+      const c = [];
+      for(let i=0;i<=8;i++){
+        const t = i/8, z = lerp(-0.842, -0.690, t), y = lerp(1.290, 0.912, t);
+        c.push([s*(hwc(z, y) - 0.006), y, z, 1, 0]);
+      }
+      sweep('C-pillar · ' + sd, 'shell', 'paint', c,
+            [[0.000, 0.000, 0.070], [0.016, 0.000, 0.062], [0.024, 0.000, 0.010], [0.018, 0.000, -0.044], [0.000, 0.000, -0.058]]);
+      const b = [];
+      for(let i=0;i<=6;i++){
+        const t = i/6, y = lerp(0.906, 1.298, t);
+        b.push([s*(hwc(-0.312, y) - 0.006), y, -0.312, 1, 0]);
+      }
+      sweep('B-post · ' + sd, 'shell', 'paint', b,
+            [[0.000, 0.000, 0.030], [0.014, 0.000, 0.026], [0.020, 0.000, 0.004], [0.014, 0.000, -0.020], [0.000, 0.000, -0.026]]);
+    }
+    addM('A-post lower', 'shell', 'steel', 'box', [hw(0.68) - 0.04, 0.600, 0.690], [0.06, 0.50, 0.09]);
+  });
+
+  /* ---------- doors ---------- */
+  grp('Doors', ()=>{
+    addM('Door frame · front edge', 'shell', 'steel', 'box', [hw(0.64) - 0.016, 0.565, 0.652], [0.045, 0.64, 0.020]);
+    addM('Door frame · rear edge', 'shell', 'steel', 'box', [hw(-0.30) - 0.016, 0.565, -0.306], [0.045, 0.64, 0.020]);
+    addM('Door frame · lower rail', 'shell', 'steel', 'box', [hw(0.16) - 0.020, 0.262, 0.170], [0.05, 0.05, 0.92]);
+    addM('Door frame · waist rail', 'shell', 'steel', 'box', [hw(0.16) - 0.020, 0.874, 0.170], [0.05, 0.045, 0.92]);
+    for(const s of [1, -1]){
+      const sd = s > 0 ? 'RH' : 'LH', top = [];
+      for(let i=0;i<=10;i++){
+        const z = lerp(0.600, -0.300, i/10);
+        top.push([s*(hwc(z, 1.286) - 0.004), 1.286, z, 1, 0]);
+      }
+      sweep('Door window frame · top rail · ' + sd, 'shell', 'paint', top,
+            [[0.000, 0.014, 0], [0.014, 0.014, 0], [0.020, 0.000, 0], [0.014, -0.014, 0], [0.000, -0.014, 0]]);
+    }
+    addM('Door hinge · upper', 'shell', 'steel', 'box', [hw(0.64) + 0.010, 0.790, 0.650], [0.055, 0.095, 0.042]);
+    addM('Door hinge · lower', 'shell', 'steel', 'box', [hw(0.64) + 0.010, 0.400, 0.650], [0.055, 0.095, 0.042]);
+    addM('Hinge pin · upper', 'fast', 'steel', 'cyl', [hw(0.64) + 0.022, 0.790, 0.650], [0.012, 0.105, 0.012]);
+    addM('Hinge pin · lower', 'fast', 'steel', 'cyl', [hw(0.64) + 0.022, 0.400, 0.650], [0.012, 0.105, 0.012]);
+    addM('Door check strap', 'shell', 'steel', 'box', [hw(0.58) - 0.05, 0.560, 0.600], [0.02, 0.03, 0.12]);
+    addM('Door latch', 'shell', 'steel', 'box', [hw(-0.28) - 0.05, 0.640, -0.290], [0.04, 0.09, 0.05]);
+    addM('Door striker plate', 'shell', 'steel', 'box', [hw(-0.34) - 0.02, 0.640, -0.340], [0.05, 0.06, 0.03]);
+    addM('Door pull cord', 'int', 'fabric', 'cyl', [hw(0.15) - 0.055, 0.700, 0.130], [0.012, 0.30, 0.012], [0,0,Math.PI/2]);
+  });
+
+  /* ---------- inner structure ---------- */
+  grp('Floor & bulkhead', ()=>{
+    for(let i=0;i<6;i++) for(let j=0;j<4;j++)
+      add('Floorpan · panel ' + (i*4+j+1), 'shell', 'steel', 'box', [-0.51 + j*0.34, 0.204, 0.72 - i*0.30], [0.34, 0.016, 0.30]);
+    for(let i=0;i<6;i++)
+      add('Transmission tunnel · section ' + (i+1), 'shell', 'steel', 'box', [0, 0.30, 0.70 - i*0.26], [0.24, 0.20, 0.26]);
+    for(let i=0;i<4;i++)
+      add('Toeboard · panel ' + (i+1), 'shell', 'steel', 'box', [-0.45 + i*0.30, 0.34, 0.86], [0.30, 0.30, 0.02], [0.45,0,0]);
+    add('Heelboard', 'shell', 'steel', 'box', [0, 0.34, -0.36], [1.20, 0.26, 0.02]);
+    add('Rear seat pan', 'shell', 'steel', 'box', [0, 0.238, -0.62], [1.16, 0.02, 0.50]);
+    add('Boot floor', 'shell', 'steel', 'box', [0, 0.248, -1.16], [1.06, 0.02, 0.56]);
+    add('Spare wheel well', 'shell', 'steel', 'cyl', [0.30, 0.205, -1.20], [0.60, 0.09, 0.60]);
+    addM('Floor crossmember', 'shell', 'steel', 'box', [0.36, 0.242, 0.34], [0.60, 0.07, 0.07]);
+    add('Bulkhead / scuttle', 'shell', 'steel', 'box', [0, 0.600, 0.760], [1.28, 0.58, 0.02], [0.10,0,0]);
+    add('Scuttle top panel', 'shell', 'paint', 'box', [0, 0.898, 0.735], [1.30, 0.02, 0.13]);
+    addM('Inner wing panel', 'shell', 'steel', 'box', [0.505, 0.560, 1.140], [0.02, 0.42, 0.62]);
+    addM('Inner wheel arch tub', 'shell', 'steel', 'cyl', [hw(AXR) - 0.15, 0.300, AXR], [0.72, 0.28, 0.72], [0,0,Math.PI/2]);
+    add('Battery box lid', 'shell', 'steel', 'box', [-0.42, 0.278, -1.24], [0.28, 0.02, 0.30]);
+    addM('Jacking point', 'chassis', 'steel', 'box', [hw(0.5) - 0.06, 0.228, 0.56], [0.07, 0.06, 0.10]);
+    addM('Jacking point · rear', 'chassis', 'steel', 'box', [hw(-0.5) - 0.06, 0.228, -0.52], [0.07, 0.06, 0.10]);
+    for(let i=0;i<12;i++)
+      addM('Floor seam weld · ' + (i+1), 'fast', 'steel', 'disc', [0.128, 0.196, 0.70 - i*0.13], [0.011, 0.006, 0.011]);
+    for(let i=0;i<10;i++)
+      addM('Sill seam weld · ' + (i+1), 'fast', 'steel', 'disc', [hw(0.2) - 0.030, 0.216, 0.58 - i*0.115], [0.011, 0.006, 0.011]);
+    for(let i=0;i<11;i++)
+      add('Bulkhead weld · ' + (i+1), 'fast', 'steel', 'disc', [-0.55 + i*0.11, 0.876, 0.748], [0.011, 0.006, 0.011]);
+  });
+}
+
+/* ==========================================================================
+   2 · SUBFRAMES
+   ========================================================================== */
+function buildChassis(){
+  grp('Front subframe', ()=>{
+    addM('Front subframe · side member', 'chassis', 'steel', 'box', [0.34, 0.28, 1.02], [0.07, 0.09, 0.62]);
+    addM('Front subframe · tower', 'chassis', 'steel', 'box', [0.40, 0.46, 0.86], [0.10, 0.30, 0.14]);
+    add('Front subframe · front crossmember', 'chassis', 'steel', 'box', [0, 0.28, 1.30], [0.86, 0.08, 0.08]);
+    add('Front subframe · rear crossmember', 'chassis', 'steel', 'box', [0, 0.28, 0.76], [0.86, 0.09, 0.09]);
+    add('Front subframe · lower deck', 'chassis', 'steel', 'box', [0, 0.235, 1.03], [0.80, 0.02, 0.50]);
+    addM('Subframe tie bar', 'chassis', 'steel', 'cyl', [0.30, 0.24, 0.72], [0.022, 0.44, 0.022], [1.35,0.18,0]);
+    addM('Tie bar bracket', 'chassis', 'steel', 'box', [0.28, 0.235, 0.50], [0.06, 0.05, 0.06]);
+    addM('Subframe mounting tower bolt', 'fast', 'steel', 'hex', [0.40, 0.63, 0.86], [0.026, 0.03, 0.026]);
+    addM('Subframe mount · rear', 'chassis', 'rubber', 'cyl', [0.42, 0.24, 0.74], [0.055, 0.05, 0.055]);
+    addM('Subframe mount · front', 'chassis', 'rubber', 'cyl', [0.42, 0.24, 1.30], [0.055, 0.05, 0.055]);
+    addM('Engine steady bracket', 'chassis', 'steel', 'box', [0.30, 0.62, 0.74], [0.05, 0.10, 0.03]);
+    add('Engine steady rod', 'chassis', 'steel', 'cyl', [0.22, 0.66, 0.80], [0.018, 0.20, 0.018], [1.4,0.5,0]);
+    for(let i=0;i<8;i++)
+      addM('Subframe bolt · ' + (i+1), 'fast', 'steel', 'hex', [0.20 + (i%4)*0.10, 0.225, 1.34 - Math.floor(i/4)*0.60], [0.024,0.028,0.024]);
+    for(let i=0;i<6;i++)
+      addM('Subframe reinforcement gusset · ' + (i+1), 'chassis', 'steel', 'box', [0.36, 0.32, 1.24 - i*0.11], [0.05, 0.07, 0.02]);
+  });
+  grp('Rear subframe', ()=>{
+    addM('Rear subframe · side member', 'chassis', 'steel', 'box', [0.36, 0.26, -1.02], [0.07, 0.08, 0.66]);
+    add('Rear subframe · front crossmember', 'chassis', 'steel', 'box', [0, 0.26, -0.72], [0.86, 0.08, 0.08]);
+    add('Rear subframe · rear crossmember', 'chassis', 'steel', 'box', [0, 0.26, -1.32], [0.86, 0.08, 0.08]);
+    addM('Rear subframe · trumpet housing', 'chassis', 'steel', 'cyl', [0.42, 0.40, -0.98], [0.10, 0.14, 0.10], [0, 0, 0.30]);
+    addM('Rear subframe mount', 'chassis', 'rubber', 'cyl', [0.44, 0.245, -0.74], [0.05, 0.05, 0.05]);
+    addM('Rear subframe mount · aft', 'chassis', 'rubber', 'cyl', [0.44, 0.245, -1.30], [0.05, 0.05, 0.05]);
+    for(let i=0;i<6;i++)
+      addM('Rear subframe bolt · ' + (i+1), 'fast', 'steel', 'hex', [0.24 + (i%3)*0.11, 0.225, -0.76 - Math.floor(i/3)*0.54], [0.024,0.028,0.024]);
+    for(let i=0;i<4;i++)
+      addM('Rear subframe gusset · ' + (i+1), 'chassis', 'steel', 'box', [0.38, 0.30, -0.80 - i*0.16], [0.05, 0.06, 0.02]);
+  });
+  grp('Body / subframe interface', ()=>{
+    for(let i=0;i<8;i++)
+      addM('Crush tube · ' + (i+1), 'chassis', 'steel', 'cyl', [0.30 + (i%2)*0.14, 0.235, 1.30 - Math.floor(i/2)*0.18], [0.02,0.05,0.02]);
+    for(let i=0;i<10;i++)
+      addM('Body mounting bracket · ' + (i+1), 'chassis', 'steel', 'box', [0.40, 0.26, 1.34 - i*0.27], [0.07, 0.03, 0.07]);
+    addM('Bump stop bracket', 'chassis', 'steel', 'box', [0.44, 0.44, 1.05], [0.06, 0.03, 0.06]);
+    addM('Bump stop bracket · rear', 'chassis', 'steel', 'box', [0.44, 0.42, -1.00], [0.06, 0.03, 0.06]);
+  });
+}
+
+/* ==========================================================================
+   3 · ENGINE — A-series 1275, transverse, crank along X at y 0.50 / z 1.12
+   ========================================================================== */
+const EZ = 1.12, CRY = 0.50, BORE = [-0.135, -0.045, 0.045, 0.135], DECK = 0.745;
+function buildEngine(){
+  grp('Cylinder block', ()=>{
+    add('Cylinder block', 'engine', 'iron', 'box', [0, 0.62, EZ], [0.42, 0.26, 0.205]);
+    BORE.forEach((x,i)=> add('Cylinder bore · ' + (i+1), 'engine', 'iron', 'cyl', [x, 0.66, EZ], [0.078, 0.20, 0.078]));
+    add('Block · water jacket wall', 'engine', 'iron', 'box', [0, 0.66, EZ + 0.11], [0.42, 0.18, 0.012]);
+    add('Core plug rail', 'engine', 'steel', 'box', [0, 0.60, EZ - 0.108], [0.40, 0.10, 0.008]);
+    for(let i=0;i<3;i++) add('Core plug · ' + (i+1), 'engine', 'steel', 'cyl', [-0.13 + i*0.13, 0.60, EZ - 0.113], [0.05,0.008,0.05], [Math.PI/2,0,0]);
+    for(let i=0;i<3;i++){
+      const x = -0.18 + i*0.18;
+      add('Main bearing cap · ' + (i+1), 'engine', 'iron', 'box', [x, 0.455, EZ], [0.09, 0.06, 0.10]);
+      add('Main bearing shell · upper ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.512, EZ], [0.066, 0.05, 0.066], [0,0,Math.PI/2]);
+      add('Main bearing shell · lower ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.490, EZ], [0.066, 0.05, 0.066], [0,0,Math.PI/2]);
+      add('Main bearing bolt · ' + (i*2+1), 'fast', 'steel', 'hex', [x, 0.418, EZ + 0.045], [0.024,0.026,0.024]);
+      add('Main bearing bolt · ' + (i*2+2), 'fast', 'steel', 'hex', [x, 0.418, EZ - 0.045], [0.024,0.026,0.024]);
+    }
+    add('Thrust washer · front', 'engine', 'brass', 'cyl', [0.015, 0.50, EZ], [0.075,0.004,0.075], [0,0,Math.PI/2]);
+    add('Thrust washer · rear', 'engine', 'brass', 'cyl', [-0.015, 0.50, EZ], [0.075,0.004,0.075], [0,0,Math.PI/2]);
+  });
+  grp('Crankshaft & rods', ()=>{
+    add('Crankshaft', 'engine', 'steel', 'cyl', [0, CRY, EZ], [0.058, 0.56, 0.058], [0,0,Math.PI/2]);
+    BORE.forEach((x,i)=>{
+      const th = [0.5, 2.6, 3.8, 5.9][i];
+      add('Crank web · ' + (i*2+1), 'engine', 'steel', 'disc', [x-0.028, CRY, EZ], [0.13,0.016,0.13], [0,0,Math.PI/2]);
+      add('Crank web · ' + (i*2+2), 'engine', 'steel', 'disc', [x+0.028, CRY, EZ], [0.13,0.016,0.13], [0,0,Math.PI/2]);
+      add('Crankpin · ' + (i+1), 'engine', 'steel', 'cyl', [x, CRY + Math.sin(th)*0.038, EZ + Math.cos(th)*0.038], [0.042,0.048,0.042], [0,0,Math.PI/2]);
+      add('Big-end bearing shell · ' + (i*2+1), 'engine', 'brass', 'cyl', [x, CRY + Math.sin(th)*0.038, EZ + Math.cos(th)*0.038], [0.048,0.022,0.048], [0,0,Math.PI/2]);
+      add('Big-end bearing shell · ' + (i*2+2), 'engine', 'brass', 'cyl', [x, CRY + Math.sin(th)*0.038, EZ + Math.cos(th)*0.038], [0.048,0.022,0.048], [0,0,Math.PI/2]);
+      const py = [0.700, 0.612, 0.700, 0.612][i];
+      add('Connecting rod · ' + (i+1), 'engine', 'steel', 'box', [x, (py + CRY)/2 - 0.005, EZ], [0.022, 0.115, 0.036]);
+      add('Big-end cap · ' + (i+1), 'engine', 'steel', 'box', [x, CRY - 0.03, EZ], [0.03, 0.026, 0.05]);
+      add('Big-end bolt · ' + (i*2+1), 'fast', 'steel', 'hex', [x, CRY - 0.05, EZ + 0.026], [0.016,0.02,0.016]);
+      add('Big-end bolt · ' + (i*2+2), 'fast', 'steel', 'hex', [x, CRY - 0.05, EZ - 0.026], [0.016,0.02,0.016]);
+      add('Small-end bush · ' + (i+1), 'engine', 'brass', 'cyl', [x, py - 0.012, EZ], [0.022,0.026,0.022], [0,0,Math.PI/2]);
+      add('Piston · ' + (i+1), 'engine', 'alloy', 'cyl', [x, py, EZ], [0.0706, 0.062, 0.0706]);
+      add('Gudgeon pin · ' + (i+1), 'engine', 'steel', 'cyl', [x, py - 0.012, EZ], [0.017, 0.055, 0.017], [0,0,Math.PI/2]);
+      add('Gudgeon pin circlip · ' + (i*2+1), 'engine', 'steel', 'tor', [x + 0.028, py - 0.012, EZ], [0.02,0.02,0.02], [0,0,Math.PI/2]);
+      add('Gudgeon pin circlip · ' + (i*2+2), 'engine', 'steel', 'tor', [x - 0.028, py - 0.012, EZ], [0.02,0.02,0.02], [0,0,Math.PI/2]);
+      add('Compression ring · top ' + (i+1), 'engine', 'iron', 'tor', [x, py + 0.026, EZ], [0.072,0.072,0.006]);
+      add('Compression ring · second ' + (i+1), 'engine', 'iron', 'tor', [x, py + 0.018, EZ], [0.072,0.072,0.006]);
+      add('Oil control ring · ' + (i+1), 'engine', 'iron', 'tor', [x, py + 0.008, EZ], [0.072,0.072,0.007]);
+      add('Oil ring rail · ' + (i*2+1), 'engine', 'steel', 'tor', [x, py + 0.012, EZ], [0.072,0.072,0.003]);
+      add('Oil ring rail · ' + (i*2+2), 'engine', 'steel', 'tor', [x, py + 0.004, EZ], [0.072,0.072,0.003]);
+    });
+  });
+  grp('Cylinder head', ()=>{
+    add('Cylinder head', 'engine', 'iron', 'box', [0, 0.805, EZ], [0.44, 0.11, 0.215]);
+    add('Head gasket', 'engine', 'copper', 'box', [0, 0.748, EZ], [0.44, 0.004, 0.215]);
+    add('Rocker cover', 'engine', 'steel', 'box', [0, 0.905, EZ - 0.01], [0.40, 0.07, 0.15]);
+    add('Rocker cover gasket', 'engine', 'rubber', 'box', [0, 0.868, EZ - 0.01], [0.40, 0.006, 0.15]);
+    add('Oil filler cap', 'engine', 'steel', 'cyl', [-0.14, 0.945, EZ - 0.01], [0.05, 0.03, 0.05]);
+    for(let i=0;i<8;i++){
+      const x = BORE[Math.floor(i/2)] + (i%2 ? 0.022 : -0.022);
+      const isEx = i%2 === 0;
+      add((isEx ? 'Exhaust' : 'Inlet') + ' valve · ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.795, EZ - 0.02], [0.030, 0.135, 0.030]);
+      add('Valve head · ' + (i+1), 'engine', 'steel', 'disc', [x, 0.735, EZ - 0.02], [0.036, 0.008, 0.036]);
+      add('Valve guide · ' + (i+1), 'engine', 'iron', 'cyl', [x, 0.818, EZ - 0.02], [0.017, 0.05, 0.017]);
+      add('Valve stem seal · ' + (i+1), 'engine', 'rubber', 'cyl', [x, 0.845, EZ - 0.02], [0.016, 0.008, 0.016]);
+      add('Valve spring · outer ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.856, EZ - 0.02], [0.036, 0.042, 0.036]);
+      add('Valve spring · inner ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.856, EZ - 0.02], [0.024, 0.040, 0.024]);
+      add('Valve spring cap · ' + (i+1), 'engine', 'steel', 'disc', [x, 0.879, EZ - 0.02], [0.038, 0.006, 0.038]);
+      add('Split collet · ' + (i*2+1), 'engine', 'steel', 'box', [x + 0.006, 0.884, EZ - 0.02], [0.006, 0.010, 0.010]);
+      add('Split collet · ' + (i*2+2), 'engine', 'steel', 'box', [x - 0.006, 0.884, EZ - 0.02], [0.006, 0.010, 0.010]);
+      add('Pushrod · ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.735, EZ + 0.062], [0.008, 0.24, 0.008]);
+      add('Cam follower · ' + (i+1), 'engine', 'iron', 'cyl', [x, 0.606, EZ + 0.062], [0.021, 0.05, 0.021]);
+      add('Rocker arm · ' + (i+1), 'engine', 'steel', 'box', [x, 0.900, EZ + 0.022], [0.016, 0.020, 0.090]);
+      add('Rocker adjusting screw · ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.905, EZ + 0.058], [0.010, 0.026, 0.010]);
+      add('Rocker adjuster locknut · ' + (i+1), 'fast', 'steel', 'hex', [x, 0.918, EZ + 0.058], [0.015,0.008,0.015]);
+      add('Rocker bush · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.900, EZ - 0.008], [0.020,0.018,0.020], [0,0,Math.PI/2]);
+    }
+    add('Rocker shaft', 'engine', 'steel', 'cyl', [0, 0.900, EZ - 0.008], [0.016, 0.42, 0.016], [0,0,Math.PI/2]);
+    for(let i=0;i<4;i++) add('Rocker pedestal · ' + (i+1), 'engine', 'alloy', 'box', [-0.165 + i*0.11, 0.885, EZ - 0.008], [0.026, 0.05, 0.042]);
+    for(let i=0;i<6;i++) add('Rocker shaft spacer spring · ' + (i+1), 'engine', 'steel', 'cyl', [-0.14 + i*0.056, 0.900, EZ - 0.008], [0.024,0.012,0.024], [0,0,Math.PI/2]);
+    for(let i=0;i<9;i++){
+      const x = -0.20 + i*0.05, zz = EZ + (i%2 ? 0.085 : -0.085);
+      add('Head stud · ' + (i+1), 'fast', 'steel', 'cyl', [x, 0.72, zz], [0.011, 0.30, 0.011]);
+      add('Head nut · ' + (i+1), 'fast', 'steel', 'hex', [x, 0.866, zz], [0.020, 0.016, 0.020]);
+      add('Head washer · ' + (i+1), 'fast', 'steel', 'disc', [x, 0.856, zz], [0.024, 0.004, 0.024]);
+    }
+    for(let i=0;i<4;i++) add('Spark plug · ' + (i+1), 'engine', 'steel', 'cyl', [BORE[i], 0.845, EZ + 0.088], [0.019, 0.075, 0.019], [-0.35,0,0]);
+    for(let i=0;i<4;i++) add('Plug washer · ' + (i+1), 'engine', 'copper', 'disc', [BORE[i], 0.822, EZ + 0.080], [0.024,0.003,0.024]);
+  });
+  grp('Valve gear drive', ()=>{
+    add('Camshaft', 'engine', 'iron', 'cyl', [0, 0.575, EZ + 0.062], [0.032, 0.50, 0.032], [0,0,Math.PI/2]);
+    for(let i=0;i<8;i++) add('Cam lobe · ' + (i+1), 'engine', 'iron', 'disc', [BORE[Math.floor(i/2)] + (i%2?0.022:-0.022), 0.575, EZ + 0.062], [0.046,0.014,0.046], [0,0,Math.PI/2]);
+    for(let i=0;i<3;i++) add('Camshaft bearing · ' + (i+1), 'engine', 'brass', 'cyl', [-0.19 + i*0.19, 0.575, EZ + 0.062], [0.040,0.022,0.040], [0,0,Math.PI/2]);
+    add('Crankshaft sprocket', 'engine', 'steel', 'disc', [-0.30, CRY, EZ], [0.072, 0.014, 0.072], [0,0,Math.PI/2]);
+    add('Camshaft sprocket', 'engine', 'steel', 'disc', [-0.30, 0.575, EZ + 0.062], [0.128, 0.014, 0.128], [0,0,Math.PI/2]);
+    /* duplex timing chain rendered link by link */
+    const cx = 0, ay = CRY, az = EZ, by = 0.575, bz = EZ + 0.062, ra = 0.036, rb = 0.064;
+    for(let i=0;i<44;i++){
+      const t = i/44 * Math.PI*2;
+      const on = Math.cos(t) > 0;
+      const cy2 = on ? by : ay, cz2 = on ? bz : az, rr = on ? rb : ra;
+      const a2 = t*2;
+      add('Timing chain link · ' + (i+1), 'engine', 'steel', 'box',
+        [-0.30, (ay+by)/2 + Math.sin(t)*0.055 + (on?0.012:-0.012), (az+bz)/2 + Math.cos(a2)*0.006 + Math.sin(t*1.0)*0.030],
+        [0.014, 0.012, 0.012], [0, 0, 0]);
+    }
+    add('Timing chain tensioner', 'engine', 'steel', 'box', [-0.30, 0.545, EZ + 0.005], [0.012, 0.07, 0.02]);
+    add('Timing cover', 'engine', 'alloy', 'box', [-0.345, 0.60, EZ + 0.02], [0.03, 0.30, 0.24]);
+    ring('Timing cover bolt', 'fast', 'steel', 'hex', -0.362, 0.60, EZ + 0.02, 0.125, 8, [0.018,0.014,0.018], 'x');
+    add('Timing cover oil seal', 'engine', 'rubber', 'tor', [-0.362, CRY, EZ], [0.055,0.055,0.010], [0,0,Math.PI/2]);
+    add('Crankshaft pulley', 'engine', 'iron', 'disc', [-0.40, CRY, EZ], [0.108, 0.03, 0.108], [0,0,Math.PI/2]);
+    add('Crankshaft pulley bolt', 'fast', 'steel', 'hex', [-0.418, CRY, EZ], [0.03,0.026,0.03], [0,0,Math.PI/2]);
+  });
+  grp('Lubrication', ()=>{
+    add('Oil pump body', 'engine', 'iron', 'box', [0.28, 0.545, EZ + 0.05], [0.06, 0.07, 0.07]);
+    add('Oil pump rotor · outer', 'engine', 'steel', 'disc', [0.28, 0.545, EZ + 0.05], [0.05,0.02,0.05], [0,0,Math.PI/2]);
+    add('Oil pump rotor · inner', 'engine', 'steel', 'disc', [0.28, 0.545, EZ + 0.05], [0.033,0.022,0.033], [0,0,Math.PI/2]);
+    add('Oil pick-up pipe', 'engine', 'steel', 'cyl', [0.22, 0.42, EZ + 0.05], [0.014, 0.22, 0.014], [0,0,0.9]);
+    add('Oil strainer', 'engine', 'steel', 'box', [0.14, 0.315, EZ + 0.05], [0.10, 0.02, 0.07]);
+    add('Oil filter bowl', 'engine', 'steel', 'cyl', [0.31, 0.62, EZ - 0.11], [0.10, 0.16, 0.10], [0.4,0,0.2]);
+    add('Oil filter element', 'engine', 'felt', 'cyl', [0.31, 0.62, EZ - 0.11], [0.08, 0.13, 0.08], [0.4,0,0.2]);
+    add('Oil filter head', 'engine', 'alloy', 'box', [0.31, 0.70, EZ - 0.10], [0.08, 0.05, 0.08]);
+    add('Oil filter centre bolt', 'fast', 'steel', 'hex', [0.31, 0.545, EZ - 0.125], [0.024,0.03,0.024]);
+    add('Oil pressure relief valve', 'engine', 'steel', 'cyl', [0.24, 0.60, EZ - 0.11], [0.018, 0.06, 0.018], [Math.PI/2,0,0]);
+    add('Relief valve spring', 'engine', 'steel', 'cyl', [0.24, 0.60, EZ - 0.13], [0.014, 0.04, 0.014], [Math.PI/2,0,0]);
+    add('Relief valve cap', 'fast', 'steel', 'hex', [0.24, 0.60, EZ - 0.155], [0.022,0.014,0.022], [Math.PI/2,0,0]);
+    add('Oil pressure switch', 'elec', 'brass', 'cyl', [0.20, 0.68, EZ - 0.11], [0.014, 0.04, 0.014], [Math.PI/2,0,0]);
+  });
+  grp('Induction & exhaust', ()=>{
+    add('Inlet manifold', 'engine', 'alloy', 'box', [0.02, 0.815, EZ - 0.17], [0.30, 0.07, 0.10]);
+    add('Manifold gasket', 'engine', 'copper', 'box', [0.02, 0.815, EZ - 0.118], [0.32, 0.09, 0.004]);
+    add('Exhaust manifold', 'engine', 'iron', 'box', [0.02, 0.735, EZ - 0.16], [0.32, 0.06, 0.09]);
+    for(let i=0;i<4;i++) add('Exhaust port branch · ' + (i+1), 'engine', 'iron', 'cyl', [BORE[i], 0.755, EZ - 0.14], [0.036, 0.07, 0.036], [Math.PI/2,0,0]);
+    for(let i=0;i<8;i++){
+      add('Manifold stud · ' + (i+1), 'fast', 'steel', 'cyl', [-0.19 + i*0.055, 0.792, EZ - 0.14], [0.009, 0.09, 0.009], [Math.PI/2,0,0]);
+      add('Manifold nut · ' + (i+1), 'fast', 'steel', 'hex', [-0.19 + i*0.055, 0.792, EZ - 0.185], [0.017,0.014,0.017], [Math.PI/2,0,0]);
+    }
+    [-0.09, 0.11].forEach((x,i)=>{
+      add('SU HS2 carburettor body · ' + (i+1), 'engine', 'alloy', 'cyl', [x, 0.815, EZ - 0.245], [0.062, 0.10, 0.062], [Math.PI/2,0,0]);
+      add('Suction chamber · ' + (i+1), 'engine', 'alloy', 'cyl', [x, 0.878, EZ - 0.245], [0.070, 0.055, 0.070]);
+      add('Dashpot damper · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.912, EZ - 0.245], [0.020, 0.028, 0.020]);
+      add('Air valve piston · ' + (i+1), 'engine', 'alloy', 'cyl', [x, 0.860, EZ - 0.245], [0.058, 0.045, 0.058]);
+      add('Piston return spring · ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.870, EZ - 0.245], [0.040, 0.040, 0.040]);
+      add('Jet needle · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.825, EZ - 0.245], [0.005, 0.06, 0.005]);
+      add('Jet assembly · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.783, EZ - 0.245], [0.014, 0.045, 0.014]);
+      add('Float chamber · ' + (i+1), 'engine', 'alloy', 'cyl', [x, 0.775, EZ - 0.315], [0.060, 0.075, 0.060]);
+      add('Float · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.770, EZ - 0.315], [0.048, 0.035, 0.048]);
+      add('Float needle valve · ' + (i+1), 'engine', 'brass', 'cyl', [x, 0.812, EZ - 0.315], [0.010, 0.024, 0.010]);
+      add('Throttle butterfly · ' + (i+1), 'engine', 'brass', 'disc', [x, 0.815, EZ - 0.285], [0.056, 0.003, 0.056], [Math.PI/2,0,0]);
+      add('Throttle spindle · ' + (i+1), 'engine', 'steel', 'cyl', [x, 0.815, EZ - 0.285], [0.006, 0.13, 0.006], [0,0,Math.PI/2]);
+      add('Throttle lever · ' + (i+1), 'engine', 'steel', 'box', [x + 0.062, 0.795, EZ - 0.285], [0.006, 0.045, 0.012]);
+      add('Mixture adjusting nut · ' + (i+1), 'engine', 'brass', 'hex', [x, 0.752, EZ - 0.245], [0.020, 0.012, 0.020]);
+      add('Carburettor flange gasket · ' + (i+1), 'engine', 'felt', 'box', [x, 0.815, EZ - 0.198], [0.09, 0.07, 0.004]);
+    });
+    add('Throttle interconnecting rod', 'engine', 'steel', 'cyl', [0.01, 0.795, EZ - 0.285], [0.006, 0.20, 0.006], [0,0,Math.PI/2]);
+    add('Throttle return spring', 'engine', 'steel', 'cyl', [0.18, 0.80, EZ - 0.285], [0.014, 0.05, 0.014], [0,0,Math.PI/2]);
+    add('Choke cable', 'engine', 'steel', 'cyl', [0.10, 0.76, EZ - 0.36], [0.006, 0.30, 0.006], [1.2,0.5,0]);
+    add('Throttle cable', 'engine', 'steel', 'cyl', [0.16, 0.78, EZ - 0.36], [0.006, 0.32, 0.006], [1.2,0.4,0]);
+    add('Air cleaner housing', 'engine', 'steel', 'cyl', [0.01, 0.845, EZ - 0.345], [0.19, 0.10, 0.19], [Math.PI/2,0,0]);
+    add('Air cleaner element', 'engine', 'felt', 'cyl', [0.01, 0.845, EZ - 0.345], [0.165, 0.07, 0.165], [Math.PI/2,0,0]);
+    add('Air cleaner lid', 'engine', 'steel', 'disc', [0.01, 0.845, EZ - 0.398], [0.19, 0.012, 0.19], [Math.PI/2,0,0]);
+    add('Air cleaner wing nut', 'fast', 'brass', 'hex', [0.01, 0.845, EZ - 0.412], [0.024,0.014,0.024], [Math.PI/2,0,0]);
+  });
+  grp('Ignition & charging', ()=>{
+    add('Distributor body', 'elec', 'alloy', 'cyl', [-0.24, 0.665, EZ - 0.13], [0.048, 0.11, 0.048], [0.25,0,0]);
+    add('Distributor cap', 'elec', 'plast', 'cyl', [-0.24, 0.735, EZ - 0.11], [0.056, 0.05, 0.056]);
+    add('Rotor arm', 'elec', 'plast', 'box', [-0.24, 0.712, EZ - 0.115], [0.012, 0.008, 0.05]);
+    add('Contact breaker points', 'elec', 'steel', 'box', [-0.245, 0.695, EZ - 0.12], [0.02, 0.006, 0.024]);
+    add('Condenser', 'elec', 'steel', 'cyl', [-0.275, 0.685, EZ - 0.155], [0.016, 0.04, 0.016], [0,0,Math.PI/2]);
+    add('Distributor drive spindle', 'elec', 'steel', 'cyl', [-0.24, 0.595, EZ - 0.14], [0.014, 0.09, 0.014], [0.25,0,0]);
+    add('Distributor drive gear', 'engine', 'steel', 'disc', [-0.24, 0.555, EZ - 0.145], [0.036,0.014,0.036]);
+    add('Distributor clamp plate', 'elec', 'steel', 'box', [-0.24, 0.612, EZ - 0.135], [0.06, 0.008, 0.05]);
+    add('Vacuum advance capsule', 'elec', 'steel', 'cyl', [-0.30, 0.672, EZ - 0.10], [0.032, 0.018, 0.032], [0,0,Math.PI/2]);
+    add('Ignition coil', 'elec', 'steel', 'cyl', [-0.30, 0.80, EZ - 0.30], [0.036, 0.13, 0.036], [Math.PI/2,0,0]);
+    add('Coil mounting clamp', 'elec', 'steel', 'tor', [-0.30, 0.80, EZ - 0.30], [0.042,0.042,0.008], [Math.PI/2,0,0]);
+    for(let i=0;i<4;i++)
+      pathRun('HT lead · ' + (i+1), 'elec', 'plast', 'cyl',
+        [[-0.24, 0.755, EZ - 0.11], [-0.18 + i*0.03, 0.90, EZ - 0.05], [BORE[i], 0.885, EZ + 0.088]], 0.007, 0.075);
+    add('Dynamo', 'elec', 'steel', 'cyl', [-0.14, 0.545, EZ - 0.22], [0.088, 0.20, 0.088], [0,0,Math.PI/2]);
+    add('Dynamo pulley', 'elec', 'steel', 'disc', [-0.26, 0.545, EZ - 0.22], [0.062, 0.022, 0.062], [0,0,Math.PI/2]);
+    add('Dynamo end bracket', 'elec', 'alloy', 'disc', [-0.04, 0.545, EZ - 0.22], [0.088, 0.02, 0.088], [0,0,Math.PI/2]);
+    add('Dynamo mounting bracket', 'elec', 'steel', 'box', [-0.14, 0.475, EZ - 0.22], [0.16, 0.02, 0.05]);
+    add('Dynamo adjusting strap', 'elec', 'steel', 'box', [-0.05, 0.60, EZ - 0.20], [0.10, 0.02, 0.012], [0,0,-0.6]);
+    add('Fan belt', 'engine', 'rubber', 'tor', [-0.395, 0.605, EZ - 0.01], [0.20, 0.20, 0.012], [0,0,Math.PI/2]);
+    add('Starter motor', 'elec', 'steel', 'cyl', [0.30, 0.435, EZ - 0.13], [0.088, 0.22, 0.088], [0,0,Math.PI/2]);
+    add('Starter solenoid', 'elec', 'steel', 'cyl', [0.30, 0.50, EZ - 0.13], [0.036, 0.09, 0.036], [0,0,Math.PI/2]);
+    add('Starter drive pinion', 'elec', 'steel', 'disc', [0.19, 0.435, EZ - 0.13], [0.038,0.03,0.038], [0,0,Math.PI/2]);
+    add('Starter nose bracket', 'elec', 'alloy', 'box', [0.20, 0.435, EZ - 0.13], [0.03, 0.09, 0.09]);
+  });
+  grp('Engine mounting', ()=>{
+    addM('Engine mounting rubber', 'engine', 'rubber', 'cyl', [0.40, 0.50, EZ - 0.02], [0.05, 0.06, 0.05], [0,0,Math.PI/2]);
+    addM('Engine mounting bracket', 'engine', 'steel', 'box', [0.44, 0.50, EZ - 0.02], [0.03, 0.10, 0.09]);
+    add('Rear engine steady', 'engine', 'steel', 'box', [0.10, 0.70, EZ - 0.42], [0.16, 0.03, 0.03]);
+    addM('Engine mounting bolt', 'fast', 'steel', 'hex', [0.455, 0.50, EZ - 0.02], [0.026,0.024,0.026], [0,0,Math.PI/2]);
+  });
+}
+
+/* ==========================================================================
+   4 · TRANSMISSION — 4-speed in sump, final drive under the crank
+   ========================================================================== */
+const GY = 0.335;
+function buildTrans(){
+  grp('Gearbox casing', ()=>{
+    add('Transmission casing / sump', 'trans', 'alloy', 'box', [0, GY, EZ], [0.50, 0.19, 0.30]);
+    add('Casing end cover · clutch side', 'trans', 'alloy', 'box', [0.26, GY, EZ], [0.03, 0.18, 0.28]);
+    add('Casing end cover · drive side', 'trans', 'alloy', 'box', [-0.26, GY, EZ], [0.03, 0.18, 0.28]);
+    add('Sump drain plug', 'fast', 'steel', 'hex', [0.16, 0.240, EZ], [0.026, 0.014, 0.026]);
+    add('Sump gasket', 'trans', 'felt', 'box', [0, 0.430, EZ], [0.50, 0.004, 0.30]);
+    for(let i=0;i<20;i++){
+      const a = i/20*Math.PI*2;
+      add('Casing bolt · ' + (i+1), 'fast', 'steel', 'hex', [Math.cos(a)*0.235, 0.430, EZ + Math.sin(a)*0.145], [0.018,0.014,0.018]);
+    }
+    add('Gearbox breather', 'trans', 'steel', 'cyl', [-0.10, 0.432, EZ - 0.13], [0.012, 0.03, 0.012]);
+    add('Speedometer drive pinion', 'trans', 'plast', 'cyl', [-0.20, 0.40, EZ - 0.15], [0.014, 0.05, 0.014], [Math.PI/2,0,0]);
+    add('Speedometer drive housing', 'trans', 'alloy', 'box', [-0.20, 0.41, EZ - 0.17], [0.04, 0.04, 0.04]);
+  });
+  grp('Clutch', ()=>{
+    add('Flywheel', 'trans', 'iron', 'disc', [0.30, CRY, EZ], [0.19, 0.035, 0.19], [0,0,Math.PI/2]);
+    add('Starter ring gear', 'trans', 'steel', 'tor', [0.30, CRY, EZ], [0.19, 0.19, 0.014], [0,0,Math.PI/2]);
+    add('Flywheel hub', 'trans', 'steel', 'cyl', [0.29, CRY, EZ], [0.07, 0.05, 0.07], [0,0,Math.PI/2]);
+    add('Flywheel taper key', 'fast', 'steel', 'box', [0.27, CRY + 0.028, EZ], [0.03, 0.008, 0.010]);
+    add('Flywheel retaining bolt', 'fast', 'steel', 'hex', [0.335, CRY, EZ], [0.034,0.03,0.034], [0,0,Math.PI/2]);
+    add('Clutch driven plate', 'trans', 'steel', 'disc', [0.345, CRY, EZ], [0.181, 0.012, 0.181], [0,0,Math.PI/2]);
+    ring('Clutch friction segment', 'trans', 'felt', 'box', 0.352, CRY, EZ, 0.15, 8, [0.006, 0.05, 0.05], 'x');
+    ring('Clutch damper spring', 'trans', 'steel', 'cyl', 0.345, CRY, EZ, 0.062, 6, [0.020,0.030,0.020], 'x');
+    add('Clutch cover / pressure plate', 'trans', 'steel', 'disc', [0.372, CRY, EZ], [0.185, 0.030, 0.185], [0,0,Math.PI/2]);
+    ring('Diaphragm spring finger', 'trans', 'steel', 'box', 0.386, CRY, EZ, 0.075, 12, [0.006, 0.10, 0.014], 'x');
+    ring('Clutch cover bolt', 'fast', 'steel', 'hex', 0.392, CRY, EZ, 0.168, 6, [0.020,0.016,0.020], 'x');
+    add('Clutch release bearing', 'trans', 'steel', 'cyl', [0.402, CRY, EZ], [0.048, 0.024, 0.048], [0,0,Math.PI/2]);
+    add('Clutch release plate', 'trans', 'steel', 'disc', [0.394, CRY, EZ], [0.070, 0.008, 0.070], [0,0,Math.PI/2]);
+    add('Clutch release lever', 'trans', 'steel', 'box', [0.420, CRY - 0.05, EZ], [0.02, 0.12, 0.03]);
+    add('Clutch slave cylinder', 'trans', 'alloy', 'cyl', [0.435, CRY - 0.14, EZ + 0.03], [0.028, 0.10, 0.028], [0,0,0.3]);
+    add('Slave cylinder pushrod', 'trans', 'steel', 'cyl', [0.428, CRY - 0.09, EZ + 0.02], [0.010, 0.06, 0.010]);
+    add('Clutch housing cover', 'trans', 'alloy', 'disc', [0.44, CRY, EZ], [0.20, 0.03, 0.20], [0,0,Math.PI/2]);
+    add('Primary gear', 'trans', 'steel', 'disc', [0.22, CRY, EZ], [0.088, 0.045, 0.088], [0,0,Math.PI/2]);
+    add('Primary gear bush', 'trans', 'brass', 'cyl', [0.22, CRY, EZ], [0.062, 0.05, 0.062], [0,0,Math.PI/2]);
+    add('Idler gear', 'trans', 'steel', 'disc', [0.22, 0.418, EZ], [0.060, 0.055, 0.060], [0,0,Math.PI/2]);
+    add('Idler gear bearing · outer', 'trans', 'steel', 'cyl', [0.25, 0.418, EZ], [0.038,0.02,0.038], [0,0,Math.PI/2]);
+    add('Idler gear bearing · inner', 'trans', 'steel', 'cyl', [0.19, 0.418, EZ], [0.038,0.02,0.038], [0,0,Math.PI/2]);
+  });
+  grp('Gear cluster', ()=>{
+    const MS = 0.372, LS = 0.300;   /* mainshaft y, layshaft y */
+    add('Mainshaft', 'trans', 'steel', 'cyl', [0, MS, EZ + 0.02], [0.030, 0.44, 0.030], [0,0,Math.PI/2]);
+    add('Layshaft', 'trans', 'steel', 'cyl', [0, LS, EZ - 0.05], [0.022, 0.42, 0.022], [0,0,Math.PI/2]);
+    const gears = [['First', 0.16, 0.086, 0.052], ['Second', 0.055, 0.076, 0.040], ['Third', -0.055, 0.066, 0.036], ['Fourth', -0.16, 0.058, 0.036]];
+    gears.forEach((g,i)=>{
+      add(g[0] + ' speed gear · mainshaft', 'trans', 'steel', 'disc', [g[1], MS, EZ + 0.02], [g[2], g[3], g[2]], [0,0,Math.PI/2]);
+      add(g[0] + ' speed gear · layshaft', 'trans', 'steel', 'disc', [g[1], LS, EZ - 0.05], [0.144 - g[2], g[3], 0.144 - g[2]], [0,0,Math.PI/2]);
+      add(g[0] + ' gear bush', 'trans', 'brass', 'cyl', [g[1], MS, EZ + 0.02], [0.036, g[3]*0.9, 0.036], [0,0,Math.PI/2]);
+      add(g[0] + ' gear thrust washer', 'trans', 'brass', 'disc', [g[1] + g[3]/2 + 0.004, MS, EZ + 0.02], [0.046,0.004,0.046], [0,0,Math.PI/2]);
+    });
+    add('Reverse idler gear', 'trans', 'steel', 'disc', [0.105, 0.255, EZ - 0.02], [0.048, 0.036, 0.048], [0,0,Math.PI/2]);
+    add('Reverse idler shaft', 'trans', 'steel', 'cyl', [0.105, 0.255, EZ - 0.02], [0.016, 0.10, 0.016], [0,0,Math.PI/2]);
+    for(let s=0;s<2;s++){
+      const x = s ? -0.108 : 0.108;
+      add('Synchroniser hub · ' + (s+1), 'trans', 'steel', 'disc', [x, MS, EZ + 0.02], [0.058, 0.030, 0.058], [0,0,Math.PI/2]);
+      add('Synchroniser sleeve · ' + (s+1), 'trans', 'steel', 'tor', [x, MS, EZ + 0.02], [0.066, 0.066, 0.016], [0,0,Math.PI/2]);
+      add('Baulk ring · ' + (s*2+1), 'trans', 'brass', 'tor', [x + 0.022, MS, EZ + 0.02], [0.058,0.058,0.008], [0,0,Math.PI/2]);
+      add('Baulk ring · ' + (s*2+2), 'trans', 'brass', 'tor', [x - 0.022, MS, EZ + 0.02], [0.058,0.058,0.008], [0,0,Math.PI/2]);
+      ring('Synchro spring · hub ' + (s+1), 'trans', 'steel', 'cyl', x, MS, EZ + 0.02, 0.042, 3, [0.008,0.020,0.008], 'x');
+      ring('Synchro ball · hub ' + (s+1), 'trans', 'steel', 'sph', x, MS, EZ + 0.02, 0.052, 3, [0.010,0.010,0.010], 'x');
+    }
+    /* shaft bearings, rendered roller by roller */
+    [[0.225, MS, EZ + 0.02, 0.040], [-0.225, MS, EZ + 0.02, 0.040], [0.215, LS, EZ - 0.05, 0.032], [-0.215, LS, EZ - 0.05, 0.032]].forEach((b,i)=>{
+      add('Shaft bearing outer race · ' + (i+1), 'trans', 'steel', 'tor', [b[0], b[1], b[2]], [b[3]+0.012, b[3]+0.012, 0.012], [0,0,Math.PI/2]);
+      add('Shaft bearing inner race · ' + (i+1), 'trans', 'steel', 'tor', [b[0], b[1], b[2]], [b[3]-0.008, b[3]-0.008, 0.012], [0,0,Math.PI/2]);
+      ring('Bearing roller · race ' + (i+1), 'trans', 'steel', 'cyl', b[0], b[1], b[2], b[3], 11, [0.010, 0.018, 0.010], 'x');
+      add('Bearing cage · ' + (i+1), 'trans', 'steel', 'tor', [b[0], b[1], b[2]], [b[3], b[3], 0.004], [0,0,Math.PI/2]);
+    });
+  });
+  grp('Selector mechanism', ()=>{
+    for(let i=0;i<3;i++){
+      add('Selector fork · ' + (i+1), 'trans', 'steel', 'box', [0.108 - i*0.108, 0.44, EZ - 0.09], [0.014, 0.10, 0.05]);
+      add('Selector rod · ' + (i+1), 'trans', 'steel', 'cyl', [0, 0.47, EZ - 0.09 - i*0.022], [0.010, 0.34, 0.010], [0,0,Math.PI/2]);
+      add('Detent ball · ' + (i+1), 'trans', 'steel', 'sph', [0.05, 0.492, EZ - 0.09 - i*0.022], [0.010,0.010,0.010]);
+      add('Detent spring · ' + (i+1), 'trans', 'steel', 'cyl', [0.05, 0.508, EZ - 0.09 - i*0.022], [0.008, 0.024, 0.008]);
+      add('Detent plug · ' + (i+1), 'fast', 'steel', 'hex', [0.05, 0.524, EZ - 0.09 - i*0.022], [0.014,0.010,0.014]);
+    }
+    add('Interlock plunger', 'trans', 'steel', 'cyl', [0.02, 0.47, EZ - 0.112], [0.006, 0.022, 0.006], [Math.PI/2,0,0]);
+    add('Selector shaft', 'trans', 'steel', 'cyl', [0, 0.47, EZ - 0.20], [0.014, 0.20, 0.014], [Math.PI/2,0,0]);
+    add('Remote control housing', 'trans', 'alloy', 'box', [0, 0.44, EZ - 0.46], [0.09, 0.10, 0.34]);
+    add('Remote control rod', 'trans', 'steel', 'cyl', [0, 0.455, EZ - 0.32], [0.016, 0.24, 0.016], [Math.PI/2,0,0]);
+    add('Remote housing bush · front', 'trans', 'rubber', 'cyl', [0, 0.455, EZ - 0.26], [0.024,0.02,0.024], [Math.PI/2,0,0]);
+    add('Remote housing bush · rear', 'trans', 'rubber', 'cyl', [0, 0.455, EZ - 0.60], [0.024,0.02,0.024], [Math.PI/2,0,0]);
+    add('Gear lever', 'int', 'steel', 'cyl', [0, 0.55, EZ - 0.60], [0.014, 0.26, 0.014], [0.30,0,0]);
+    add('Gear lever knob', 'int', 'plast', 'sph', [0, 0.68, EZ - 0.64], [0.048,0.044,0.048]);
+    add('Gear lever ball seat', 'trans', 'plast', 'sph', [0, 0.455, EZ - 0.58], [0.036,0.036,0.036]);
+    add('Gear lever gaiter', 'int', 'rubber', 'cone', [0, 0.50, EZ - 0.61], [0.09, 0.09, 0.09]);
+  });
+  grp('Final drive', ()=>{
+    add('Final drive pinion', 'trans', 'steel', 'disc', [-0.20, 0.372, EZ + 0.02], [0.048, 0.04, 0.048], [0,0,Math.PI/2]);
+    add('Crown wheel', 'trans', 'steel', 'disc', [-0.16, 0.300, EZ + 0.12], [0.128, 0.020, 0.128], [0,0,Math.PI/2]);
+    add('Differential cage', 'trans', 'iron', 'cyl', [-0.05, 0.300, EZ + 0.12], [0.095, 0.14, 0.095], [0,0,Math.PI/2]);
+    add('Differential cross pin', 'trans', 'steel', 'cyl', [-0.05, 0.300, EZ + 0.12], [0.010, 0.11, 0.010], [Math.PI/2,0,0]);
+    add('Differential planet gear · 1', 'trans', 'steel', 'cone', [-0.05, 0.300, EZ + 0.175], [0.048,0.034,0.048], [Math.PI/2,0,0]);
+    add('Differential planet gear · 2', 'trans', 'steel', 'cone', [-0.05, 0.300, EZ + 0.065], [0.048,0.034,0.048], [-Math.PI/2,0,0]);
+    add('Differential sun gear · RH', 'trans', 'steel', 'cone', [0.01, 0.300, EZ + 0.12], [0.054,0.036,0.054], [0,0,-Math.PI/2]);
+    add('Differential sun gear · LH', 'trans', 'steel', 'cone', [-0.11, 0.300, EZ + 0.12], [0.054,0.036,0.054], [0,0,Math.PI/2]);
+    addM('Differential bearing', 'trans', 'steel', 'tor', [0.10, 0.300, EZ + 0.12], [0.062,0.062,0.014], [0,0,Math.PI/2]);
+    ring('Crown wheel bolt', 'fast', 'steel', 'hex', -0.145, 0.300, EZ + 0.12, 0.098, 8, [0.018,0.014,0.018], 'x');
+    addM('Differential end cover', 'trans', 'alloy', 'disc', [0.14, 0.300, EZ + 0.12], [0.10, 0.02, 0.10], [0,0,Math.PI/2]);
+    addM('Driveshaft oil seal', 'trans', 'rubber', 'tor', [0.15, 0.300, EZ + 0.12], [0.038,0.038,0.008], [0,0,Math.PI/2]);
+  });
+  grp('Driveshafts', ()=>{
+    addM('Inner constant velocity joint', 'trans', 'steel', 'cyl', [0.20, 0.300, EZ + 0.12], [0.052, 0.06, 0.052], [0,0,Math.PI/2]);
+    addM('Inner joint yoke', 'trans', 'steel', 'box', [0.24, 0.300, EZ + 0.12], [0.05, 0.07, 0.07]);
+    addM('Driveshaft', 'trans', 'steel', 'cyl', [0.42, 0.288, EZ - 0.05], [0.021, 0.36, 0.021], [0.28,0,Math.PI/2]);
+    addM('Outer constant velocity joint', 'trans', 'steel', 'sph', [0.578, 0.276, AXF], [0.086,0.086,0.086]);
+    ring('Outer CV ball · RH', 'trans', 'steel', 'sph', 0.578, 0.276, AXF, 0.036, 6, [0.016,0.016,0.016], 'x');
+    ring('Outer CV ball · LH', 'trans', 'steel', 'sph', -0.578, 0.276, AXF, 0.036, 6, [0.016,0.016,0.016], 'x');
+    addM('CV joint cage', 'trans', 'steel', 'tor', [0.578, 0.276, AXF], [0.046,0.046,0.012], [0,0,Math.PI/2]);
+    addM('CV joint boot', 'trans', 'rubber', 'cone', [0.52, 0.282, AXF - 0.02], [0.08, 0.10, 0.08], [0,0,Math.PI/2]);
+    addM('Inner joint boot', 'trans', 'rubber', 'cone', [0.27, 0.296, EZ + 0.08], [0.07, 0.09, 0.07], [0,0,-Math.PI/2]);
+    addM('Boot clip · large', 'fast', 'steel', 'tor', [0.475, 0.284, AXF - 0.04], [0.042,0.042,0.005], [0,0,Math.PI/2]);
+    addM('Boot clip · small', 'fast', 'steel', 'tor', [0.555, 0.278, AXF - 0.005], [0.030,0.030,0.005], [0,0,Math.PI/2]);
+    addM('Inner boot clip', 'fast', 'steel', 'tor', [0.30, 0.294, EZ + 0.10], [0.034,0.034,0.005], [0,0,Math.PI/2]);
+  });
+}
+
+/* ==========================================================================
+   5 · SUSPENSION — rubber cone springs, wishbones front, trailing arms rear
+   ========================================================================== */
+function buildSusp(){
+  grp('Front suspension', ()=>{
+    addM('Upper suspension arm', 'susp', 'steel', 'box', [0.48, 0.455, AXF], [0.20, 0.03, 0.07]);
+    addM('Upper arm pivot shaft', 'susp', 'steel', 'cyl', [0.39, 0.455, AXF], [0.016, 0.09, 0.016], [Math.PI/2,0,0]);
+    addM('Upper arm needle bearing', 'susp', 'steel', 'cyl', [0.39, 0.455, AXF + 0.036], [0.024,0.026,0.024], [Math.PI/2,0,0]);
+    addM('Lower suspension arm', 'susp', 'steel', 'box', [0.47, 0.235, AXF], [0.22, 0.035, 0.08]);
+    addM('Lower arm pivot shaft', 'susp', 'steel', 'cyl', [0.37, 0.235, AXF], [0.018, 0.10, 0.018], [Math.PI/2,0,0]);
+    addM('Lower arm bush', 'susp', 'rubber', 'cyl', [0.37, 0.235, AXF + 0.042], [0.026,0.024,0.026], [Math.PI/2,0,0]);
+    addM('Rubber cone spring', 'susp', 'rubber', 'cone', [0.40, 0.545, AXF - 0.04], [0.155, 0.14, 0.155], [Math.PI,0,0]);
+    addM('Cone spring strut', 'susp', 'steel', 'cyl', [0.42, 0.500, AXF - 0.02], [0.020, 0.13, 0.020], [0.3,0,0.25]);
+    addM('Knuckle joint', 'susp', 'steel', 'sph', [0.44, 0.452, AXF - 0.02], [0.042,0.042,0.042]);
+    addM('Knuckle joint cup', 'susp', 'steel', 'cyl', [0.44, 0.470, AXF - 0.02], [0.046,0.030,0.046]);
+    addM('Trumpet housing', 'susp', 'steel', 'cone', [0.40, 0.575, AXF - 0.04], [0.13, 0.10, 0.13], [Math.PI,0,0]);
+    addM('Swivel hub', 'susp', 'iron', 'box', [0.585, 0.290, AXF], [0.07, 0.24, 0.09]);
+    addM('Upper ball joint', 'susp', 'steel', 'sph', [0.575, 0.430, AXF], [0.040,0.040,0.040]);
+    addM('Upper ball joint housing', 'susp', 'steel', 'cyl', [0.575, 0.442, AXF], [0.046, 0.05, 0.046]);
+    addM('Lower ball joint', 'susp', 'steel', 'sph', [0.575, 0.220, AXF], [0.040,0.040,0.040]);
+    addM('Lower ball joint housing', 'susp', 'steel', 'cyl', [0.575, 0.208, AXF], [0.046, 0.05, 0.046]);
+    addM('Ball joint shim pack', 'susp', 'steel', 'disc', [0.575, 0.472, AXF], [0.042,0.005,0.042]);
+    addM('Ball joint dust cover', 'susp', 'rubber', 'cone', [0.575, 0.405, AXF], [0.05,0.035,0.05]);
+    addM('Ball pin retaining cap', 'fast', 'steel', 'hex', [0.575, 0.486, AXF], [0.040,0.014,0.040]);
+    addM('Front damper', 'susp', 'steel', 'cyl', [0.455, 0.475, AXF + 0.10], [0.030, 0.20, 0.030], [0.16,0,0.18]);
+    addM('Front damper rod', 'susp', 'chrome', 'cyl', [0.44, 0.590, AXF + 0.08], [0.012, 0.10, 0.012], [0.16,0,0.18]);
+    addM('Front damper upper eye', 'susp', 'steel', 'tor', [0.432, 0.640, AXF + 0.07], [0.020,0.020,0.010], [0,0,Math.PI/2]);
+    addM('Front damper lower eye', 'susp', 'steel', 'tor', [0.470, 0.372, AXF + 0.12], [0.020,0.020,0.010], [0,0,Math.PI/2]);
+    addM('Damper bush · upper', 'susp', 'rubber', 'cyl', [0.432, 0.640, AXF + 0.07], [0.014,0.026,0.014], [0,0,Math.PI/2]);
+    addM('Damper bush · lower', 'susp', 'rubber', 'cyl', [0.470, 0.372, AXF + 0.12], [0.014,0.026,0.014], [0,0,Math.PI/2]);
+    addM('Front bump stop', 'susp', 'rubber', 'cone', [0.47, 0.400, AXF - 0.10], [0.05, 0.05, 0.05], [Math.PI,0,0]);
+    addM('Rebound buffer', 'susp', 'rubber', 'cyl', [0.47, 0.196, AXF - 0.10], [0.03, 0.03, 0.03]);
+    addM('Tie rod · lower arm', 'susp', 'steel', 'cyl', [0.36, 0.235, AXF - 0.22], [0.018, 0.42, 0.018], [1.42,0.10,0]);
+    addM('Tie rod bush', 'susp', 'rubber', 'cyl', [0.34, 0.235, AXF - 0.42], [0.028,0.03,0.028], [Math.PI/2,0,0]);
+    addM('Tie rod nut', 'fast', 'steel', 'hex', [0.34, 0.235, AXF - 0.45], [0.026,0.016,0.026], [Math.PI/2,0,0]);
+    addM('Hub carrier bearing spacer', 'susp', 'steel', 'cyl', [0.60, 0.268, AXF], [0.036,0.03,0.036], [0,0,Math.PI/2]);
+    for(let i=0;i<4;i++) addM('Suspension arm shim · ' + (i+1), 'fast', 'steel', 'disc', [0.34, 0.455, AXF + 0.05 - i*0.006], [0.030,0.003,0.030], [Math.PI/2,0,0]);
+  });
+  grp('Rear suspension', ()=>{
+    addM('Radius arm', 'susp', 'steel', 'box', [0.50, 0.268, AXR + 0.10], [0.10, 0.10, 0.34]);
+    addM('Radius arm pivot shaft', 'susp', 'steel', 'cyl', [0.44, 0.290, AXR + 0.28], [0.020, 0.14, 0.020], [0,0,Math.PI/2]);
+    ring('Radius arm needle roller · RH', 'susp', 'steel', 'cyl', 0.44, 0.290, AXR + 0.28, 0.022, 14, [0.006, 0.05, 0.006], 'x');
+    ring('Radius arm needle roller · LH', 'susp', 'steel', 'cyl', -0.44, 0.290, AXR + 0.28, 0.022, 14, [0.006, 0.05, 0.006], 'x');
+    addM('Radius arm bearing housing', 'susp', 'iron', 'cyl', [0.44, 0.290, AXR + 0.28], [0.058, 0.10, 0.058], [0,0,Math.PI/2]);
+    addM('Radius arm thrust washer', 'susp', 'brass', 'disc', [0.50, 0.290, AXR + 0.28], [0.042,0.004,0.042], [0,0,Math.PI/2]);
+    addM('Rear rubber cone spring', 'susp', 'rubber', 'cone', [0.44, 0.430, AXR + 0.02], [0.145, 0.13, 0.145], [Math.PI,0,0]);
+    addM('Rear cone strut', 'susp', 'steel', 'cyl', [0.46, 0.370, AXR + 0.04], [0.020, 0.12, 0.020], [-0.3,0,0.2]);
+    addM('Rear knuckle joint', 'susp', 'steel', 'sph', [0.47, 0.330, AXR + 0.05], [0.040,0.040,0.040]);
+    addM('Rear damper', 'susp', 'steel', 'cyl', [0.50, 0.430, AXR - 0.12], [0.028, 0.20, 0.028], [-0.2,0,0.12]);
+    addM('Rear damper rod', 'susp', 'chrome', 'cyl', [0.49, 0.545, AXR - 0.14], [0.011, 0.10, 0.011], [-0.2,0,0.12]);
+    addM('Rear damper upper eye', 'susp', 'steel', 'tor', [0.485, 0.595, AXR - 0.15], [0.019,0.019,0.010], [0,0,Math.PI/2]);
+    addM('Rear damper lower eye', 'susp', 'steel', 'tor', [0.515, 0.330, AXR - 0.10], [0.019,0.019,0.010], [0,0,Math.PI/2]);
+    addM('Rear bump stop', 'susp', 'rubber', 'cone', [0.48, 0.395, AXR + 0.14], [0.05,0.05,0.05], [Math.PI,0,0]);
+    addM('Rear hub carrier', 'susp', 'iron', 'box', [0.575, 0.268, AXR], [0.06, 0.13, 0.13]);
+    addM('Rear stub axle', 'susp', 'steel', 'cyl', [0.598, 0.268, AXR], [0.028, 0.10, 0.028], [0,0,Math.PI/2]);
+    addM('Rear hub nut', 'fast', 'steel', 'hex', [0.635, 0.268, AXR], [0.042,0.020,0.042], [0,0,Math.PI/2]);
+    addM('Rear hub split pin', 'fast', 'steel', 'cyl', [0.635, 0.268, AXR], [0.004,0.05,0.004], [Math.PI/2,0,0]);
+  });
+}
+
+/* ==========================================================================
+   6 · BRAKES
+   ========================================================================== */
+function buildBrakes(){
+  grp('Front disc brakes', ()=>{
+    addM('Brake disc', 'brakes', 'iron', 'disc', [0.575, 0.268, AXF], [0.190, 0.010, 0.190], [0,0,Math.PI/2]);
+    addM('Disc hub flange', 'brakes', 'steel', 'disc', [0.568, 0.268, AXF], [0.090, 0.020, 0.090], [0,0,Math.PI/2]);
+    addM('Brake caliper · outer half', 'brakes', 'iron', 'box', [0.598, 0.410, AXF], [0.030, 0.11, 0.09]);
+    addM('Brake caliper · inner half', 'brakes', 'iron', 'box', [0.552, 0.410, AXF], [0.030, 0.11, 0.09]);
+    addM('Caliper piston · outer', 'brakes', 'steel', 'cyl', [0.592, 0.400, AXF], [0.036, 0.03, 0.036], [0,0,Math.PI/2]);
+    addM('Caliper piston · inner', 'brakes', 'steel', 'cyl', [0.558, 0.400, AXF], [0.036, 0.03, 0.036], [0,0,Math.PI/2]);
+    addM('Piston seal · outer', 'brakes', 'rubber', 'tor', [0.590, 0.400, AXF], [0.038,0.038,0.005], [0,0,Math.PI/2]);
+    addM('Piston seal · inner', 'brakes', 'rubber', 'tor', [0.560, 0.400, AXF], [0.038,0.038,0.005], [0,0,Math.PI/2]);
+    addM('Dust seal · outer', 'brakes', 'rubber', 'tor', [0.586, 0.400, AXF], [0.040,0.040,0.004], [0,0,Math.PI/2]);
+    addM('Dust seal · inner', 'brakes', 'rubber', 'tor', [0.564, 0.400, AXF], [0.040,0.040,0.004], [0,0,Math.PI/2]);
+    addM('Brake pad · outer', 'brakes', 'felt', 'box', [0.584, 0.395, AXF], [0.014, 0.07, 0.07]);
+    addM('Brake pad · inner', 'brakes', 'felt', 'box', [0.566, 0.395, AXF], [0.014, 0.07, 0.07]);
+    addM('Pad backing plate · outer', 'brakes', 'steel', 'box', [0.592, 0.395, AXF], [0.004, 0.07, 0.07]);
+    addM('Pad backing plate · inner', 'brakes', 'steel', 'box', [0.558, 0.395, AXF], [0.004, 0.07, 0.07]);
+    addM('Pad retaining pin · upper', 'fast', 'steel', 'cyl', [0.575, 0.425, AXF + 0.028], [0.005, 0.07, 0.005], [0,0,Math.PI/2]);
+    addM('Pad retaining pin · lower', 'fast', 'steel', 'cyl', [0.575, 0.425, AXF - 0.028], [0.005, 0.07, 0.005], [0,0,Math.PI/2]);
+    addM('Pad retaining clip', 'fast', 'steel', 'box', [0.575, 0.440, AXF], [0.06, 0.004, 0.05]);
+    addM('Caliper bolt · upper', 'fast', 'steel', 'hex', [0.545, 0.448, AXF + 0.03], [0.024,0.024,0.024], [0,0,Math.PI/2]);
+    addM('Caliper bolt · lower', 'fast', 'steel', 'hex', [0.545, 0.372, AXF - 0.03], [0.024,0.024,0.024], [0,0,Math.PI/2]);
+    addM('Caliper bleed nipple', 'brakes', 'steel', 'cyl', [0.575, 0.470, AXF], [0.008, 0.03, 0.008]);
+    addM('Brake disc splash shield', 'brakes', 'steel', 'disc', [0.545, 0.268, AXF], [0.185, 0.004, 0.185], [0,0,Math.PI/2]);
+  });
+  grp('Rear drum brakes', ()=>{
+    addM('Brake drum', 'brakes', 'iron', 'cyl', [0.578, 0.268, AXR], [0.180, 0.062, 0.180], [0,0,Math.PI/2]);
+    addM('Brake backplate', 'brakes', 'steel', 'disc', [0.550, 0.268, AXR], [0.185, 0.005, 0.185], [0,0,Math.PI/2]);
+    addM('Brake shoe · leading', 'brakes', 'steel', 'tor', [0.566, 0.268, AXR + 0.04], [0.145,0.145,0.020], [0,0,Math.PI/2]);
+    addM('Brake shoe · trailing', 'brakes', 'steel', 'tor', [0.566, 0.268, AXR - 0.04], [0.145,0.145,0.020], [0,0,Math.PI/2]);
+    addM('Shoe lining · leading', 'brakes', 'felt', 'tor', [0.566, 0.268, AXR + 0.04], [0.152,0.152,0.016], [0,0,Math.PI/2]);
+    addM('Shoe lining · trailing', 'brakes', 'felt', 'tor', [0.566, 0.268, AXR - 0.04], [0.152,0.152,0.016], [0,0,Math.PI/2]);
+    addM('Shoe return spring · upper', 'brakes', 'steel', 'cyl', [0.562, 0.330, AXR], [0.008, 0.07, 0.008], [Math.PI/2,0,0]);
+    addM('Shoe return spring · lower', 'brakes', 'steel', 'cyl', [0.562, 0.206, AXR], [0.008, 0.07, 0.008], [Math.PI/2,0,0]);
+    addM('Shoe steady pin', 'fast', 'steel', 'cyl', [0.556, 0.268, AXR + 0.09], [0.004, 0.03, 0.004], [0,0,Math.PI/2]);
+    addM('Shoe steady spring cup', 'brakes', 'steel', 'disc', [0.566, 0.268, AXR + 0.09], [0.016,0.004,0.016], [0,0,Math.PI/2]);
+    addM('Wheel cylinder', 'brakes', 'alloy', 'cyl', [0.562, 0.372, AXR], [0.024, 0.070, 0.024], [Math.PI/2,0,0]);
+    addM('Wheel cylinder piston · 1', 'brakes', 'steel', 'cyl', [0.562, 0.372, AXR + 0.026], [0.020,0.018,0.020], [Math.PI/2,0,0]);
+    addM('Wheel cylinder piston · 2', 'brakes', 'steel', 'cyl', [0.562, 0.372, AXR - 0.026], [0.020,0.018,0.020], [Math.PI/2,0,0]);
+    addM('Wheel cylinder seal · 1', 'brakes', 'rubber', 'cyl', [0.562, 0.372, AXR + 0.014], [0.021,0.006,0.021], [Math.PI/2,0,0]);
+    addM('Wheel cylinder seal · 2', 'brakes', 'rubber', 'cyl', [0.562, 0.372, AXR - 0.014], [0.021,0.006,0.021], [Math.PI/2,0,0]);
+    addM('Brake adjuster', 'brakes', 'steel', 'box', [0.556, 0.170, AXR], [0.02, 0.03, 0.05]);
+    addM('Adjuster tappet', 'brakes', 'steel', 'cyl', [0.556, 0.170, AXR + 0.026], [0.010,0.020,0.010], [Math.PI/2,0,0]);
+    addM('Drum retaining screw', 'fast', 'steel', 'hex', [0.600, 0.320, AXR], [0.014,0.012,0.014], [0,0,Math.PI/2]);
+  });
+  grp('Hydraulics', ()=>{
+    add('Brake master cylinder', 'brakes', 'alloy', 'cyl', [0.34, 0.545, 0.86], [0.036, 0.16, 0.036], [0,0,Math.PI/2 - 0.2]);
+    add('Master cylinder reservoir', 'brakes', 'plast', 'box', [0.34, 0.625, 0.86], [0.07, 0.07, 0.06]);
+    add('Reservoir cap', 'brakes', 'plast', 'cyl', [0.34, 0.665, 0.86], [0.036,0.016,0.036]);
+    add('Master cylinder piston', 'brakes', 'steel', 'cyl', [0.30, 0.540, 0.86], [0.028,0.05,0.028], [0,0,Math.PI/2 - 0.2]);
+    add('Master cylinder pushrod', 'brakes', 'steel', 'cyl', [0.26, 0.535, 0.86], [0.010,0.09,0.010], [0,0,Math.PI/2 - 0.2]);
+    add('Clutch master cylinder', 'brakes', 'alloy', 'cyl', [0.44, 0.545, 0.86], [0.032, 0.14, 0.032], [0,0,Math.PI/2 - 0.2]);
+    add('Clutch reservoir', 'brakes', 'plast', 'box', [0.44, 0.618, 0.86], [0.055, 0.055, 0.05]);
+    add('Pressure regulating valve', 'brakes', 'steel', 'cyl', [0.10, 0.30, 0.88], [0.020, 0.06, 0.020]);
+    pathRun('Brake pipe · front RH', 'brakes', 'steel', 'cyl', [[0.30,0.50,0.84],[0.42,0.42,0.90],[0.50,0.40,AXF+0.06],[0.545,0.44,AXF]], 0.006, 0.10);
+    pathRun('Brake pipe · front LH', 'brakes', 'steel', 'cyl', [[0.30,0.50,0.84],[-0.30,0.42,0.86],[-0.50,0.40,AXF+0.06],[-0.545,0.44,AXF]], 0.006, 0.12);
+    pathRun('Brake pipe · rear main', 'brakes', 'steel', 'cyl', [[0.30,0.50,0.84],[0.24,0.24,0.60],[0.24,0.235,-0.60],[0.20,0.26,-0.95]], 0.006, 0.14);
+    pathRun('Brake pipe · rear RH branch', 'brakes', 'steel', 'cyl', [[0.20,0.26,-0.95],[0.42,0.30,-1.00],[0.545,0.35,AXR]], 0.006, 0.10);
+    pathRun('Brake pipe · rear LH branch', 'brakes', 'steel', 'cyl', [[0.20,0.26,-0.95],[-0.30,0.28,-0.98],[-0.545,0.35,AXR]], 0.006, 0.12);
+    addM('Flexible brake hose · front', 'brakes', 'rubber', 'cyl', [0.53, 0.46, AXF - 0.05], [0.010, 0.14, 0.010], [0.9,0,0.3]);
+    addM('Flexible brake hose · rear', 'brakes', 'rubber', 'cyl', [0.50, 0.38, AXR + 0.06], [0.010, 0.12, 0.010], [-0.9,0,0.3]);
+    for(let i=0;i<10;i++) add('Brake pipe union · ' + (i+1), 'fast', 'brass', 'hex', [0.22 - (i%5)*0.10, 0.28 + (i>4?0.20:0), 0.60 - i*0.22], [0.011,0.020,0.011], [Math.PI/2,0,0]);
+    for(let i=0;i<8;i++) add('Brake pipe clip · ' + (i+1), 'fast', 'steel', 'box', [0.245, 0.245, 0.50 - i*0.18], [0.02, 0.012, 0.008]);
+  });
+  grp('Handbrake', ()=>{
+    add('Handbrake lever', 'brakes', 'steel', 'box', [0.10, 0.42, 0.16], [0.03, 0.20, 0.03], [-0.35,0,0]);
+    add('Handbrake grip', 'brakes', 'plast', 'cyl', [0.10, 0.52, 0.20], [0.024, 0.09, 0.024], [-0.35,0,0]);
+    add('Handbrake ratchet', 'brakes', 'steel', 'disc', [0.10, 0.34, 0.13], [0.05,0.006,0.05], [0,0,Math.PI/2]);
+    add('Handbrake pawl', 'brakes', 'steel', 'box', [0.10, 0.36, 0.14], [0.008, 0.03, 0.012]);
+    add('Handbrake release rod', 'brakes', 'steel', 'cyl', [0.10, 0.45, 0.17], [0.006, 0.18, 0.006], [-0.35,0,0]);
+    add('Handbrake mounting bracket', 'brakes', 'steel', 'box', [0.10, 0.29, 0.13], [0.05, 0.08, 0.07]);
+    add('Handbrake compensator', 'brakes', 'steel', 'box', [0.10, 0.245, -0.30], [0.09, 0.02, 0.03]);
+    pathRun('Handbrake cable · RH', 'brakes', 'steel', 'cyl', [[0.10,0.28,0.10],[0.16,0.24,-0.30],[0.44,0.24,-0.80],[0.545,0.30,AXR-0.06]], 0.006, 0.14);
+    pathRun('Handbrake cable · LH', 'brakes', 'steel', 'cyl', [[0.10,0.28,0.10],[-0.16,0.24,-0.30],[-0.44,0.24,-0.80],[-0.545,0.30,AXR-0.06]], 0.006, 0.14);
+    addM('Cable clevis', 'fast', 'steel', 'box', [0.545, 0.30, AXR - 0.10], [0.02, 0.03, 0.02]);
+    addM('Cable adjusting nut', 'fast', 'steel', 'hex', [0.30, 0.245, -0.66], [0.014,0.012,0.014], [Math.PI/2,0,0]);
+  });
+}
+
+/* ==========================================================================
+   7 · STEERING
+   ========================================================================== */
+function buildSteer(){
+  grp('Steering rack', ()=>{
+    add('Steering rack housing', 'steer', 'steel', 'cyl', [0, 0.395, 0.795], [0.038, 0.60, 0.038], [0,0,Math.PI/2]);
+    add('Steering rack bar', 'steer', 'steel', 'cyl', [0.03, 0.395, 0.795], [0.020, 0.70, 0.020], [0,0,Math.PI/2]);
+    add('Rack teeth section', 'steer', 'steel', 'box', [0.10, 0.408, 0.795], [0.14, 0.012, 0.022]);
+    add('Steering pinion', 'steer', 'steel', 'cyl', [0.16, 0.420, 0.795], [0.022, 0.05, 0.022], [0.5,0,0]);
+    add('Pinion bearing · upper', 'steer', 'steel', 'tor', [0.163, 0.445, 0.782], [0.024,0.024,0.008], [0.5,0,0]);
+    add('Pinion bearing · lower', 'steer', 'steel', 'tor', [0.157, 0.392, 0.795], [0.024,0.024,0.008], [0.5,0,0]);
+    add('Rack damper plunger', 'steer', 'brass', 'cyl', [0.10, 0.372, 0.795], [0.020, 0.02, 0.020]);
+    add('Rack damper spring', 'steer', 'steel', 'cyl', [0.10, 0.356, 0.795], [0.016, 0.02, 0.016]);
+    add('Rack damper cover', 'fast', 'steel', 'hex', [0.10, 0.340, 0.795], [0.028,0.012,0.028]);
+    addM('Rack mounting clamp', 'steer', 'steel', 'box', [0.22, 0.372, 0.795], [0.05, 0.05, 0.05]);
+    addM('Rack mounting bush', 'steer', 'rubber', 'cyl', [0.22, 0.395, 0.795], [0.046,0.04,0.046], [0,0,Math.PI/2]);
+    addM('Rack clamp bolt · 1', 'fast', 'steel', 'hex', [0.22, 0.340, 0.775], [0.020,0.024,0.020]);
+    addM('Rack clamp bolt · 2', 'fast', 'steel', 'hex', [0.22, 0.340, 0.815], [0.020,0.024,0.020]);
+    addM('Rack gaiter', 'steer', 'rubber', 'cone', [0.36, 0.395, 0.795], [0.05, 0.10, 0.05], [0,0,Math.PI/2]);
+    addM('Gaiter clip · inner', 'fast', 'steel', 'tor', [0.31, 0.395, 0.795], [0.030,0.030,0.004], [0,0,Math.PI/2]);
+    addM('Gaiter clip · outer', 'fast', 'steel', 'tor', [0.41, 0.395, 0.795], [0.022,0.022,0.004], [0,0,Math.PI/2]);
+  });
+  grp('Track rods & column', ()=>{
+    addM('Track rod', 'steer', 'steel', 'cyl', [0.50, 0.393, 0.83], [0.014, 0.18, 0.014], [-0.25,0,Math.PI/2]);
+    addM('Track rod end', 'steer', 'steel', 'box', [0.575, 0.390, 0.885], [0.05, 0.03, 0.05]);
+    addM('Track rod ball pin', 'steer', 'steel', 'sph', [0.583, 0.385, 0.90], [0.026,0.026,0.026]);
+    addM('Track rod end boot', 'steer', 'rubber', 'cone', [0.583, 0.400, 0.90], [0.032,0.024,0.032]);
+    addM('Track rod locknut', 'fast', 'steel', 'hex', [0.548, 0.392, 0.86], [0.020,0.012,0.020], [0,0,Math.PI/2]);
+    addM('Steering arm', 'steer', 'iron', 'box', [0.585, 0.385, 0.94], [0.05, 0.03, 0.11]);
+    add('Steering column · lower shaft', 'steer', 'steel', 'cyl', [0.24, 0.560, 0.70], [0.016, 0.30, 0.016], [-0.85,0.20,0]);
+    add('Steering universal joint', 'steer', 'steel', 'box', [0.19, 0.470, 0.755], [0.04, 0.05, 0.04]);
+    add('Steering column · upper shaft', 'steer', 'steel', 'cyl', [0.31, 0.680, 0.48], [0.016, 0.52, 0.016], [-0.90,0.05,0]);
+    add('Steering column tube', 'steer', 'steel', 'cyl', [0.32, 0.700, 0.44], [0.026, 0.44, 0.026], [-0.90,0.05,0]);
+    add('Column upper bush', 'steer', 'plast', 'cyl', [0.34, 0.790, 0.31], [0.024,0.03,0.024], [-0.90,0.05,0]);
+    add('Column lower bush', 'steer', 'plast', 'cyl', [0.28, 0.600, 0.62], [0.024,0.03,0.024], [-0.90,0.05,0]);
+    add('Column clamp bracket', 'steer', 'steel', 'box', [0.33, 0.760, 0.40], [0.06, 0.05, 0.03]);
+    add('Steering wheel rim', 'steer', 'plast', 'tor', [0.35, 0.830, 0.245], [0.170, 0.170, 0.014], [-0.90,0.05,0]);
+    add('Steering wheel boss', 'steer', 'alloy', 'cyl', [0.35, 0.830, 0.245], [0.056, 0.03, 0.056], [-0.90+Math.PI/2,0.05,0]);
+    for(let i=0;i<3;i++){
+      const a = i/3*Math.PI*2 + 0.4;
+      add('Steering wheel spoke · ' + (i+1), 'steer', 'alloy', 'box',
+        [0.35 + Math.cos(a)*0.085, 0.830 + Math.sin(a)*0.085*0.62, 0.245 + Math.sin(a)*0.085*0.78],
+        [0.016, 0.16, 0.010], [-0.90, 0.05, -a]);
+    }
+    add('Horn push', 'steer', 'plast', 'cyl', [0.35, 0.836, 0.238], [0.050, 0.016, 0.050], [-0.90+Math.PI/2,0.05,0]);
+    add('Steering wheel nut', 'fast', 'steel', 'hex', [0.35, 0.826, 0.252], [0.030,0.020,0.030], [-0.90+Math.PI/2,0.05,0]);
+  });
+}
+
+/* ==========================================================================
+   8 · WHEELS & TYRES — 10 in steel wheels, 145/70
+   ========================================================================== */
+function buildWheels(){
+  const corners = [[0.615, AXF, 'front RH'], [-0.615, AXF, 'front LH'], [0.615, AXR, 'rear RH'], [-0.615, AXR, 'rear LH']];
+  corners.forEach(([x, z, label])=>{
+    grp('Road wheel · ' + label, ()=>{
+      const sgn = x > 0 ? 1 : -1;
+      add('Tyre · ' + label, 'wheels', 'rubber', 'cyl', [x, WR, z], [WR*2, 0.145, WR*2], [0,0,Math.PI/2]);
+      add('Tyre sidewall · outer · ' + label, 'wheels', 'rubber', 'tor', [x + sgn*0.068, WR, z], [WR*1.98, WR*1.98, 0.030], [0,0,Math.PI/2]);
+      add('Tyre sidewall · inner · ' + label, 'wheels', 'rubber', 'tor', [x - sgn*0.068, WR, z], [WR*1.98, WR*1.98, 0.030], [0,0,Math.PI/2]);
+      add('Inner tube · ' + label, 'wheels', 'rubber', 'tor', [x, WR, z], [0.225, 0.225, 0.050], [0,0,Math.PI/2]);
+      add('Tyre valve · ' + label, 'wheels', 'brass', 'cyl', [x + sgn*0.030, WR + 0.115, z], [0.008, 0.035, 0.008]);
+      add('Wheel rim · ' + label, 'wheels', 'steel', 'cyl', [x, WR, z], [0.254, 0.115, 0.254], [0,0,Math.PI/2]);
+      add('Wheel disc centre · ' + label, 'wheels', 'steel', 'disc', [x + sgn*0.062, WR, z], [0.300, 0.014, 0.300], [0,0,Math.PI/2]);
+      add('Rim flange · outer · ' + label, 'wheels', 'steel', 'tor', [x + sgn*0.070, WR, z], [0.318, 0.318, 0.020], [0,0,Math.PI/2]);
+      add('Rim flange · inner · ' + label, 'wheels', 'steel', 'tor', [x - sgn*0.062, WR, z], [0.272, 0.272, 0.016], [0,0,Math.PI/2]);
+      for(let i=0;i<8;i++){
+        const a = i/8*Math.PI*2;
+        add('Wheel vent hole reinforcement · ' + (i+1) + ' · ' + label, 'wheels', 'steel', 'tor',
+          [x + sgn*0.066, WR + Math.sin(a)*0.096, z + Math.cos(a)*0.096], [0.040,0.040,0.008], [0,0,Math.PI/2]);
+      }
+      add('Wheel hub · ' + label, 'wheels', 'iron', 'cyl', [x - sgn*0.030, WR, z], [0.120, 0.075, 0.120], [0,0,Math.PI/2]);
+      add('Hub flange · ' + label, 'wheels', 'iron', 'disc', [x + sgn*0.005, WR, z], [0.155, 0.014, 0.155], [0,0,Math.PI/2]);
+      ring('Wheel stud · ' + label, 'fast', 'steel', 'cyl', x + sgn*0.020, WR, z, 0.0508, 4, [0.011, 0.045, 0.011], 'x');
+      ring('Wheel nut · ' + label, 'fast', 'steel', 'hex', x + sgn*0.068, WR, z, 0.0508, 4, [0.026, 0.020, 0.026], 'x');
+      add('Hub cap · ' + label, 'wheels', 'chrome', 'cyl', [x + sgn*0.078, WR, z], [0.190, 0.026, 0.190], [0,0,Math.PI/2]);
+      add('Hub cap clip · ' + label, 'wheels', 'steel', 'tor', [x + sgn*0.070, WR, z], [0.160,0.160,0.006], [0,0,Math.PI/2]);
+      add('Wheel bearing · outer race · ' + label, 'wheels', 'steel', 'tor', [x - sgn*0.052, WR, z], [0.062,0.062,0.016], [0,0,Math.PI/2]);
+      add('Wheel bearing · inner race · ' + label, 'wheels', 'steel', 'tor', [x - sgn*0.052, WR, z], [0.040,0.040,0.016], [0,0,Math.PI/2]);
+      ring('Taper roller · ' + label, 'wheels', 'steel', 'cone', x - sgn*0.052, WR, z, 0.050, 13, [0.013, 0.020, 0.013], 'x');
+      add('Bearing cage · ' + label, 'wheels', 'steel', 'tor', [x - sgn*0.052, WR, z], [0.050,0.050,0.004], [0,0,Math.PI/2]);
+      add('Hub grease seal · ' + label, 'wheels', 'rubber', 'tor', [x - sgn*0.072, WR, z], [0.055,0.055,0.010], [0,0,Math.PI/2]);
+      add('Balance weight · ' + label, 'wheels', 'steel', 'box', [x + sgn*0.066, WR + 0.132, z], [0.012, 0.008, 0.030]);
+      add('Balance weight · secondary · ' + label, 'wheels', 'steel', 'box', [x + sgn*0.066, WR - 0.068, z + 0.118], [0.012, 0.020, 0.020]);
+    });
+  });
+  grp('Spare wheel', ()=>{
+    add('Spare tyre', 'wheels', 'rubber', 'cyl', [0.30, 0.30, -1.20], [WR*2, 0.145, WR*2], [Math.PI/2,0,0]);
+    add('Spare wheel rim', 'wheels', 'steel', 'cyl', [0.30, 0.30, -1.20], [0.254, 0.115, 0.254], [Math.PI/2,0,0]);
+    add('Spare wheel clamp bolt', 'fast', 'steel', 'hex', [0.30, 0.30, -1.13], [0.030,0.030,0.030], [Math.PI/2,0,0]);
+    add('Spare wheel clamp plate', 'wheels', 'steel', 'disc', [0.30, 0.30, -1.14], [0.09,0.008,0.09], [Math.PI/2,0,0]);
+    add('Jack', 'wheels', 'steel', 'box', [-0.34, 0.28, -1.34], [0.10, 0.06, 0.24]);
+    add('Wheel brace', 'wheels', 'steel', 'cyl', [-0.30, 0.26, -1.10], [0.012, 0.26, 0.012], [0,0,Math.PI/2]);
+  });
+}
+
+/* ==========================================================================
+   9 · COOLING — side-mounted radiator on the timing-case end
+   ========================================================================== */
+function buildCool(){
+  grp('Radiator', ()=>{
+    add('Radiator top tank', 'cool', 'brass', 'box', [-0.50, 0.775, EZ], [0.075, 0.055, 0.30]);
+    add('Radiator bottom tank', 'cool', 'brass', 'box', [-0.50, 0.435, EZ], [0.075, 0.050, 0.30]);
+    for(let i=0;i<22;i++)
+      add('Radiator core tube · ' + (i+1), 'cool', 'copper', 'box', [-0.50, 0.605, EZ - 0.135 + i*0.0128], [0.062, 0.285, 0.0055]);
+    for(let i=0;i<11;i++)
+      add('Radiator core fin block · ' + (i+1), 'cool', 'copper', 'box', [-0.50, 0.605, EZ - 0.128 + i*0.0256], [0.058, 0.280, 0.012]);
+    add('Radiator side plate · front', 'cool', 'steel', 'box', [-0.50, 0.605, EZ + 0.155], [0.070, 0.30, 0.012]);
+    add('Radiator side plate · rear', 'cool', 'steel', 'box', [-0.50, 0.605, EZ - 0.155], [0.070, 0.30, 0.012]);
+    add('Radiator filler neck', 'cool', 'brass', 'cyl', [-0.50, 0.815, EZ + 0.10], [0.048, 0.04, 0.048]);
+    add('Radiator cap', 'cool', 'steel', 'cyl', [-0.50, 0.842, EZ + 0.10], [0.052, 0.024, 0.052]);
+    add('Radiator overflow pipe', 'cool', 'copper', 'cyl', [-0.50, 0.62, EZ + 0.14], [0.007, 0.32, 0.007]);
+    add('Radiator cowling · outer', 'cool', 'steel', 'box', [-0.545, 0.605, EZ], [0.012, 0.32, 0.32]);
+    add('Radiator cowling · top', 'cool', 'steel', 'box', [-0.47, 0.775, EZ], [0.14, 0.012, 0.32]);
+    add('Radiator cowling · bottom', 'cool', 'steel', 'box', [-0.47, 0.435, EZ], [0.14, 0.012, 0.32]);
+    for(let i=0;i<4;i++) add('Radiator mounting bolt · ' + (i+1), 'fast', 'steel', 'hex', [-0.50, 0.42 + (i%2)*0.37, EZ - 0.13 + Math.floor(i/2)*0.26], [0.020,0.020,0.020]);
+    add('Radiator mounting bracket · upper', 'cool', 'steel', 'box', [-0.44, 0.80, EZ], [0.10, 0.02, 0.10]);
+    add('Radiator mounting bracket · lower', 'cool', 'steel', 'box', [-0.44, 0.42, EZ], [0.10, 0.02, 0.10]);
+  });
+  grp('Water pump & hoses', ()=>{
+    add('Water pump body', 'cool', 'alloy', 'cyl', [-0.375, 0.665, EZ + 0.05], [0.085, 0.06, 0.085], [0,0,Math.PI/2]);
+    add('Water pump impeller', 'cool', 'steel', 'disc', [-0.365, 0.665, EZ + 0.05], [0.070, 0.020, 0.070], [0,0,Math.PI/2]);
+    add('Water pump spindle', 'cool', 'steel', 'cyl', [-0.40, 0.665, EZ + 0.05], [0.016, 0.10, 0.016], [0,0,Math.PI/2]);
+    add('Water pump bearing', 'cool', 'steel', 'tor', [-0.40, 0.665, EZ + 0.05], [0.026,0.026,0.012], [0,0,Math.PI/2]);
+    add('Water pump seal', 'cool', 'rubber', 'tor', [-0.383, 0.665, EZ + 0.05], [0.030,0.030,0.008], [0,0,Math.PI/2]);
+    add('Water pump gasket', 'cool', 'felt', 'disc', [-0.352, 0.665, EZ + 0.05], [0.086,0.003,0.086], [0,0,Math.PI/2]);
+    add('Water pump pulley', 'cool', 'steel', 'disc', [-0.435, 0.665, EZ + 0.05], [0.062, 0.024, 0.062], [0,0,Math.PI/2]);
+    for(let i=0;i<16;i++){
+      const a = i/16*Math.PI*2;
+      add('Fan blade · ' + (i+1), 'cool', 'plast', 'box',
+        [-0.455, 0.665 + Math.sin(a)*0.088, EZ + 0.05 + Math.cos(a)*0.088],
+        [0.006, 0.11, 0.038], [-a, 0.35, 0]);
+    }
+    add('Fan hub', 'cool', 'steel', 'disc', [-0.452, 0.665, EZ + 0.05], [0.060, 0.016, 0.060], [0,0,Math.PI/2]);
+    for(let i=0;i<4;i++) add('Fan retaining bolt · ' + (i+1), 'fast', 'steel', 'hex', [-0.462, 0.665 + Math.cos(i/4*6.28)*0.030, EZ + 0.05 + Math.sin(i/4*6.28)*0.030], [0.016,0.012,0.016], [0,0,Math.PI/2]);
+    add('Thermostat', 'cool', 'brass', 'cyl', [0.10, 0.865, EZ + 0.06], [0.042, 0.035, 0.042]);
+    add('Thermostat housing', 'cool', 'alloy', 'box', [0.10, 0.895, EZ + 0.06], [0.075, 0.05, 0.075]);
+    add('Thermostat housing gasket', 'cool', 'felt', 'box', [0.10, 0.868, EZ + 0.06], [0.075, 0.003, 0.075]);
+    add('Thermostat housing bolt · 1', 'fast', 'steel', 'hex', [0.055, 0.900, EZ + 0.06], [0.018,0.018,0.018]);
+    add('Thermostat housing bolt · 2', 'fast', 'steel', 'hex', [0.145, 0.900, EZ + 0.06], [0.018,0.018,0.018]);
+    add('Temperature sender', 'elec', 'brass', 'cyl', [0.16, 0.880, EZ + 0.09], [0.014, 0.04, 0.014], [Math.PI/2,0,0]);
+    pathRun('Radiator top hose', 'cool', 'rubber', 'cyl', [[0.10,0.915,EZ+0.06],[-0.20,0.905,EZ+0.06],[-0.44,0.80,EZ+0.02]], 0.024, 0.075);
+    pathRun('Radiator bottom hose', 'cool', 'rubber', 'cyl', [[-0.36,0.640,EZ+0.05],[-0.44,0.50,EZ+0.02],[-0.47,0.445,EZ]], 0.022, 0.070);
+    pathRun('Heater feed hose', 'cool', 'rubber', 'cyl', [[0.14,0.885,EZ+0.02],[0.30,0.80,0.90],[0.34,0.72,0.80]], 0.014, 0.080);
+    pathRun('Heater return hose', 'cool', 'rubber', 'cyl', [[-0.30,0.660,EZ+0.05],[0.10,0.60,0.88],[0.28,0.66,0.80]], 0.014, 0.090);
+    for(let i=0;i<8;i++) add('Hose clip · ' + (i+1), 'fast', 'steel', 'tor', [[-0.44,0.80,EZ+0.02],[0.10,0.915,EZ+0.06],[-0.36,0.64,EZ+0.05],[-0.47,0.445,EZ],[0.30,0.80,0.90],[0.34,0.72,0.80],[-0.30,0.66,EZ+0.05],[0.28,0.66,0.80]][i], [0.026,0.026,0.006], [0,0,Math.PI/2]);
+  });
+  grp('Heater', ()=>{
+    add('Heater box', 'cool', 'steel', 'box', [0.30, 0.62, 0.70], [0.24, 0.20, 0.14]);
+    add('Heater box lid', 'cool', 'steel', 'box', [0.30, 0.725, 0.70], [0.24, 0.014, 0.14]);
+    for(let i=0;i<12;i++) add('Heater matrix tube · ' + (i+1), 'cool', 'copper', 'box', [0.30, 0.60, 0.70], [0.19, 0.010, 0.10]);
+    add('Heater matrix core', 'cool', 'copper', 'box', [0.30, 0.60, 0.70], [0.19, 0.13, 0.10]);
+    add('Heater blower motor', 'cool', 'steel', 'cyl', [0.42, 0.62, 0.70], [0.05, 0.09, 0.05], [0,0,Math.PI/2]);
+    add('Heater blower fan', 'cool', 'plast', 'cyl', [0.36, 0.62, 0.70], [0.09, 0.06, 0.09], [0,0,Math.PI/2]);
+    add('Heater water valve', 'cool', 'brass', 'cyl', [0.20, 0.70, 0.76], [0.020, 0.05, 0.020]);
+    add('Heater control cable', 'cool', 'steel', 'cyl', [0.14, 0.74, 0.72], [0.005, 0.24, 0.005], [0,0.6,0]);
+    add('Heater duct · demist RH', 'cool', 'plast', 'cyl', [0.30, 0.80, 0.74], [0.030, 0.14, 0.030], [0.4,0,0]);
+    add('Heater duct · demist LH', 'cool', 'plast', 'cyl', [-0.10, 0.80, 0.74], [0.030, 0.14, 0.030], [0.4,0,0]);
+    add('Demister vent · RH', 'int', 'plast', 'box', [0.30, 0.872, 0.70], [0.14, 0.012, 0.03]);
+    add('Demister vent · LH', 'int', 'plast', 'box', [-0.10, 0.872, 0.70], [0.14, 0.012, 0.03]);
+  });
+}
+
+/* ==========================================================================
+   10 · FUEL & EXHAUST
+   ========================================================================== */
+function buildFuel(){
+  grp('Fuel system', ()=>{
+    add('Fuel tank', 'fuel', 'steel', 'box', [0.38, 0.44, -1.22], [0.24, 0.36, 0.44]);
+    add('Fuel tank baffle', 'fuel', 'steel', 'box', [0.38, 0.44, -1.22], [0.22, 0.30, 0.010]);
+    add('Fuel tank sender unit', 'fuel', 'brass', 'cyl', [0.38, 0.615, -1.22], [0.056, 0.03, 0.056]);
+    add('Sender float arm', 'fuel', 'steel', 'cyl', [0.34, 0.52, -1.22], [0.005, 0.16, 0.005], [0,0,0.8]);
+    add('Sender float', 'fuel', 'brass', 'sph', [0.28, 0.46, -1.22], [0.040,0.030,0.040]);
+    add('Fuel filler neck', 'fuel', 'steel', 'cyl', [0.46, 0.58, -1.16], [0.048, 0.16, 0.048], [0,0,-0.9]);
+    add('Fuel filler cap', 'fuel', 'chrome', 'cyl', [0.545, 0.615, -1.16], [0.062, 0.028, 0.062], [0,0,Math.PI/2]);
+    add('Filler neck hose', 'fuel', 'rubber', 'cyl', [0.50, 0.60, -1.16], [0.052, 0.06, 0.052], [0,0,-0.9]);
+    add('Tank strap · upper', 'fuel', 'steel', 'box', [0.38, 0.62, -1.22], [0.25, 0.02, 0.03]);
+    add('Tank strap · lower', 'fuel', 'steel', 'box', [0.38, 0.26, -1.22], [0.25, 0.02, 0.03]);
+    add('Tank mounting bolt · 1', 'fast', 'steel', 'hex', [0.26, 0.255, -1.22], [0.022,0.024,0.022]);
+    add('Tank mounting bolt · 2', 'fast', 'steel', 'hex', [0.50, 0.255, -1.22], [0.022,0.024,0.022]);
+    add('SU electric fuel pump', 'fuel', 'steel', 'cyl', [0.20, 0.30, -1.34], [0.052, 0.13, 0.052], [0,0,Math.PI/2]);
+    add('Fuel pump diaphragm', 'fuel', 'rubber', 'disc', [0.26, 0.30, -1.34], [0.050,0.005,0.050], [0,0,Math.PI/2]);
+    add('Fuel pump points', 'elec', 'steel', 'box', [0.15, 0.30, -1.34], [0.02, 0.02, 0.02]);
+    add('Fuel filter', 'fuel', 'glass', 'cyl', [0.24, 0.28, 0.60], [0.026, 0.06, 0.026], [0,0,Math.PI/2]);
+    pathRun('Fuel pipe · tank to pump', 'fuel', 'copper', 'cyl', [[0.34,0.28,-1.28],[0.24,0.26,-1.32]], 0.006, 0.06);
+    pathRun('Fuel pipe · pump to carburettors', 'fuel', 'copper', 'cyl',
+      [[0.18,0.28,-1.30],[0.30,0.24,-1.00],[0.30,0.235,-0.20],[0.28,0.245,0.60],[0.22,0.50,0.86],[0.12,0.76,0.90],[0.02,0.775,EZ-0.34]], 0.006, 0.12);
+    add('Fuel pipe banjo union · 1', 'fast', 'brass', 'hex', [-0.09, 0.775, EZ - 0.315], [0.014,0.016,0.014]);
+    add('Fuel pipe banjo union · 2', 'fast', 'brass', 'hex', [0.11, 0.775, EZ - 0.315], [0.014,0.016,0.014]);
+    for(let i=0;i<7;i++) add('Fuel pipe clip · ' + (i+1), 'fast', 'steel', 'box', [0.30, 0.238, -0.90 + i*0.26], [0.018, 0.010, 0.008]);
+  });
+  grp('Exhaust system', ()=>{
+    pathRun('Exhaust downpipe', 'fuel', 'steel', 'cyl',
+      [[0.02,0.720,EZ-0.20],[0.10,0.55,0.94],[0.16,0.34,0.86],[0.20,0.255,0.70]], 0.042, 0.10);
+    pathRun('Exhaust intermediate pipe', 'fuel', 'steel', 'cyl',
+      [[0.20,0.255,0.70],[0.24,0.225,0.10],[0.26,0.225,-0.60]], 0.040, 0.13);
+    add('Exhaust silencer', 'fuel', 'steel', 'cyl', [0.30, 0.235, -0.92], [0.115, 0.44, 0.115], [Math.PI/2,0,0]);
+    add('Silencer end cap · front', 'fuel', 'steel', 'disc', [0.30, 0.235, -0.70], [0.115,0.012,0.115], [Math.PI/2,0,0]);
+    add('Silencer end cap · rear', 'fuel', 'steel', 'disc', [0.30, 0.235, -1.14], [0.115,0.012,0.115], [Math.PI/2,0,0]);
+    for(let i=0;i<3;i++) add('Silencer baffle · ' + (i+1), 'fuel', 'steel', 'disc', [0.30, 0.235, -0.80 - i*0.11], [0.105,0.008,0.105], [Math.PI/2,0,0]);
+    add('Silencer perforated tube', 'fuel', 'steel', 'cyl', [0.30, 0.235, -0.92], [0.045, 0.42, 0.045], [Math.PI/2,0,0]);
+    pathRun('Tailpipe', 'fuel', 'steel', 'cyl', [[0.30,0.235,-1.15],[0.34,0.245,-1.45],[0.36,0.250,-1.56]], 0.038, 0.11);
+    add('Tailpipe trim', 'fuel', 'chrome', 'cyl', [0.36, 0.250, -1.57], [0.048, 0.05, 0.048], [Math.PI/2,0,0]);
+    add('Manifold to downpipe clamp', 'fast', 'steel', 'tor', [0.03, 0.700, EZ - 0.215], [0.050,0.050,0.012], [0.6,0,0]);
+    for(let i=0;i<3;i++) add('Exhaust clamp · ' + (i+1), 'fast', 'steel', 'tor', [[0.20,0.255,0.70],[0.30,0.235,-0.68],[0.31,0.240,-1.17]][i], [0.048,0.048,0.010], [Math.PI/2,0,0]);
+    for(let i=0;i<4;i++){
+      const p = [[0.22,0.28,0.42],[0.26,0.26,-0.34],[0.32,0.28,-0.70],[0.34,0.29,-1.30]][i];
+      add('Exhaust mounting rubber · ' + (i+1), 'fuel', 'rubber', 'box', p, [0.02, 0.07, 0.03]);
+      add('Exhaust mounting bracket · ' + (i+1), 'fuel', 'steel', 'box', [p[0], p[1]+0.05, p[2]], [0.05, 0.02, 0.03]);
+    }
+    add('Exhaust manifold gasket', 'fuel', 'copper', 'box', [0.02, 0.752, EZ - 0.118], [0.30, 0.05, 0.004]);
+  });
+}
+
+/* ==========================================================================
+   11 · ELECTRICAL & 12 · LIGHTING
+   ========================================================================== */
+function buildElec(){
+  grp('Wiring loom', ()=>{
+    pathRun('Main harness · engine bay', 'elec', 'plast', 'cyl',
+      [[0.30,0.72,0.80],[0.10,0.86,0.86],[-0.20,0.82,0.92],[-0.34,0.72,1.06],[-0.42,0.66,1.24]], 0.014, 0.09);
+    pathRun('Main harness · scuttle', 'elec', 'plast', 'cyl',
+      [[0.44,0.70,0.78],[0.10,0.845,0.755],[-0.42,0.78,0.76]], 0.016, 0.09);
+    pathRun('Main harness · RH sill', 'elec', 'plast', 'cyl',
+      [[0.44,0.70,0.78],[0.60,0.40,0.62],[0.61,0.30,-0.40],[0.58,0.30,-1.02],[0.40,0.34,-1.36]], 0.014, 0.10);
+    pathRun('Main harness · LH sill', 'elec', 'plast', 'cyl',
+      [[-0.42,0.72,0.76],[-0.60,0.40,0.60],[-0.61,0.30,-0.40],[-0.56,0.32,-1.06],[-0.42,0.34,-1.30]], 0.014, 0.10);
+    pathRun('Harness · instrument branch', 'elec', 'plast', 'cyl',
+      [[0.10,0.845,0.755],[0.05,0.845,0.72],[0.0,0.83,0.70]], 0.012, 0.06);
+    pathRun('Harness · headlamp branch RH', 'elec', 'plast', 'cyl', [[-0.20,0.82,0.92],[0.30,0.78,1.20],[0.455,0.72,1.32]], 0.010, 0.09);
+    pathRun('Harness · headlamp branch LH', 'elec', 'plast', 'cyl', [[-0.20,0.82,0.92],[-0.34,0.78,1.20],[-0.455,0.72,1.32]], 0.010, 0.09);
+    pathRun('Harness · rear lamp branch RH', 'elec', 'plast', 'cyl', [[0.40,0.34,-1.36],[0.50,0.50,-1.44],[0.50,0.62,-1.46]], 0.010, 0.07);
+    pathRun('Harness · rear lamp branch LH', 'elec', 'plast', 'cyl', [[-0.42,0.34,-1.30],[-0.50,0.50,-1.44],[-0.50,0.62,-1.46]], 0.010, 0.07);
+    for(let i=0;i<18;i++) add('Bullet connector · ' + (i+1), 'elec', 'brass', 'cyl',
+      [-0.42 + (i%6)*0.17, 0.80 + Math.floor(i/6)*0.03, 0.79 + (i%3)*0.02], [0.007, 0.024, 0.007], [0,0,Math.PI/2]);
+    for(let i=0;i<10;i++) add('Snap connector sleeve · ' + (i+1), 'elec', 'plast', 'cyl',
+      [-0.30 + i*0.07, 0.775, 0.80], [0.010, 0.030, 0.010], [0,0,Math.PI/2]);
+    for(let i=0;i<9;i++) add('Loom grommet · ' + (i+1), 'elec', 'rubber', 'tor',
+      [[0.44,0.70,0.775],[-0.42,0.72,0.755],[0.60,0.36,0.60],[-0.60,0.36,0.60],[0.42,0.34,-1.34],[-0.42,0.34,-1.30],[0.10,0.845,0.755],[0.30,0.72,0.80],[-0.42,0.66,1.24]][i],
+      [0.024,0.024,0.008], [Math.PI/2,0,0]);
+    for(let i=0;i<12;i++) add('Harness clip · ' + (i+1), 'fast', 'steel', 'box',
+      [(i%2?1:-1)*0.60, 0.34, 0.50 - Math.floor(i/2)*0.30], [0.010, 0.018, 0.008]);
+  });
+  grp('Battery & control', ()=>{
+    add('Battery', 'elec', 'plast', 'box', [-0.40, 0.35, -1.22], [0.19, 0.20, 0.28]);
+    add('Battery lid', 'elec', 'plast', 'box', [-0.40, 0.452, -1.22], [0.19, 0.012, 0.28]);
+    for(let i=0;i<6;i++) add('Battery cell cap · ' + (i+1), 'elec', 'plast', 'cyl', [-0.44 + (i%2)*0.08, 0.462, -1.32 + Math.floor(i/2)*0.10], [0.026,0.010,0.026]);
+    add('Battery terminal · positive', 'elec', 'copper', 'cyl', [-0.46, 0.472, -1.32], [0.020, 0.024, 0.020]);
+    add('Battery terminal · negative', 'elec', 'copper', 'cyl', [-0.34, 0.472, -1.32], [0.020, 0.024, 0.020]);
+    add('Battery clamp', 'elec', 'steel', 'box', [-0.40, 0.462, -1.22], [0.22, 0.014, 0.020]);
+    pathRun('Battery cable · positive', 'elec', 'plast', 'cyl',
+      [[-0.46,0.472,-1.32],[-0.30,0.26,-1.20],[0.10,0.235,-0.40],[0.24,0.24,0.40],[0.30,0.42,0.80],[0.30,0.44,EZ-0.14]], 0.012, 0.13);
+    add('Earth strap', 'elec', 'copper', 'box', [-0.36, 0.25, -1.28], [0.05, 0.006, 0.05]);
+    add('Engine earth strap', 'elec', 'copper', 'box', [0.36, 0.44, 0.94], [0.10, 0.006, 0.03]);
+    add('Fuse box', 'elec', 'plast', 'box', [0.44, 0.78, 0.80], [0.06, 0.03, 0.09]);
+    for(let i=0;i<4;i++) add('Fuse · ' + (i+1), 'elec', 'glass', 'cyl', [0.44, 0.788, 0.775 + i*0.018], [0.008, 0.030, 0.008], [0,0,Math.PI/2]);
+    add('Control box / voltage regulator', 'elec', 'steel', 'box', [0.38, 0.80, 0.78], [0.09, 0.05, 0.07]);
+    add('Flasher unit', 'elec', 'steel', 'cyl', [0.30, 0.79, 0.78], [0.024, 0.045, 0.024]);
+    add('Horn', 'elec', 'steel', 'cyl', [-0.30, 0.50, 1.32], [0.085, 0.045, 0.085], [Math.PI/2,0,0]);
+    add('Horn bracket', 'elec', 'steel', 'box', [-0.30, 0.56, 1.32], [0.02, 0.06, 0.02]);
+    add('Ignition switch', 'elec', 'steel', 'cyl', [0.06, 0.845, 0.735], [0.020, 0.05, 0.020], [Math.PI/2,0,0]);
+    add('Windscreen wiper motor', 'elec', 'steel', 'cyl', [-0.34, 0.79, 0.80], [0.062, 0.10, 0.062], [0,0,Math.PI/2]);
+    add('Wiper motor gearbox', 'elec', 'alloy', 'box', [-0.28, 0.79, 0.80], [0.05, 0.07, 0.07]);
+    pathRun('Wiper drive rack tube', 'elec', 'steel', 'cyl', [[-0.28,0.80,0.80],[-0.10,0.88,0.78],[0.20,0.88,0.78]], 0.010, 0.09);
+    addM('Wiper wheelbox', 'elec', 'alloy', 'box', [0.20, 0.885, 0.775], [0.04, 0.04, 0.04]);
+    addM('Wiper spindle', 'elec', 'steel', 'cyl', [0.20, 0.915, 0.775], [0.010, 0.05, 0.010]);
+    addM('Wiper arm', 'elec', 'steel', 'box', [0.20, 0.945, 0.70], [0.012, 0.008, 0.22], [0.2,0.3,0]);
+    addM('Wiper blade', 'elec', 'rubber', 'box', [0.22, 0.975, 0.60], [0.010, 0.010, 0.20], [0.2,0.3,0]);
+    for(let i=0;i<6;i++) add('Toggle switch · ' + (i+1), 'elec', 'plast', 'cyl', [-0.14 + i*0.055, 0.845, 0.722], [0.012, 0.03, 0.012], [Math.PI/2,0,0]);
+  });
+  grp('Lighting', ()=>{
+    addM('Headlamp bowl', 'lamps', 'steel', 'cyl', [0.400, 0.772, 1.442], [0.200, 0.10, 0.200], [Math.PI/2,0,0]);
+    addM('Headlamp reflector', 'lamps', 'chrome', 'cone', [0.400, 0.772, 1.492], [0.184, 0.075, 0.184], [-Math.PI/2,0,0]);
+    addM('Headlamp lens', 'lamps', 'glass', 'cyl', [0.400, 0.772, 1.504], [0.192, 0.012, 0.192], [Math.PI/2,0,0]);
+    addM('Headlamp bulb', 'lamps', 'glass', 'sph', [0.400, 0.772, 1.486], [0.040,0.040,0.040]);
+    addM('Headlamp bulb holder', 'lamps', 'plast', 'cyl', [0.400, 0.772, 1.424], [0.036, 0.03, 0.036], [Math.PI/2,0,0]);
+    addM('Headlamp rim', 'lamps', 'chrome', 'tor', [0.400, 0.772, 1.508], [0.212, 0.212, 0.020], [Math.PI/2,0,0]);
+    addM('Headlamp rim screw', 'fast', 'steel', 'hex', [0.400, 0.668, 1.510], [0.012,0.012,0.012], [Math.PI/2,0,0]);
+    for(let i=0;i<3;i++){
+      const a = i/3*Math.PI*2 + 0.5;
+      addM('Headlamp adjuster screw · ' + (i+1), 'lamps', 'steel', 'cyl',
+        [0.400 + Math.cos(a)*0.15, 0.772 + Math.sin(a)*0.15, 1.406], [0.008, 0.05, 0.008], [Math.PI/2,0,0]);
+    }
+    addM('Sidelamp body', 'lamps', 'chrome', 'cyl', [0.522, 0.620, 1.472], [0.058, 0.06, 0.058], [Math.PI/2,0,-0.20]);
+    addM('Sidelamp lens', 'lamps', 'glass', 'sph', [0.526, 0.620, 1.496], [0.058,0.048,0.058]);
+    addM('Sidelamp bulb', 'lamps', 'glass', 'cyl', [0.522, 0.620, 1.474], [0.014, 0.028, 0.014], [Math.PI/2,0,0]);
+    addM('Indicator lamp body · front', 'lamps', 'chrome', 'cyl', [0.518, 0.512, 1.474], [0.052, 0.06, 0.052], [Math.PI/2,0,-0.20]);
+    addM('Indicator lens · front', 'lamps', 'glass', 'sph', [0.522, 0.512, 1.498], [0.052,0.044,0.052]);
+    addM('Indicator bulb · front', 'lamps', 'glass', 'cyl', [0.518, 0.512, 1.476], [0.014, 0.028, 0.014], [Math.PI/2,0,0]);
+    addM('Rear lamp body', 'lamps', 'chrome', 'box', [0.478, 0.640, -1.470], [0.078, 0.250, 0.055]);
+    addM('Rear lamp lens · upper', 'lamps', 'glass', 'sph', [0.478, 0.702, -1.498], [0.072,0.104,0.048]);
+    addM('Rear lamp lens · lower', 'lamps', 'glass', 'sph', [0.478, 0.582, -1.498], [0.072,0.094,0.048]);
+    addM('Stop / tail bulb', 'lamps', 'glass', 'cyl', [0.478, 0.702, -1.462], [0.016, 0.034, 0.016], [Math.PI/2,0,0]);
+    addM('Indicator bulb · rear', 'lamps', 'glass', 'cyl', [0.478, 0.582, -1.462], [0.016, 0.034, 0.016], [Math.PI/2,0,0]);
+    addM('Rear lamp bulb holder', 'lamps', 'plast', 'box', [0.478, 0.640, -1.444], [0.05, 0.14, 0.02]);
+    addM('Rear lamp gasket', 'lamps', 'rubber', 'box', [0.478, 0.640, -1.460], [0.084, 0.262, 0.006]);
+    add('Number plate lamp · RH', 'lamps', 'chrome', 'box', [0.10, 0.402, -1.492], [0.05, 0.03, 0.03]);
+    add('Number plate lamp · LH', 'lamps', 'chrome', 'box', [-0.10, 0.402, -1.492], [0.05, 0.03, 0.03]);
+    add('Number plate lamp bulb · RH', 'lamps', 'glass', 'cyl', [0.10, 0.402, -1.484], [0.010, 0.022, 0.010], [0,0,Math.PI/2]);
+    add('Number plate lamp bulb · LH', 'lamps', 'glass', 'cyl', [-0.10, 0.402, -1.484], [0.010, 0.022, 0.010], [0,0,Math.PI/2]);
+    add('Interior lamp', 'lamps', 'plast', 'box', [0, 1.315, -0.30], [0.09, 0.03, 0.05]);
+    add('Interior lamp bulb', 'lamps', 'glass', 'cyl', [0, 1.302, -0.30], [0.010, 0.030, 0.010], [0,0,Math.PI/2]);
+    addM('Reflector · rear', 'lamps', 'plast', 'cyl', [0.330, 0.470, -1.476], [0.040, 0.012, 0.040], [Math.PI/2,0,0]);
+  });
+}
+
+/* ==========================================================================
+   13 · INTERIOR
+   ========================================================================== */
+function buildInt(){
+  [[0.33, 'RH'], [-0.33, 'LH']].forEach(([x, side])=>{
+    grp('Front seat · ' + side, ()=>{
+      add('Seat cushion · ' + side, 'int', 'fabric', 'box', [x, 0.395, 0.20], [0.40, 0.10, 0.42]);
+      add('Seat squab · ' + side, 'int', 'fabric', 'box', [x, 0.640, -0.02], [0.40, 0.42, 0.10], [-0.16,0,0]);
+      add('Seat cushion foam · ' + side, 'int', 'felt', 'box', [x, 0.385, 0.20], [0.36, 0.07, 0.38]);
+      add('Seat squab foam · ' + side, 'int', 'felt', 'box', [x, 0.640, -0.03], [0.36, 0.38, 0.07], [-0.16,0,0]);
+      add('Seat frame · base · ' + side, 'int', 'steel', 'box', [x, 0.335, 0.20], [0.40, 0.02, 0.42]);
+      add('Seat frame · back · ' + side, 'int', 'steel', 'box', [x, 0.640, 0.03], [0.40, 0.42, 0.02], [-0.16,0,0]);
+      for(let i=0;i<8;i++)
+        add('Seat cushion spring · ' + (i+1) + ' · ' + side, 'int', 'steel', 'cyl',
+          [x - 0.15 + (i%4)*0.10, 0.360, 0.06 + Math.floor(i/4)*0.24], [0.05, 0.05, 0.05]);
+      for(let i=0;i<6;i++)
+        add('Seat squab spring · ' + (i+1) + ' · ' + side, 'int', 'steel', 'cyl',
+          [x - 0.12 + (i%3)*0.12, 0.52 + Math.floor(i/3)*0.22, 0.01], [0.05, 0.05, 0.05], [Math.PI/2,0,0]);
+      add('Seat runner · inner · ' + side, 'int', 'steel', 'box', [x - 0.13, 0.290, 0.20], [0.03, 0.03, 0.40]);
+      add('Seat runner · outer · ' + side, 'int', 'steel', 'box', [x + 0.13, 0.290, 0.20], [0.03, 0.03, 0.40]);
+      add('Runner locking catch · ' + side, 'int', 'steel', 'box', [x - 0.13, 0.290, 0.36], [0.02, 0.03, 0.05]);
+      for(let i=0;i<4;i++)
+        add('Seat mounting bolt · ' + (i+1) + ' · ' + side, 'fast', 'steel', 'hex',
+          [x + (i%2?0.13:-0.13), 0.262, 0.02 + Math.floor(i/2)*0.36], [0.022,0.022,0.022]);
+      add('Seat tilt hinge · ' + side, 'int', 'steel', 'box', [x + 0.19, 0.44, 0.02], [0.02, 0.05, 0.05]);
+      add('Seat piping · ' + side, 'int', 'plast', 'box', [x, 0.448, 0.20], [0.40, 0.008, 0.42]);
+      add('Seat belt webbing · ' + side, 'int', 'fabric', 'box', [x + 0.16, 0.55, 0.06], [0.010, 0.55, 0.048], [0.25,0,0.35]);
+      add('Seat belt buckle · ' + side, 'int', 'steel', 'box', [x - 0.16, 0.40, 0.16], [0.03, 0.02, 0.07]);
+      add('Seat belt stalk · ' + side, 'int', 'fabric', 'box', [x - 0.16, 0.35, 0.18], [0.010, 0.10, 0.040]);
+      add('Seat belt upper anchorage · ' + side, 'int', 'steel', 'box', [x + 0.26, 0.82, -0.16], [0.03, 0.04, 0.02]);
+      add('Seat belt lower anchorage · ' + side, 'int', 'steel', 'box', [x + 0.24, 0.26, 0.10], [0.03, 0.02, 0.04]);
+      add('Seat belt anchor bolt · ' + side, 'fast', 'steel', 'hex', [x + 0.26, 0.82, -0.15], [0.024,0.024,0.024], [Math.PI/2,0,0]);
+    });
+  });
+  grp('Rear seat', ()=>{
+    add('Rear seat cushion', 'int', 'fabric', 'box', [0, 0.315, -0.60], [1.02, 0.14, 0.40]);
+    add('Rear seat squab', 'int', 'fabric', 'box', [0, 0.560, -0.80], [1.02, 0.38, 0.10], [0.18,0,0]);
+    add('Rear seat cushion frame', 'int', 'steel', 'box', [0, 0.250, -0.60], [1.02, 0.02, 0.40]);
+    add('Rear seat squab frame', 'int', 'steel', 'box', [0, 0.560, -0.84], [1.02, 0.38, 0.02], [0.18,0,0]);
+    for(let i=0;i<10;i++)
+      add('Rear seat spring · ' + (i+1), 'int', 'steel', 'cyl', [-0.42 + (i%5)*0.21, 0.278, -0.68 + Math.floor(i/5)*0.16], [0.05,0.05,0.05]);
+    add('Rear parcel shelf', 'int', 'paintW', 'box', [0, 0.885, -1.06], [1.04, 0.014, 0.30]);
+  });
+  grp('Facia & controls', ()=>{
+    add('Facia shelf', 'int', 'steel', 'box', [0, 0.800, 0.700], [1.24, 0.014, 0.19], [0.12,0,0]);
+    add('Facia shelf lip', 'int', 'steel', 'box', [0, 0.828, 0.615], [1.24, 0.055, 0.014]);
+    add('Facia rail', 'int', 'steel', 'box', [0, 0.878, 0.735], [1.26, 0.05, 0.05]);
+    add('Instrument binnacle', 'int', 'plast', 'cyl', [0, 0.855, 0.700], [0.30, 0.10, 0.30], [-1.30,0,0]);
+    add('Speedometer', 'int', 'glass', 'cyl', [0, 0.862, 0.678], [0.115, 0.02, 0.115], [-1.30,0,0]);
+    add('Speedometer bezel', 'int', 'chrome', 'tor', [0, 0.862, 0.676], [0.120,0.120,0.010], [-1.30,0,0]);
+    add('Speedometer needle', 'int', 'steel', 'box', [0, 0.862, 0.672], [0.006, 0.09, 0.004], [-1.30,0,0.6]);
+    add('Tachometer', 'int', 'glass', 'cyl', [-0.145, 0.858, 0.690], [0.070, 0.02, 0.070], [-1.30,0,0]);
+    add('Tachometer bezel', 'int', 'chrome', 'tor', [-0.145, 0.858, 0.688], [0.074,0.074,0.008], [-1.30,0,0]);
+    add('Oil pressure & water temperature gauge', 'int', 'glass', 'cyl', [0.145, 0.858, 0.690], [0.070, 0.02, 0.070], [-1.30,0,0]);
+    add('Gauge bezel', 'int', 'chrome', 'tor', [0.145, 0.858, 0.688], [0.074,0.074,0.008], [-1.30,0,0]);
+    add('Fuel gauge', 'int', 'glass', 'cyl', [0.075, 0.905, 0.700], [0.040, 0.016, 0.040], [-1.30,0,0]);
+    for(let i=0;i<4;i++) add('Warning lamp · ' + (i+1), 'int', 'glass', 'cyl', [-0.06 + i*0.04, 0.905, 0.700], [0.014, 0.014, 0.014], [-1.30,0,0]);
+    add('Binnacle mounting bracket', 'int', 'steel', 'box', [0, 0.790, 0.730], [0.20, 0.05, 0.02]);
+    add('Speedometer cable', 'int', 'plast', 'cyl', [-0.10, 0.62, 0.74], [0.008, 0.60, 0.008], [1.1,0.6,0]);
+    add('Choke control knob', 'int', 'plast', 'cyl', [0.28, 0.818, 0.665], [0.020, 0.05, 0.020], [-1.30,0,0]);
+    add('Heater control knob', 'int', 'plast', 'cyl', [-0.28, 0.818, 0.665], [0.020, 0.05, 0.020], [-1.30,0,0]);
+    add('Glovebox · RH', 'int', 'plast', 'box', [0.42, 0.780, 0.720], [0.34, 0.09, 0.16]);
+    add('Glovebox · LH', 'int', 'plast', 'box', [-0.42, 0.780, 0.720], [0.34, 0.09, 0.16]);
+    add('Ashtray', 'int', 'chrome', 'box', [0, 0.760, 0.640], [0.10, 0.03, 0.05]);
+    add('Rear-view mirror', 'int', 'chrome', 'box', [0, 1.245, 0.395], [0.20, 0.05, 0.02], [0.10,0,0]);
+    add('Mirror stem', 'int', 'chrome', 'cyl', [0, 1.290, 0.375], [0.010, 0.07, 0.010], [0.5,0,0]);
+    addM('Sun visor', 'int', 'paintW', 'box', [0.28, 1.238, 0.436], [0.32, 0.014, 0.13], [0.62,0,0]);
+    addM('Sun visor pivot', 'int', 'steel', 'cyl', [0.44, 1.262, 0.452], [0.008, 0.05, 0.008], [0,0,Math.PI/2]);
+    add('Grab handle', 'int', 'plast', 'box', [-0.42, 1.190, 0.520], [0.16, 0.02, 0.03]);
+  });
+  grp('Pedals & column controls', ()=>{
+    add('Accelerator pedal', 'int', 'steel', 'box', [0.30, 0.300, 0.760], [0.05, 0.14, 0.02], [0.45,0,0]);
+    add('Brake pedal', 'int', 'steel', 'box', [0.19, 0.330, 0.780], [0.06, 0.20, 0.02], [0.30,0,0]);
+    add('Clutch pedal', 'int', 'steel', 'box', [0.07, 0.330, 0.780], [0.06, 0.20, 0.02], [0.30,0,0]);
+    add('Accelerator pedal rubber', 'int', 'rubber', 'box', [0.30, 0.298, 0.752], [0.045, 0.13, 0.008], [0.45,0,0]);
+    add('Brake pedal rubber', 'int', 'rubber', 'box', [0.19, 0.250, 0.762], [0.055, 0.06, 0.008], [0.30,0,0]);
+    add('Clutch pedal rubber', 'int', 'rubber', 'box', [0.07, 0.250, 0.762], [0.055, 0.06, 0.008], [0.30,0,0]);
+    add('Pedal box', 'int', 'steel', 'box', [0.13, 0.430, 0.800], [0.24, 0.10, 0.06]);
+    add('Pedal pivot shaft', 'int', 'steel', 'cyl', [0.13, 0.430, 0.800], [0.012, 0.26, 0.012], [0,0,Math.PI/2]);
+    add('Brake pedal return spring', 'int', 'steel', 'cyl', [0.19, 0.390, 0.812], [0.014, 0.05, 0.014]);
+    add('Clutch pedal return spring', 'int', 'steel', 'cyl', [0.07, 0.390, 0.812], [0.014, 0.05, 0.014]);
+    add('Accelerator cable abutment', 'int', 'steel', 'box', [0.30, 0.400, 0.790], [0.03, 0.02, 0.02]);
+    add('Dip switch', 'int', 'plast', 'box', [-0.34, 0.245, 0.760], [0.04, 0.03, 0.04]);
+  });
+  grp('Trim & soundproofing', ()=>{
+    for(let i=0;i<8;i++)
+      add('Carpet section · ' + (i+1), 'int', 'fabric', 'box', [-0.45 + (i%4)*0.30, 0.216, 0.62 - Math.floor(i/4)*0.44], [0.30, 0.008, 0.44]);
+    for(let i=0;i<8;i++)
+      add('Sound deadening pad · ' + (i+1), 'int', 'felt', 'box', [-0.45 + (i%4)*0.30, 0.210, 0.62 - Math.floor(i/4)*0.44], [0.29, 0.004, 0.43]);
+    for(let i=0;i<6;i++)
+      add('Headlining panel · ' + (i+1), 'int', 'paintW', 'box', [-0.36 + (i%3)*0.36, 1.278, 0.06 - Math.floor(i/3)*0.52], [0.36, 0.006, 0.52]);
+    addM('Door trim panel', 'int', 'fabric', 'box', [hw(0.2)-0.055, 0.58, 0.155], [0.010, 0.56, 0.84]);
+    addM('Door pocket', 'int', 'fabric', 'box', [hw(0.2)-0.085, 0.42, 0.155], [0.05, 0.20, 0.70]);
+    addM('Rear side trim panel', 'int', 'fabric', 'box', [hw(-0.75)-0.05, 0.60, -0.75], [0.010, 0.50, 0.50]);
+    addM('Kick panel', 'int', 'fabric', 'box', [hw(0.62)-0.05, 0.50, 0.66], [0.010, 0.36, 0.20]);
+    add('Boot board', 'int', 'felt', 'box', [0, 0.262, -1.16], [1.02, 0.008, 0.52]);
+    add('Tunnel carpet', 'int', 'fabric', 'box', [0, 0.406, 0.30], [0.26, 0.008, 0.90], [0,0,0]);
+    add('Handbrake gaiter', 'int', 'fabric', 'cone', [0.10, 0.315, 0.14], [0.09, 0.08, 0.09]);
+    addM('Sill finisher', 'int', 'plast', 'box', [hw(0.1)-0.06, 0.240, 0.10], [0.05, 0.010, 0.90]);
+  });
+}
+
+/* ==========================================================================
+   14 · GLASS & EXTERNAL TRIM
+   ========================================================================== */
+function buildGlass(){
+  grp('Glazing', ()=>{
+    add('Windscreen', 'glass', 'glass', 'box', [0, 1.122, 0.485], [1.128, 0.502, 0.008], [-0.667,0,0]);
+    add('Windscreen rubber · upper', 'glass', 'rubber', 'box', [0, 1.312, 0.336], [1.152, 0.036, 0.026], [-0.667,0,0]);
+    add('Windscreen rubber · lower', 'glass', 'rubber', 'box', [0, 0.934, 0.634], [1.152, 0.036, 0.026], [-0.667,0,0]);
+    addM('Windscreen rubber · side', 'glass', 'rubber', 'box', [0.560, 1.122, 0.482], [0.030, 0.512, 0.026], [-0.667,0,0.228]);
+    add('Windscreen finisher · upper', 'glass', 'chrome', 'box', [0, 1.310, 0.334], [1.09, 0.020, 0.024], [-0.667,0,0]);
+    add('Windscreen finisher · lower', 'glass', 'chrome', 'box', [0, 0.936, 0.638], [1.15, 0.020, 0.024], [-0.667,0,0]);
+    addM('Windscreen finisher · side', 'glass', 'chrome', 'box', [0.548, 1.122, 0.478], [0.014, 0.500, 0.016], [-0.667,0,0.228]);
+    add('Rear screen', 'glass', 'glass', 'box', [0, 1.120, -0.966], [1.000, 0.418, 0.008], [0.562,0,0]);
+    add('Rear screen rubber · upper', 'glass', 'rubber', 'box', [0, 1.288, -0.864], [1.022, 0.034, 0.024], [0.562,0,0]);
+    add('Rear screen rubber · lower', 'glass', 'rubber', 'box', [0, 0.954, -1.068], [1.022, 0.034, 0.024], [0.562,0,0]);
+    addM('Rear screen rubber · side', 'glass', 'rubber', 'box', [0.502, 1.120, -0.968], [0.028, 0.430, 0.024], [0.562,0,0.20]);
+    add('Rear screen finisher · upper', 'glass', 'chrome', 'box', [0, 1.290, -0.862], [0.98, 0.018, 0.020], [0.562,0,0]);
+    add('Rear screen finisher · lower', 'glass', 'chrome', 'box', [0, 0.952, -1.070], [1.00, 0.018, 0.020], [0.562,0,0]);
+    addM('Door glass · front pane', 'glass', 'glass', 'box', [hwc(0.350, 1.095) - 0.022, 1.095, 0.350], [0.006, 0.372, 0.400], [0,0,0.228]);
+    addM('Door glass · rear pane', 'glass', 'glass', 'box', [hwc(-0.070, 1.095) - 0.030, 1.095, -0.070], [0.006, 0.372, 0.400], [0,0,0.228]);
+    addM('Sliding glass channel · upper', 'glass', 'plast', 'box', [hwc(0.140, 1.282) - 0.024, 1.282, 0.140], [0.014, 0.016, 0.850], [0,0,0.228]);
+    addM('Sliding glass channel · lower', 'glass', 'plast', 'box', [hwc(0.140, 0.912) - 0.024, 0.912, 0.140], [0.014, 0.016, 0.850], [0,0,0.228]);
+    addM('Sliding window catch', 'glass', 'chrome', 'box', [hwc(0.140, 0.955) - 0.040, 0.955, 0.140], [0.018, 0.022, 0.070]);
+    addM('Quarter light glass', 'glass', 'glass', 'box', [hwc(-0.470, 1.110) - 0.020, 1.110, -0.470], [0.006, 0.330, 0.300], [0,0,0.228]);
+    addM('Quarter light rubber · fore', 'glass', 'rubber', 'box', [hwc(-0.470, 1.110) - 0.016, 1.110, -0.324], [0.014, 0.340, 0.026], [0,0,0.228]);
+    addM('Quarter light rubber · aft', 'glass', 'rubber', 'box', [hwc(-0.470, 1.110) - 0.016, 1.110, -0.616], [0.014, 0.340, 0.026], [0,0,0.228]);
+    addM('Quarter light rubber · upper', 'glass', 'rubber', 'box', [hwc(-0.470, 1.272) - 0.016, 1.272, -0.470], [0.014, 0.026, 0.316], [0,0,0.228]);
+    addM('Quarter light rubber · lower', 'glass', 'rubber', 'box', [hwc(-0.470, 0.948) - 0.016, 0.948, -0.470], [0.014, 0.026, 0.316], [0,0,0.228]);
+    addM('Quarter light finisher', 'glass', 'chrome', 'box', [hwc(-0.470, 1.284) - 0.012, 1.284, -0.470], [0.010, 0.018, 0.330], [0,0,0.228]);
+    addM('Door glass weatherstrip · outer', 'glass', 'rubber', 'box', [hwc(0.150, 0.905) - 0.020, 0.905, 0.150], [0.012, 0.014, 0.860], [0,0,0.228]);
+    addM('Door glass weatherstrip · inner', 'glass', 'rubber', 'box', [hwc(0.150, 0.905) - 0.046, 0.905, 0.150], [0.012, 0.014, 0.860], [0,0,0.228]);
+    for(let i=0;i<9;i++)
+      addM('Door aperture seal · ' + (i+1), 'glass', 'rubber', 'box',
+        [hw(0.16) - 0.034, 0.300 + i*0.072, i%2 ? 0.630 : -0.292], [0.020, 0.074, 0.020]);
+  });
+  grp('Grille & brightwork', ()=>{
+    add('Grille surround', 'glass', 'chrome', 'tor', [0, 0.648, 1.492], [0.564, 0.336, 0.028], [Math.PI/2,0,0]);
+    add('Grille surround · inner bead', 'glass', 'chrome', 'tor', [0, 0.648, 1.487], [0.512, 0.290, 0.015], [Math.PI/2,0,0]);
+    for(let i=0;i<13;i++){
+      const y = 0.518 + i*0.0222;
+      const half = 0.240 * Math.sqrt(Math.max(0.06, 1 - Math.pow((y - 0.648)/0.158, 2)));
+      add('Grille slat · ' + (i+1), 'glass', 'chrome', 'box', [0, y, 1.486], [half*2, 0.010, 0.013]);
+    }
+    for(let i=0;i<3;i++)
+      add('Grille vertical bar · ' + (i+1), 'glass', 'chrome', 'box', [-0.15 + i*0.15, 0.648, 1.480], [0.011, 0.284, 0.011]);
+    add('Grille backing mesh', 'glass', 'steel', 'box', [0, 0.648, 1.466], [0.48, 0.30, 0.004]);
+    add('Bonnet badge', 'glass', 'chrome', 'box', [0, 0.842, 1.494], [0.140, 0.028, 0.012], [-0.30,0,0]);
+    add('Boot badge', 'glass', 'chrome', 'box', [0, 0.700, -1.486], [0.160, 0.030, 0.012]);
+    addM('Wing badge', 'glass', 'chrome', 'box', [hw(1.24) - 0.006, 0.700, 1.240], [0.008, 0.026, 0.100]);
+    /* bumpers wrap round the corners */
+    for(let i=0;i<9;i++){
+      const x = lerp(-0.60, 0.60, (i + 0.5)/9);
+      const zf = 1.556 - Math.pow(Math.abs(x)/0.62, 2.2)*0.115;
+      add('Front bumper · section ' + (i+1), 'glass', 'chrome', 'box', [x, 0.412, zf], [0.146, 0.072, 0.046], [0, Math.sign(x)*Math.pow(Math.abs(x)/0.62,1.6)*0.46, 0]);
+      const zr = -(1.548 - Math.pow(Math.abs(x)/0.62, 2.2)*0.105);
+      add('Rear bumper · section ' + (i+1), 'glass', 'chrome', 'box', [x, 0.412, zr], [0.146, 0.072, 0.046], [0, -Math.sign(x)*Math.pow(Math.abs(x)/0.62,1.6)*0.44, 0]);
+    }
+    addM('Front over-rider', 'glass', 'chrome', 'box', [0.255, 0.442, 1.560], [0.070, 0.150, 0.052]);
+    addM('Rear over-rider', 'glass', 'chrome', 'box', [0.255, 0.442, -1.552], [0.070, 0.150, 0.052]);
+    addM('Front bumper bracket', 'glass', 'steel', 'box', [0.40, 0.412, 1.500], [0.05, 0.05, 0.07]);
+    addM('Rear bumper bracket', 'glass', 'steel', 'box', [0.40, 0.412, -1.494], [0.05, 0.05, 0.07]);
+    for(let i=0;i<4;i++) addM('Bumper bolt · ' + (i+1), 'fast', 'steel', 'hex', [0.40, 0.412, (i<2?1:-1)*1.482], [0.024,0.026,0.024], [Math.PI/2,0,0]);
+    addM('Sill finisher strip', 'glass', 'chrome', 'box', [hw(0.1) + 0.004, 0.256, 0.10], [0.010, 0.022, 0.94]);
+    addM('Waist trim strip', 'glass', 'chrome', 'box', [hw(0.1) + 0.004, 0.878, 0.10], [0.008, 0.016, 1.14]);
+    addM('Door mirror', 'glass', 'chrome', 'cyl', [hw(0.58) + 0.055, 0.930, 0.585], [0.078, 0.028, 0.078], [0,0,Math.PI/2]);
+    addM('Door mirror stem', 'glass', 'chrome', 'cyl', [hw(0.58) + 0.020, 0.912, 0.585], [0.010, 0.070, 0.010], [0,0,Math.PI/2]);
+    addM('Door handle', 'glass', 'chrome', 'box', [hw(-0.14) + 0.012, 0.828, -0.140], [0.024, 0.032, 0.120]);
+    addM('Door handle escutcheon', 'glass', 'chrome', 'box', [hw(-0.14) + 0.004, 0.828, -0.140], [0.006, 0.048, 0.140]);
+    add('Front number plate', 'glass', 'paintW', 'box', [0, 0.330, 1.508], [0.36, 0.100, 0.008]);
+    add('Rear number plate', 'glass', 'paintW', 'box', [0, 0.318, -1.508], [0.36, 0.100, 0.008]);
+    add('Windscreen washer bottle', 'glass', 'plast', 'cyl', [-0.44, 0.720, 0.860], [0.070, 0.16, 0.070]);
+    add('Washer bottle cap', 'glass', 'plast', 'cyl', [-0.44, 0.805, 0.860], [0.040, 0.02, 0.040]);
+    addM('Washer jet', 'glass', 'chrome', 'cyl', [0.20, 0.908, 0.762], [0.008, 0.02, 0.008]);
+  });
+}
+
+/* ==========================================================================
+   15 · SPOT WELDS & LOOSE HARDWARE
+   ========================================================================== */
+function buildFast(){
+  grp('Loose hardware', ()=>{
+    const spots = [
+      [0.40,0.86,1.44],[-0.40,0.86,1.44],[0.36,0.905,-1.10],[-0.36,0.905,-1.10],
+      [0.62,0.78,0.63],[-0.62,0.78,0.63],[0.62,0.38,0.63],[-0.62,0.38,0.63],
+      [0.30,0.235,1.34],[-0.30,0.235,1.34],[0.30,0.235,-1.30],[-0.30,0.235,-1.30]
+    ];
+    spots.forEach((p,i)=>{
+      add('Body panel setscrew · ' + (i+1), 'fast', 'steel', 'hex', p, [0.018,0.016,0.018]);
+      add('Plain washer · ' + (i+1), 'fast', 'steel', 'disc', [p[0], p[1]-0.010, p[2]], [0.024,0.003,0.024]);
+      add('Spring washer · ' + (i+1), 'fast', 'steel', 'tor', [p[0], p[1]-0.015, p[2]], [0.020,0.020,0.003]);
+    });
+    for(let i=0;i<14;i++)
+      add('Captive nut · ' + (i+1), 'fast', 'steel', 'hex', [-0.60 + i*0.09, 0.196, 0.34], [0.017,0.012,0.017]);
+    for(let i=0;i<10;i++)
+      addM('Trim clip · ' + (i+1), 'fast', 'plast', 'cyl', [hw(0.2)-0.045, 0.32 + (i%2)*0.44, 0.55 - Math.floor(i/2)*0.22], [0.012, 0.018, 0.012], [0,0,Math.PI/2]);
+    for(let i=0;i<8;i++)
+      add('Grommet · floor drain ' + (i+1), 'fast', 'rubber', 'cyl', [-0.42 + (i%4)*0.28, 0.198, 0.50 - Math.floor(i/4)*0.70], [0.020, 0.012, 0.020]);
+  });
+}
+
+/* The power unit sits low in the bay, under the bonnet line. */
+const LOWERED = new Set(['Cylinder block','Crankshaft & rods','Cylinder head','Valve gear drive','Lubrication',
+  'Induction & exhaust','Ignition & charging','Engine mounting','Gearbox casing','Clutch','Gear cluster',
+  'Selector mechanism','Final drive','Radiator','Water pump & hoses']);
+function settleEngine(){ PARTS.forEach(p => { if(LOWERED.has(p.asm)) p.p[1] -= 0.078; }); }
+
+/* ---- build the whole car -------------------------------------------------- */
+buildShell(); buildChassis(); buildEngine(); buildTrans(); buildSusp(); buildBrakes();
+buildSteer(); buildWheels(); buildCool(); buildFuel(); buildElec(); buildInt();
+buildGlass(); buildFast(); settleEngine();
+
+/* ==========================================================================
+   RENDERER
+   ========================================================================== */
+const N = PARTS.length;
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(34, 1, 0.05, 120);
+
+/* studio environment from a painted gradient */
+function envTexture(dark){
+  const c = document.createElement('canvas'); c.width = 16; c.height = 128;
+  const g = c.getContext('2d').createLinearGradient(0, 0, 0, 128);
+  if(dark){ g.addColorStop(0,'#46534c'); g.addColorStop(.45,'#232a26'); g.addColorStop(.52,'#151a17'); g.addColorStop(1,'#0b0f0d'); }
+  else    { g.addColorStop(0,'#ffffff'); g.addColorStop(.42,'#eef1ee'); g.addColorStop(.52,'#d8ded8'); g.addColorStop(1,'#b6bdb6'); }
+  const ctx = c.getContext('2d'); ctx.fillStyle = g; ctx.fillRect(0,0,16,128);
+  const t = new THREE.CanvasTexture(c); t.mapping = THREE.EquirectangularReflectionMapping; return t;
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+let envRT = null;
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(2.4, 4.0, 2.2); scene.add(key);
+const fill = new THREE.DirectionalLight(0xffffff, 0.5); fill.position.set(-3, 1.5, -2.5); scene.add(fill);
+const hemi = new THREE.HemisphereLight(0xffffff, 0x8a9a90, 0.5); scene.add(hemi);
+/* a soft lamp inside the cabin, so the glasshouse reads as a cabin and not a hole */
+const cabin = new THREE.PointLight(0xfff4e6, 2.2, 3.2, 2); cabin.position.set(0, 0.98, 0.05); scene.add(cabin);
+const bay = new THREE.PointLight(0xffffff, 1.4, 2.0, 2); bay.position.set(0, 0.72, 1.10); scene.add(bay);
+
+/* soft contact shadow */
+const shadowCanvas = document.createElement('canvas'); shadowCanvas.width = shadowCanvas.height = 256;
+{
+  const x = shadowCanvas.getContext('2d');
+  const rg = x.createRadialGradient(128,128,10,128,128,124);
+  rg.addColorStop(0,'rgba(0,0,0,.44)'); rg.addColorStop(.45,'rgba(0,0,0,.20)'); rg.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle = rg; x.fillRect(0,0,256,256);
+}
+const shadowMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(4.6, 2.3),
+  new THREE.MeshBasicMaterial({ map:new THREE.CanvasTexture(shadowCanvas), transparent:true, depthWrite:false })
+);
+shadowMesh.rotation.x = -Math.PI/2; shadowMesh.position.set(0, 0.002, 0); scene.add(shadowMesh);
+
+/* unit-extent geometry archetypes */
+const torusGeo = new THREE.TorusGeometry(0.45, 0.05, 8, 26);
+const GEOMS = {
+  box : new THREE.BoxGeometry(1,1,1),
+  cyl : new THREE.CylinderGeometry(0.5,0.5,1,14,1),
+  disc: new THREE.CylinderGeometry(0.5,0.5,1,26,1),
+  hex : new THREE.CylinderGeometry(0.5,0.5,1,6,1),
+  sph : new THREE.SphereGeometry(0.5,12,8),
+  cone: new THREE.ConeGeometry(0.5,1,14,1),
+  tor : torusGeo
+};
+const TOR_FIX = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2, 0, 0));
+
+/* bucket every piece by geometry × material */
+const buckets = new Map();
+const uniques = [];                   // lofted pressings, one mesh each
+PARTS.forEach((p, i) => {
+  if(typeof p.g !== 'string'){ uniques.push(i); return; }
+  const k = p.g + '|' + p.m;
+  if(!buckets.has(k)) buckets.set(k, []);
+  buckets.get(k).push(i);
+});
+const meshes = [], pickables = [];
+const slotOf = new Int32Array(N);     // index within its bucket
+const meshOf = new Array(N);
+function stdMaterial(md, twoSided){
+  return new THREE.MeshStandardMaterial({
+    color: 0xffffff, metalness: md.m, roughness: md.r,
+    transparent: !!md.t, opacity: md.t || 1, depthWrite: !md.t,
+    envMapIntensity: md.t ? 2.2 : 0.85,
+    side: (md.t || twoSided) ? THREE.DoubleSide : THREE.FrontSide
+  });
+}
+buckets.forEach((list, k) => {
+  const [g, m] = k.split('|');
+  const md = MAT[m];
+  const mat = stdMaterial(md, false);
+  const mesh = new THREE.InstancedMesh(GEOMS[g], mat, list.length);
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.frustumCulled = false;
+  if(md.t) mesh.renderOrder = 2;
+  mesh.userData.list = list; mesh.userData.geo = g;
+  const base = new THREE.Color(md.c);
+  const col = new THREE.Color();
+  list.forEach((pi, s) => {
+    slotOf[pi] = s; meshOf[pi] = mesh;
+    const j = 1 + (((pi * 2654435761) % 1000) / 1000 - 0.5) * 0.13;
+    col.setRGB(base.r * j, base.g * j, base.b * j);
+    mesh.setColorAt(s, col);
+    PARTS[pi].col = col.clone();
+  });
+  mesh.instanceColor.needsUpdate = true;
+  scene.add(mesh); meshes.push(mesh); pickables.push(mesh);
+});
+/* one smooth mesh per pressed panel */
+uniques.forEach(pi => {
+  const p = PARTS[pi], md = MAT[p.m];
+  const mesh = new THREE.Mesh(p.g, stdMaterial(md, true));
+  const base = new THREE.Color(md.c);
+  const j = 1 + (((pi * 2654435761) % 1000) / 1000 - 0.5) * 0.06;
+  p.col = new THREE.Color(base.r*j, base.g*j, base.b*j);
+  mesh.material.color.copy(p.col);
+  mesh.matrixAutoUpdate = false;
+  mesh.frustumCulled = false;
+  mesh.userData.pi = pi;
+  meshOf[pi] = mesh; slotOf[pi] = -1;
+  scene.add(mesh); pickables.push(mesh);
+});
+
+/* selection outline */
+const outline = new THREE.LineSegments(
+  new THREE.EdgesGeometry(new THREE.BoxGeometry(1,1,1)),
+  new THREE.LineBasicMaterial({ color: 0xB0272F, transparent:true, opacity:.95, depthTest:false })
+);
+outline.renderOrder = 5; outline.visible = false; scene.add(outline);
+
+/* ---- explode targets ------------------------------------------------------ */
+const CENTRE = new THREE.Vector3(0, 0.66, 0);
+const sysOrder = SYSKEYS.slice();
+const sysDir = {};
+sysOrder.forEach((k, i) => {
+  const a = i / sysOrder.length * Math.PI * 2, b = (i % 5) / 5 - 0.4;
+  sysDir[k] = new THREE.Vector3(Math.cos(a), b * 1.5, Math.sin(a)).normalize();
+});
+
+const GRID = { w:1, h:1, cy:1 };
+const P0 = new Float32Array(N*3), PB = new Float32Array(N*3), PG = new Float32Array(N*3);
+const Q0 = new Float32Array(N*4), SC = new Float32Array(N*3);
+{
+  const v = new THREE.Vector3(), e = new THREE.Euler(), q = new THREE.Quaternion();
+  /* catalogue wall, grouped in bands by system */
+  const order = [];
+  sysOrder.forEach(k => PARTS.forEach((p, i) => { if(p.sy === k) order.push(i); }));
+  const WALL = 10.4, GAP = 0.018;
+  let cx = 0, cy = 0, rowH = 0, lastSys = null, deepest = 0;
+  const place = () => { cy -= rowH + GAP; cx = 0; rowH = 0; };
+  order.forEach(i => {
+    const e = PARTS[i].env || PARTS[i].s;
+    const w = Math.min(1.45, Math.max(e[0], e[2])) + GAP;
+    const h = Math.min(1.45, Math.max(e[1], e[2])) + GAP;
+    if(lastSys !== null && PARTS[i].sy !== lastSys) place();
+    else if(cx + w > WALL) place();
+    lastSys = PARTS[i].sy;
+    PG[i*3] = cx + w/2; PG[i*3+1] = cy - h/2; PG[i*3+2] = 0;
+    cx += w; rowH = Math.max(rowH, h);
+    deepest = Math.min(deepest, cy - h);
+  });
+  GRID.w = WALL + 0.30; GRID.h = -deepest + 0.30; GRID.cy = 0.95 + GRID.h/2;
+  for(let i=0;i<N;i++){ PG[i*3] -= WALL/2; PG[i*3+1] += GRID.cy + GRID.h/2 - 0.15; }
+
+  PARTS.forEach((p, i) => {
+    P0[i*3] = p.p[0]; P0[i*3+1] = p.p[1]; P0[i*3+2] = p.p[2];
+    e.set(p.r[0], p.r[1], p.r[2]); q.setFromEuler(e);
+    if(p.g === 'tor') q.multiply(TOR_FIX);
+    Q0[i*4] = q.x; Q0[i*4+1] = q.y; Q0[i*4+2] = q.z; Q0[i*4+3] = q.w;
+    SC[i*3] = p.s[0]; SC[i*3+1] = p.s[1]; SC[i*3+2] = p.s[2];
+    if(p.g === 'tor') SC[i*3+2] = p.s[2] * 10;   /* torus base is 0.1 deep */
+    v.set(p.p[0], p.p[1], p.p[2]).sub(CENTRE);
+    if(v.lengthSq() < 1e-6) v.set(0, 1, 0);
+    v.normalize();
+    const d = sysDir[p.sy];
+    PB[i*3]   = p.p[0] + v.x * 0.62 + d.x * 0.72;
+    PB[i*3+1] = p.p[1] + v.y * 0.42 + d.y * 0.52 + 0.10;
+    PB[i*3+2] = p.p[2] + v.z * 0.62 + d.z * 0.72;
+  });
+}
+
+/* ---- state ---------------------------------------------------------------- */
+const visible = {}; sysOrder.forEach(k => visible[k] = true);
+let T = 0.55, Ttarget = 0.55, selected = -1, hovered = -1, colourBySystem = false;
+let dirty = true;
+
+const _m = new THREE.Matrix4(), _p = new THREE.Vector3(), _q = new THREE.Quaternion(),
+      _q2 = new THREE.Quaternion(), _s = new THREE.Vector3(), _zero = new THREE.Vector3(0,0,0);
+/* pieces settle onto the catalogue wall tipped towards the viewer, so plates read as plates */
+const IDENT = new THREE.Quaternion().setFromEuler(new THREE.Euler(-1.02, 0, 0));
+const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+
+function writeMatrices(){
+  const t1 = ease(Math.min(1, T / 0.55));
+  const t2 = ease(Math.max(0, (T - 0.5) / 0.5));
+  for(let i=0;i<N;i++){
+    const uniq = slotOf[i] < 0;
+    const on = visible[PARTS[i].sy];
+    if(!on){
+      if(uniq) meshOf[i].visible = false;
+      else { _m.makeScale(0,0,0); meshOf[i].setMatrixAt(slotOf[i], _m); }
+      continue;
+    }
+    if(uniq) meshOf[i].visible = true;
+    const bx = lerp(P0[i*3],   PB[i*3],   t1), gx = lerp(bx, PG[i*3],   t2);
+    const by = lerp(P0[i*3+1], PB[i*3+1], t1), gy = lerp(by, PG[i*3+1], t2);
+    const bz = lerp(P0[i*3+2], PB[i*3+2], t1), gz = lerp(bz, PG[i*3+2], t2);
+    _p.set(gx, gy, gz);
+    _q.set(Q0[i*4], Q0[i*4+1], Q0[i*4+2], Q0[i*4+3]);
+    if(t2 > 0){ _q2.copy(_q).slerp(IDENT, t2); _q.copy(_q2); }
+    _s.set(SC[i*3], SC[i*3+1], SC[i*3+2]);
+    _m.compose(_p, _q, _s);
+    if(uniq) meshOf[i].matrix.copy(_m);
+    else meshOf[i].setMatrixAt(slotOf[i], _m);
+  }
+  meshes.forEach(m => m.instanceMatrix.needsUpdate = true);
+  if(selected >= 0) placeOutline(selected);
+}
+function worldPos(i, out){
+  const t1 = ease(Math.min(1, T / 0.55)), t2 = ease(Math.max(0, (T - 0.5) / 0.5));
+  const bx = lerp(P0[i*3], PB[i*3], t1), by = lerp(P0[i*3+1], PB[i*3+1], t1), bz = lerp(P0[i*3+2], PB[i*3+2], t1);
+  return out.set(lerp(bx, PG[i*3], t2), lerp(by, PG[i*3+1], t2), lerp(bz, PG[i*3+2], t2));
+}
+function placeOutline(i){
+  worldPos(i, outline.position);
+  const t2 = ease(Math.max(0, (T - 0.5) / 0.5));
+  _q.set(Q0[i*4], Q0[i*4+1], Q0[i*4+2], Q0[i*4+3]);
+  if(t2 > 0) _q.slerp(IDENT, t2);
+  outline.quaternion.copy(_q);
+  const e = PARTS[i].env || [SC[i*3], SC[i*3+1], SC[i*3+2]];
+  const pad = 1.14;
+  outline.scale.set(Math.max(e[0],0.02)*pad, Math.max(e[1],0.02)*pad, Math.max(e[2],0.02)*pad);
+}
+
+/* ---- colours -------------------------------------------------------------- */
+const HOT = new THREE.Color(0xB0272F);
+function paint(){
+  const c = new THREE.Color(), sys = {};
+  sysOrder.forEach(k => sys[k] = new THREE.Color(SYS[k].c));
+  for(let i=0;i<N;i++){
+    const base = colourBySystem ? sys[PARTS[i].sy] : PARTS[i].col;
+    const j = 1 + (((i * 2654435761) % 1000) / 1000 - 0.5) * (colourBySystem ? 0.16 : 0);
+    if(i === selected) c.copy(HOT);
+    else if(i === hovered) c.copy(base).lerp(HOT, 0.45);
+    else c.setRGB(base.r*j, base.g*j, base.b*j);
+    if(slotOf[i] < 0) meshOf[i].material.color.copy(c);
+    else meshOf[i].setColorAt(slotOf[i], c);
+  }
+  meshes.forEach(m => m.instanceColor.needsUpdate = true);
+}
+
+/* ---- theme ---------------------------------------------------------------- */
+let isDark = false;
+function applyTheme(){
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.dataset.theme !== 'light'
+            || document.documentElement.dataset.theme === 'dark';
+  isDark = dark;
+  const g = new THREE.Color(css('--ground'));
+  scene.background = g;
+  scene.fog = new THREE.Fog(g.getHex(), 18, 52);
+  if(envRT) envRT.dispose();
+  envRT = pmrem.fromEquirectangular(envTexture(dark));
+  scene.environment = envRT.texture;
+  key.intensity = dark ? 1.9 : 1.5;
+  hemi.intensity = dark ? .35 : .55;
+  shadowMesh.material.opacity = dark ? .55 : 1;
+  outline.material.color.set(css('--hot'));
+  renderer.toneMappingExposure = dark ? 1.12 : 1.0;
+}
+applyTheme();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+
+/* ==========================================================================
+   CAMERA CONTROL
+   ========================================================================== */
+const cam = { theta: 0.70, phi: 1.17, dist: 6.4, target: new THREE.Vector3(0, 0.70, 0) };
+const goal = { theta: cam.theta, phi: cam.phi, dist: cam.dist, target: cam.target.clone() };
+let baseDist = 6.4, spinning = false;
+
+function updateCamera(){
+  cam.theta += (goal.theta - cam.theta) * .12;
+  cam.phi   += (goal.phi   - cam.phi)   * .12;
+  cam.dist  += (goal.dist  - cam.dist)  * .10;
+  cam.target.lerp(goal.target, .12);
+  const sp = Math.sin(cam.phi);
+  camera.position.set(
+    cam.target.x + cam.dist * sp * Math.sin(cam.theta),
+    cam.target.y + cam.dist * Math.cos(cam.phi),
+    cam.target.z + cam.dist * sp * Math.cos(cam.theta)
+  );
+  camera.lookAt(cam.target);
+}
+let drag = null;
+canvas.addEventListener('pointerdown', e => {
+  canvas.setPointerCapture(e.pointerId);
+  drag = { x:e.clientX, y:e.clientY, pan: e.button === 2 || e.shiftKey, moved:0 };
+});
+canvas.addEventListener('pointermove', e => {
+  if(drag){
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.x = e.clientX; drag.y = e.clientY; drag.moved += Math.abs(dx) + Math.abs(dy);
+    if(drag.pan){
+      const r = new THREE.Vector3().subVectors(camera.position, cam.target);
+      const right = new THREE.Vector3().crossVectors(camera.up, r).normalize();
+      const up = new THREE.Vector3().crossVectors(r, right).normalize();
+      const k = cam.dist * 0.0016;
+      goal.target.addScaledVector(right, dx * k).addScaledVector(up, dy * k);
+    } else {
+      goal.theta -= dx * 0.0062;
+      goal.phi = Math.max(0.10, Math.min(Math.PI - 0.10, goal.phi - dy * 0.0055));
+      spinning = false; document.getElementById('spin').setAttribute('aria-pressed','false');
+    }
+  } else hoverTest(e);
+});
+addEventListener('pointerup', e => {
+  if(drag && drag.moved < 5 && e.target === canvas) clickTest(e);
+  drag = null;
+});
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  goal.dist = Math.max(0.8, Math.min(24, goal.dist * (1 + Math.sign(e.deltaY) * 0.09)));
+  if(T < 0.55) baseDist = goal.dist / (1 + T * 0.55);
+}, { passive:false });
+
+/* ---- picking -------------------------------------------------------------- */
+const ray = new THREE.Raycaster(); ray.firstHitOnly = true;
+const ndc = new THREE.Vector2();
+let lastHover = 0;
+function pick(e){
+  const r = canvas.getBoundingClientRect();
+  ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
+  ray.setFromCamera(ndc, camera);
+  const hits = ray.intersectObjects(pickables, false);
+  for(const h of hits){
+    const gi = h.instanceId === undefined ? h.object.userData.pi
+                                          : h.object.userData.list[h.instanceId];
+    if(gi === undefined) continue;
+    if(visible[PARTS[gi].sy]) return gi;
+  }
+  return -1;
+}
+const tip = document.getElementById('tip');
+function hoverTest(e){
+  const now = performance.now();
+  if(now - lastHover < 70) return;
+  lastHover = now;
+  const i = pick(e);
+  if(i !== hovered){
+    hovered = i; paint();
+    canvas.style.cursor = i >= 0 ? 'pointer' : 'grab';
+  }
+  if(i >= 0){
+    tip.innerHTML = escapeHtml(PARTS[i].n) + '<span class="s">' + escapeHtml(SYS[PARTS[i].sy].n) + '</span>';
+    tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px';
+    tip.classList.add('on');
+  } else tip.classList.remove('on');
+}
+function clickTest(e){ select(pick(e)); }
+function escapeHtml(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ==========================================================================
+   INTERFACE
+   ========================================================================== */
+const nf = new Intl.NumberFormat('en-GB');
+document.getElementById('total').textContent = nf.format(N);
+document.getElementById('syscount').textContent = sysOrder.length;
+
+/* duplicate-name tally, for "fitted qty" */
+const baseName = s => s.replace(/\s·\s(RH|LH)$/,'').replace(/\s·\s\d+$/,'').replace(/\s·\ssection\s\d+$/,'');
+const tally = {};
+PARTS.forEach(p => { const b = baseName(p.n); tally[b] = (tally[b]||0)+1; });
+
+/* --- systems list --- */
+const counts = {}; sysOrder.forEach(k => counts[k] = 0);
+PARTS.forEach(p => counts[p.sy]++);
+const syslist = document.getElementById('syslist');
+sysOrder.forEach(k => {
+  const el = document.createElement('div');
+  el.className = 'sys'; el.dataset.k = k; el.setAttribute('role','switch');
+  el.setAttribute('aria-checked','true'); el.tabIndex = 0;
+  el.innerHTML = '<span class="chip" style="background:' + SYS[k].c + '"></span>' +
+                 '<span class="nm">' + SYS[k].n + '</span>' +
+                 '<span class="ct">' + nf.format(counts[k]) + '</span><span class="sw"></span>';
+  const flip = () => {
+    visible[k] = !visible[k];
+    el.setAttribute('aria-checked', visible[k]);
+    dirty = true; updateVisibleCount();
+    if(selected >= 0 && !visible[PARTS[selected].sy]) select(-1);
+  };
+  el.addEventListener('click', flip);
+  el.addEventListener('keydown', e => { if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); } });
+  syslist.appendChild(el);
+});
+function updateVisibleCount(){
+  let v = 0; PARTS.forEach(p => { if(visible[p.sy]) v++; });
+  document.getElementById('vis').textContent = nf.format(v) + ' pieces visible';
+  document.getElementById('toggleall').textContent = v > 0 ? 'Hide all' : 'Show all';
+}
+updateVisibleCount();
+document.getElementById('toggleall').addEventListener('click', () => {
+  const anyOn = sysOrder.some(k => visible[k]);
+  sysOrder.forEach(k => {
+    visible[k] = !anyOn;
+    syslist.querySelector('[data-k="' + k + '"]').setAttribute('aria-checked', !anyOn);
+  });
+  dirty = true; updateVisibleCount(); if(anyOn) select(-1);
+});
+document.getElementById('filters').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  [...e.currentTarget.children].forEach(x => x.setAttribute('aria-pressed', x === b));
+  const f = b.dataset.f;
+  sysOrder.forEach(k => {
+    const on = f === 'all' || SYS[k].g === f;
+    visible[k] = on;
+    syslist.querySelector('[data-k="' + k + '"]').setAttribute('aria-checked', on);
+  });
+  dirty = true; updateVisibleCount();
+  if(selected >= 0 && !visible[PARTS[selected].sy]) select(-1);
+});
+
+/* --- explode slider --- */
+const ex = document.getElementById('ex'), pct = document.getElementById('pct'), stageLbl = document.getElementById('stage-lbl');
+/* distance that frames the whole catalogue wall */
+function wallDistance(){
+  const th = Math.tan(camera.fov * Math.PI / 360);
+  return Math.max(GRID.h / (2*th), GRID.w / (2*th*camera.aspect)) * 1.18;
+}
+function setExplode(v, instant){
+  v = Math.max(0, Math.min(100, v));
+  ex.value = v; Ttarget = v/100;
+  if(instant) T = Ttarget;
+  ex.style.setProperty('--f', v + '%');
+  pct.innerHTML = (v % 1 ? v.toFixed(1) : v) + '<em>%</em>';
+  stageLbl.textContent = v < 1 ? '· assembled' : v < 50 ? '· separating' : v < 99 ? '· exploded' : '· catalogue';
+  const t = Ttarget;
+  goal.dist = lerp(baseDist * (1 + t * 0.55), wallDistance(), Math.max(0, (t - 0.55) / 0.45));
+  goal.target.set(0, lerp(0.70, GRID.cy, Math.max(0, (t - 0.5) / 0.5)), 0);
+  /* square up to the wall as the pieces lay themselves out */
+  if(t > 0.55){
+    const k = Math.pow((t - 0.55) / 0.45, 1.4);
+    goal.theta = goal.theta * (1 - k);
+    goal.phi = lerp(goal.phi, 1.46, k);
+  }
+  dirty = true;
+}
+ex.addEventListener('input', () => setExplode(parseFloat(ex.value), false));
+document.querySelectorAll('.ticks button').forEach(b =>
+  b.addEventListener('click', () => setExplode(parseFloat(b.dataset.set), false)));
+
+/* --- view rail --- */
+const VIEWS = { iso:[0.70,1.17], front:[0,1.40], side:[Math.PI/2,1.40], rear:[Math.PI,1.40], top:[0.72,0.16] };
+document.querySelectorAll('#rail [data-v]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('#rail [data-v]').forEach(x => x.setAttribute('aria-pressed', x === b));
+  const v = VIEWS[b.dataset.v];
+  goal.theta = v[0]; goal.phi = v[1]; spinning = false;
+  document.getElementById('spin').setAttribute('aria-pressed','false');
+}));
+document.getElementById('spin').addEventListener('click', e => {
+  spinning = !spinning; e.currentTarget.setAttribute('aria-pressed', spinning);
+});
+document.getElementById('reset').addEventListener('click', () => {
+  goal.theta = 0.70; goal.phi = 1.17; baseDist = 6.4; spinning = false;
+  setExplode(parseFloat(ex.value));
+  document.getElementById('spin').setAttribute('aria-pressed','false');
+  document.querySelectorAll('#rail [data-v]').forEach(x => x.setAttribute('aria-pressed', x.dataset.v === 'iso'));
+});
+
+/* --- part card --- */
+const card = document.getElementById('card');
+const SYSCODE = { shell:'BDY', chassis:'SUB', engine:'ENG', trans:'TRN', susp:'SUS', brakes:'BRK', steer:'STR',
+                  wheels:'WHL', cool:'COL', fuel:'FUE', elec:'ELE', lamps:'LMP', int:'INT', glass:'TRM', fast:'FST' };
+function select(i){
+  if(i === selected) return;
+  selected = i; paint();
+  if(i < 0){ card.classList.remove('on'); outline.visible = false; return; }
+  const p = PARTS[i];
+  document.getElementById('c-ref').textContent = 'MC-' + SYSCODE[p.sy] + '-' + String(i).padStart(4,'0');
+  document.getElementById('c-name').textContent = p.n;
+  document.getElementById('c-sys').textContent = SYS[p.sy].n;
+  document.getElementById('c-chip').style.background = SYS[p.sy].c;
+  document.getElementById('c-mat').textContent = MAT[p.m].n;
+  document.getElementById('c-asm').textContent = p.asm;
+  document.getElementById('c-dim').textContent =
+    (p.env || p.s).map(v => Math.round(v*1000)).join(' × ') + ' mm';
+  const q = tally[baseName(p.n)];
+  document.getElementById('c-qty').textContent = q + (q === 1 ? '' : ' off');
+  card.classList.add('on');
+  outline.visible = true; placeOutline(i);
+}
+document.getElementById('c-close').addEventListener('click', () => select(-1));
+
+/* --- search --- */
+const q = document.getElementById('q'), results = document.getElementById('results');
+let hits = [], cursor = 0;
+function runSearch(){
+  const s = q.value.trim().toLowerCase();
+  if(!s){ results.classList.remove('on'); results.innerHTML = ''; hits = []; return; }
+  hits = [];
+  for(let i=0;i<N && hits.length<40;i++) if(PARTS[i].n.toLowerCase().includes(s)) hits.push(i);
+  cursor = 0;
+  results.innerHTML = hits.length
+    ? hits.map((i,k) => '<button data-i="' + i + '"' + (k===0?' class="sel"':'') + '>' +
+        '<span class="chip" style="width:6px;height:6px;border-radius:2px;flex:none;background:' + SYS[PARTS[i].sy].c + '"></span>' +
+        '<span class="nm">' + escapeHtml(PARTS[i].n) + '</span>' +
+        '<span class="sy">' + SYSCODE[PARTS[i].sy] + '</span></button>').join('')
+    : '<div class="empty">No part matches “' + escapeHtml(q.value) + '”.</div>';
+  results.classList.add('on');
+}
+function gotoPart(i){
+  if(!visible[PARTS[i].sy]){
+    visible[PARTS[i].sy] = true;
+    syslist.querySelector('[data-k="' + PARTS[i].sy + '"]').setAttribute('aria-checked','true');
+    dirty = true; updateVisibleCount();
+  }
+  select(i);
+  worldPos(i, goal.target);
+  goal.dist = Math.max(0.9, Math.min(goal.dist, 2.0));
+  results.classList.remove('on'); q.blur();
+}
+q.addEventListener('input', runSearch);
+q.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ q.value = ''; results.classList.remove('on'); q.blur(); }
+  if(!hits.length) return;
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    cursor = (cursor + (e.key === 'ArrowDown' ? 1 : hits.length-1)) % hits.length;
+    [...results.children].forEach((c,k) => c.classList.toggle('sel', k === cursor));
+    results.children[cursor].scrollIntoView({ block:'nearest' });
+  }
+  if(e.key === 'Enter'){ e.preventDefault(); gotoPart(hits[cursor]); }
+});
+results.addEventListener('click', e => {
+  const b = e.target.closest('button'); if(b) gotoPart(+b.dataset.i);
+});
+q.addEventListener('focus', () => { if(hits.length) results.classList.add('on'); });
+addEventListener('click', e => { if(!e.target.closest('#searchwrap')) results.classList.remove('on'); });
+
+/* --- info modal --- */
+const scrim = document.getElementById('scrim');
+document.getElementById('infobtn').addEventListener('click', () => scrim.classList.add('on'));
+document.getElementById('info-close').addEventListener('click', () => scrim.classList.remove('on'));
+scrim.addEventListener('click', e => { if(e.target === scrim) scrim.classList.remove('on'); });
+
+/* --- keys --- */
+addEventListener('keydown', e => {
+  if(e.target === q) return;
+  if(e.key === '/'){ e.preventDefault(); q.focus(); q.select(); }
+  else if(e.key === 'Escape'){ scrim.classList.remove('on'); select(-1); }
+  else if(e.key === 'ArrowRight'){ setExplode(parseFloat(ex.value) + (e.shiftKey ? 10 : 2)); }
+  else if(e.key === 'ArrowLeft'){ setExplode(parseFloat(ex.value) - (e.shiftKey ? 10 : 2)); }
+  else if(e.key === '0'){ setExplode(0); }
+  else if(e.key === '1'){ setExplode(100); }
+});
+
+/* ==========================================================================
+   LOOP
+   ========================================================================== */
+function resize(){
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+setExplode(reduce ? 0 : 55, true);
+if(!reduce) setTimeout(() => setExplode(0), 420);
+paint(); writeMatrices();
+
+let loaded = false;
+function frame(){
+  requestAnimationFrame(frame);
+  if(spinning) goal.theta += 0.0022;
+  if(Math.abs(T - Ttarget) > 0.0004){ T += (Ttarget - T) * 0.085; dirty = true; }
+  else if(T !== Ttarget){ T = Ttarget; dirty = true; }
+  if(dirty){ writeMatrices(); dirty = false; }
+  shadowMesh.material.opacity = (isDark ? .55 : 1) * Math.max(0, 1 - T * 2.4);
+  shadowMesh.visible = shadowMesh.material.opacity > 0.02;
+  updateCamera();
+  renderer.render(scene, camera);
+  if(!loaded){
+    loaded = true;
+    requestAnimationFrame(() => {
+      document.getElementById('loadmsg').textContent = nf.format(N) + ' pieces';
+      document.getElementById('load').classList.add('off');
+      setTimeout(() => document.getElementById('load').remove(), 700);
+    });
+  }
+}
+frame();
+</script>
