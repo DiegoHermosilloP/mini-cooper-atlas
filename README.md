@@ -1,5 +1,7 @@
 # Mini Cooper Atlas
 
+**▶ Live: https://diegohermosillop.github.io/mini-cooper-atlas/**
+
 An interactive 3D teardown of a 1964–67 Morris Mini Cooper S (1275), built as a single
 self-contained HTML file. Pull the **Disassemble** slider and the car separates along its
 own assembly order — body off subframes, subframes off running gear — until all
@@ -41,7 +43,8 @@ published figures for the car: wheelbase 2036 mm, track 1230 mm, bore 70.6 × st
 
 ## Running it
 
-It is one file with no build step:
+It runs live at [diegohermosillop.github.io/mini-cooper-atlas](https://diegohermosillop.github.io/mini-cooper-atlas/).
+Locally it is one file with no build step:
 
 ```sh
 python3 -m http.server 8000
